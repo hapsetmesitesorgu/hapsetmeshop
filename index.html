@@ -9,7 +9,7 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #2a2a3e 0%, #1f1f2e 50%, #16162a 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -27,8 +27,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            backdrop-filter: blur(100px);
             pointer-events: none;
             animation: pulse 8s ease-in-out infinite;
         }
@@ -38,9 +39,37 @@
             50% { opacity: 1; }
         }
         
+        /* Particles */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-particle linear infinite;
+        }
+        
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
         .logo-3d {
             position: absolute;
-            top: 15%;
+            top: 8%;
             font-size: clamp(3rem, 12vw, 8rem);
             font-weight: 900;
             letter-spacing: 0.1em;
@@ -175,9 +204,8 @@
         
         .discord-btn {
             position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 30px;
+            right: 30px;
             width: 250px;
             height: 70px;
             background: rgba(88, 101, 242, 0.3);
@@ -203,6 +231,36 @@
         .discord-btn:hover {
             background: rgba(88, 101, 242, 0.5);
             box-shadow: 0 15px 50px rgba(88, 101, 242, 0.6);
+        }
+        
+        /* Audio control */
+        .audio-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .audio-control:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .audio-control svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
         }
         
         .discord-icon {
@@ -252,6 +310,14 @@
     </style>
 </head>
 <body>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="/static/hapsetme.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Particles -->
+    <div id="particles"></div>
+    
     <div class="logo-3d">HAPSETME</div>
     
     <div class="container">
@@ -318,9 +384,20 @@
         </svg>
         discord.gg/hapsetme
     </a>
+    
+    <!-- Audio Control -->
+    <div class="audio-control" id="audioControl" title="Müzik Aç/Kapat">
+        <svg id="audioIcon" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+    </div>
 
     <script>
         const BACKEND = 'http://localhost:5000';
+        
+        const bgMusic = document.getElementById('bgMusic');
+        const audioControl = document.getElementById('audioControl');
+        const audioIcon = document.getElementById('audioIcon');
         
         const keyScreen = document.getElementById('keyScreen');
         const usernameScreen = document.getElementById('usernameScreen');
@@ -342,20 +419,59 @@
         const discordBtn = document.getElementById('discordBtn');
         
         let validatedKey = null;
+        let musicPlaying = false;
+        
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // Audio control
+        audioControl.addEventListener('click', () => {
+            if (musicPlaying) {
+                bgMusic.pause();
+                audioIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+                musicPlaying = false;
+            } else {
+                bgMusic.play().catch(e => console.log('Autoplay blocked:', e));
+                audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+                musicPlaying = true;
+            }
+        });
+        
+        // Try to autoplay music
+        document.addEventListener('click', () => {
+            if (!musicPlaying) {
+                bgMusic.play().catch(e => console.log('Autoplay blocked:', e));
+                musicPlaying = true;
+                audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            }
+        }, { once: true });
         
         // Mouse tracking for Discord button - rotate based on mouse position
         document.addEventListener('mousemove', (e) => {
+            const rect = discordBtn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
             const x = e.clientX;
             const y = e.clientY;
             
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
+            // Calculate rotation based on distance from button center
+            const rotateX = ((y - centerY) / window.innerHeight) * -20;
+            const rotateY = ((x - centerX) / window.innerWidth) * 20;
             
-            // Calculate rotation based on distance from center
-            const rotateX = ((y - centerY) / centerY) * -15; // Vertical tilt
-            const rotateY = ((x - centerX) / centerX) * 15;  // Horizontal tilt
-            
-            discordBtn.style.transform = `translateX(-50%) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            discordBtn.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
         
         // Key form submission
@@ -396,7 +512,7 @@
                 }
             } catch (e) {
                 console.error('Key validation error:', e);
-                showStatus(keyStatus, 'Bağlantı hatası. Backend çalışıyor mu?', 'error');
+                showStatus(keyStatus, '❌ Backend bağlantı hatası! Flask uygulamasını başlatın: python app.py', 'error');
                 keyBtn.disabled = false;
                 keyBtnText.textContent = 'Devam Et';
             }
