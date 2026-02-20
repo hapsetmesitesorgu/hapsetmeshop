@@ -1,1 +1,470 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NeoSoft | Yazılım Market</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#05010f;
+    color:#fff;
+    font-family:'Poppins',sans-serif;
+    overflow-x:hidden;
+}
+
+/* NEON EFFECT */
+
+.neon{
+    text-shadow:
+    0 0 5px #7f5cff,
+    0 0 10px #7f5cff,
+    0 0 20px #7f5cff,
+    0 0 40px #00f7ff;
+}
+
+/* HEADER */
+
+header{
+    background:rgba(5,1,15,.95);
+    border-bottom:2px solid #7f5cff;
+    position:fixed;
+    width:100%;
+    z-index:1000;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+}
+
+.logo{
+    font-family:'Orbitron';
+    font-size:26px;
+    color:#7f5cff;
+}
+
+.menu{
+    list-style:none;
+    display:flex;
+}
+
+.menu li{
+    margin-left:25px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#fff;
+    transition:.3s;
+}
+
+.menu a:hover{
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+.hamburger{
+    display:none;
+    font-size:26px;
+    cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+    height:100vh;
+    background:
+    radial-gradient(circle at top,#1b0a3d,#05010f);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.hero h1{
+    font-family:'Orbitron';
+    font-size:55px;
+}
+
+.hero p{
+    margin:15px 0;
+    color:#ccc;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 35px;
+    border:2px solid #7f5cff;
+    border-radius:30px;
+    color:#7f5cff;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+    box-shadow:0 0 15px #7f5cff;
+}
+
+.btn:hover{
+    background:#7f5cff;
+    color:#000;
+    box-shadow:0 0 25px #00f7ff;
+}
+
+/* SLIDER */
+
+.slider{
+    max-width:900px;
+    margin:80px auto;
+    border:2px solid #7f5cff;
+    box-shadow:0 0 25px #7f5cff;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.slide{
+    display:none;
+}
+
+.slide img{
+    width:100%;
+}
+
+/* PRODUCTS */
+
+.products{
+    padding:80px 40px;
+    text-align:center;
+}
+
+.products h2{
+    font-family:'Orbitron';
+    margin-bottom:40px;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+.product{
+    background:rgba(20,10,40,.8);
+    padding:25px;
+    border-radius:15px;
+    border:1px solid #7f5cff;
+    box-shadow:0 0 15px #7f5cff55;
+    transition:.3s;
+}
+
+.product:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 30px #00f7ff;
+}
+
+.product img{
+    width:100%;
+    border-radius:10px;
+}
+
+.product h3{
+    margin:15px 0;
+    color:#00f7ff;
+}
+
+/* PRICING */
+
+.pricing{
+    background:#080214;
+    padding:80px 40px;
+    text-align:center;
+}
+
+.pricing-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.plan{
+    background:rgba(15,5,35,.9);
+    padding:30px;
+    border-radius:15px;
+    border:1px solid #7f5cff;
+    box-shadow:0 0 20px #7f5cff55;
+}
+
+.plan h3{
+    font-family:'Orbitron';
+    color:#00f7ff;
+}
+
+.price{
+    font-size:34px;
+    margin:15px 0;
+    color:#7f5cff;
+}
+
+/* DISCORD */
+
+.discord{
+    padding:80px 40px;
+    text-align:center;
+}
+
+.discord-box{
+    max-width:500px;
+    margin:auto;
+    padding:40px;
+    border:2px solid #00f7ff;
+    border-radius:20px;
+    box-shadow:0 0 30px #00f7ff;
+}
+
+.discord-box h2{
+    font-family:'Orbitron';
+    margin-bottom:20px;
+}
+
+/* FOOTER */
+
+footer{
+    background:#020008;
+    padding:25px;
+    text-align:center;
+    color:#777;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.menu{
+    position:absolute;
+    top:70px;
+    left:0;
+    width:100%;
+    background:#05010f;
+    flex-direction:column;
+    display:none;
+}
+
+.menu li{
+    margin:15px 0;
+    text-align:center;
+}
+
+.hamburger{
+    display:block;
+}
+
+.hero h1{
+    font-size:40px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<nav class="navbar">
+
+<div class="logo neon">NeoSoft</div>
+
+<ul class="menu" id="menu">
+<li><a href="#home">Anasayfa</a></li>
+<li><a href="#products">Yazılımlar</a></li>
+<li><a href="#pricing">Paketler</a></li>
+<li><a href="#discord">Discord</a></li>
+</ul>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+</nav>
+</header>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+<div>
+
+<h1 class="neon">Premium Yazılım Market</h1>
+
+<p>Hızlı • Güvenli • Lisanslı • Güncel</p>
+
+<a href="#products" class="btn">Ürünleri İncele</a>
+
+</div>
+
+</section>
+
+<!-- SLIDER -->
+
+<div class="slider">
+
+<div class="slide">
+<img src="https://picsum.photos/900/400?11">
+</div>
+
+<div class="slide">
+<img src="https://picsum.photos/900/400?12">
+</div>
+
+<div class="slide">
+<img src="https://picsum.photos/900/400?13">
+</div>
+
+</div>
+
+<!-- PRODUCTS -->
+
+<section class="products" id="products">
+
+<h2 class="neon">Yazılımlar</h2>
+
+<div class="product-grid">
+
+<div class="product">
+<img src="https://picsum.photos/300/200?21">
+<h3>Panel Bot</h3>
+<p>Otomatik sistem</p>
+<a class="btn">Satın Al</a>
+</div>
+
+<div class="product">
+<img src="https://picsum.photos/300/200?22">
+<h3>Web Script</h3>
+<p>Hazır altyapı</p>
+<a class="btn">Satın Al</a>
+</div>
+
+<div class="product">
+<img src="https://picsum.photos/300/200?23">
+<h3>API Tool</h3>
+<p>Profesyonel araç</p>
+<a class="btn">Satın Al</a>
+</div>
+
+</div>
+
+</section>
+
+<!-- PRICING -->
+
+<section class="pricing" id="pricing">
+
+<h2 class="neon">Paketler</h2>
+
+<div class="pricing-grid">
+
+<div class="plan">
+<h3>Starter</h3>
+<div class="price">₺149</div>
+<p>Temel Yazılımlar</p>
+<a class="btn">Satın Al</a>
+</div>
+
+<div class="plan">
+<h3>Pro</h3>
+<div class="price">₺299</div>
+<p>Tüm Sistemler</p>
+<a class="btn">Satın Al</a>
+</div>
+
+<div class="plan">
+<h3>Elite</h3>
+<div class="price">₺499</div>
+<p>VIP Destek</p>
+<a class="btn">Satın Al</a>
+</div>
+
+</div>
+
+</section>
+
+<!-- DISCORD -->
+
+<section class="discord" id="discord">
+
+<div class="discord-box">
+
+<h2 class="neon">Discord Sunucumuz</h2>
+
+<p>Tüm satış, destek ve güncellemeler Discord üzerinden yapılmaktadır.</p>
+
+<br>
+
+<a href="https://discord.gg/XXXXXX" target="_blank" class="btn">
+Discord'a Katıl
+</a>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 NeoSoft | Tüm Hakları Saklıdır
+
+</footer>
+
+<script>
+
+/* MENU */
+
+function toggleMenu(){
+
+let menu=document.getElementById("menu");
+
+if(menu.style.display=="flex"){
+menu.style.display="none";
+}else{
+menu.style.display="flex";
+}
+
+}
+
+/* SLIDER */
+
+let index=0;
+showSlide();
+
+function showSlide(){
+
+let slides=document.getElementsByClassName("slide");
+
+for(let i=0;i<slides.length;i++){
+slides[i].style.display="none";
+}
+
+index++;
+
+if(index>slides.length){index=1;}
+
+slides[index-1].style.display="block";
+
+setTimeout(showSlide,3000);
+}
+
+</script>
+
+</body>
+</html>
 
