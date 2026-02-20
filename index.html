@@ -370,7 +370,7 @@
             modalBtnText.innerHTML = '<span class="spinner"></span>';
             
             try {
-                const res = await fetch(`${BACKEND}/api/submit-key`, {
+                const res = await fetch(`${BACKEND}/api/validate-registration-key`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
@@ -379,7 +379,7 @@
                 const data = await res.json();
                 
                 if (data.success) {
-                    showModalStatus('Giriş başarılı!', 'success');
+                    showModalStatus('Key doğrulandı! Yönlendiriliyorsun...', 'success');
                     setTimeout(() => {
                         authenticated = true;
                         keyModal.classList.add('hidden');
@@ -391,7 +391,7 @@
                     modalBtnText.textContent = 'Giriş Yap';
                 }
             } catch (e) {
-                showModalStatus('Bağlantı hatası', 'error');
+                showModalStatus('Bağlantı hatası: Backend çalışmıyor olabilir', 'error');
                 modalBtn.disabled = false;
                 modalBtnText.textContent = 'Giriş Yap';
             }
