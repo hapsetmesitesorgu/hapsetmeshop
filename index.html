@@ -330,7 +330,11 @@
     </footer>
 
     <script>
-        const BACKEND = 'http://YOUR_PUBLIC_IP:5000';
+        // IMPORTANT: Change this to your backend URL
+        // For local testing: http://localhost:5000
+        // For production: http://YOUR_PUBLIC_IP:5000
+        const BACKEND = 'http://localhost:5000';
+        
         const keyModal = document.getElementById('keyModal');
         const keyForm = document.getElementById('keyForm');
         const keyInput = document.getElementById('keyInput');
@@ -351,6 +355,31 @@
         let authenticated = false;
         let currentResults = '';
         let currentQuery = '';
+        
+        // Test backend connection on load
+        async function testBackendConnection() {
+            try {
+                const res = await fetch(`${BACKEND}/api/health`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(5000)
+                });
+                if (res.ok) {
+                    console.log('✅ Backend bağlantısı başarılı');
+                    return true;
+                } else {
+                    console.error('❌ Backend yanıt verdi ama hata döndü:', res.status);
+                    showModalStatus(`Backend hatası: ${res.status}`, 'error');
+                    return false;
+                }
+            } catch (e) {
+                console.error('❌ Backend bağlantı hatası:', e);
+                showModalStatus(`Backend bağlantı hatası: ${BACKEND} adresine ulaşılamıyor. Flask uygulamasının çalıştığından emin olun.`, 'error');
+                return false;
+            }
+        }
+        
+        // Test connection on page load
+        testBackendConnection();
         
         // Get IP
         fetch('https://api.ipify.org?format=json')
@@ -391,7 +420,8 @@
                     modalBtnText.textContent = 'Giriş Yap';
                 }
             } catch (e) {
-                showModalStatus('Bağlantı hatası: Backend çalışmıyor olabilir', 'error');
+                console.error('Key validation error:', e);
+                showModalStatus(`Bağlantı hatası: ${BACKEND} adresine ulaşılamıyor. Flask uygulamasını başlatın: python app.py`, 'error');
                 modalBtn.disabled = false;
                 modalBtnText.textContent = 'Giriş Yap';
             }
