@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HAPSETME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .welcome {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+        }
+
+        .info {
+            background: #0a0a0a;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .info h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #0ea5e9;
+        }
+
+        .info p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: #0ea5e9;
+            color: #000;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #38bdf8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HAPSETME Dashboard</h1>
+        <p class="welcome">Hoş geldiniz!</p>
+        
+        <div class="info">
+            <h2>Platform Bilgileri</h2>
+            <p>
+                Discord botumuz üzerinden sorgulama yapabilirsiniz.<br>
+                Komutlar: <code>a!sorgula &lt;sorgu&gt;</code><br>
+                Discord: <a href="https://discord.gg/hapsetme" style="color: #0ea5e9;">discord.gg/hapsetme</a>
+            </p>
+        </div>
+
+        <button class="btn" onclick="window.location.href='/'">Ana Sayfa</button>
+        <button class="btn" onclick="logout()">Çıkış Yap</button>
+    </div>
+
+    <script>
+        async function logout() {
+            await fetch('http://localhost:5000/api/logout', { method: 'POST' });
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
 
