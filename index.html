@@ -3,258 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAPSETME</title>
+    <title>HAPSETME - Database Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #2a2a3e 0%, #1f1f2e 50%, #16162a 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0a0f;
         }
         
-        body::before {
-            content: '';
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: white;
+        }
+        
+        /* Animated Grid Background */
+        .grid-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-            backdrop-filter: blur(100px);
-            pointer-events: none;
-            animation: pulse 8s ease-in-out infinite;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
         
-        /* Particles */
-        .particle {
+        /* Scanline Effect */
+        .scanline {
             position: fixed;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 243, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            animation: scan 8s linear infinite;
             pointer-events: none;
-            animation: float-particle linear infinite;
+            z-index: 999;
         }
         
-        @keyframes float-particle {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
+        @keyframes scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
         }
         
-        .logo-3d {
-            position: absolute;
-            top: 8%;
-            font-size: clamp(3rem, 12vw, 8rem);
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            color: #fff;
-            text-transform: uppercase;
-            transform: perspective(1000px) rotateX(15deg);
-            text-shadow: 
-                0 1px 0 #ccc,
-                0 2px 0 #c9c9c9,
-                0 3px 0 #bbb,
-                0 4px 0 #b9b9b9,
-                0 5px 0 #aaa,
-                0 6px 1px rgba(0,0,0,.1),
-                0 0 5px rgba(0,0,0,.1),
-                0 1px 3px rgba(0,0,0,.3),
-                0 3px 5px rgba(0,0,0,.2),
-                0 5px 10px rgba(0,0,0,.25),
-                0 10px 20px rgba(0,0,0,.2),
-                0 20px 40px rgba(0,0,0,.15);
-            animation: float 6s ease-in-out infinite;
-            z-index: 10;
+        /* Glowing Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 15s ease-in-out infinite;
+            z-index: 2;
+        }
+        
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--neon-blue);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+        
+        .orb2 {
+            width: 500px;
+            height: 500px;
+            background: var(--neon-pink);
+            bottom: -250px;
+            right: -250px;
+            animation-delay: 5s;
+        }
+        
+        .orb3 {
+            width: 350px;
+            height: 350px;
+            background: var(--neon-purple);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
         }
         
         @keyframes float {
-            0%, 100% { transform: perspective(1000px) rotateX(15deg) translateY(0px); }
-            50% { transform: perspective(1000px) rotateX(15deg) translateY(-20px); }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
         }
         
-        .container {
+        /* Main Logo with Glitch */
+        .logo-container {
             position: relative;
-            z-index: 5;
+            z-index: 10;
             text-align: center;
-            margin-top: 200px;
+            margin-top: 15vh;
         }
         
+        .logo-3d {
+            font-size: clamp(4rem, 15vw, 10rem);
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            color: #fff;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            text-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue),
+                0 0 40px var(--neon-blue),
+                0 0 80px var(--neon-blue),
+                0 0 120px var(--neon-blue);
+            animation: glitch 3s infinite, glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            91% { transform: translate(-2px, 2px); }
+            92% { transform: translate(2px, -2px); }
+            93% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 10px var(--neon-blue),
+                    0 0 20px var(--neon-blue),
+                    0 0 40px var(--neon-blue);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 20px var(--neon-pink),
+                    0 0 40px var(--neon-pink),
+                    0 0 80px var(--neon-pink),
+                    0 0 120px var(--neon-pink);
+            }
+        }
+        
+        .logo-3d::before,
+        .logo-3d::after {
+            content: 'HAPSETME';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .logo-3d::before {
+            color: #ff00ff;
+            animation: glitch-1 2.5s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+        
+        .logo-3d::after {
+            color: #00f3ff;
+            animation: glitch-2 2.5s infinite;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); }
+            33% { transform: translate(-5px, 0); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); }
+            33% { transform: translate(5px, 0); }
+        }
+        
+        /* Subtitle with typing effect */
         .subtitle {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 3rem;
-            font-weight: 300;
-            letter-spacing: 0.05em;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--neon-blue);
+            margin-top: 2rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            overflow: hidden;
+            border-right: 3px solid var(--neon-blue);
+            white-space: nowrap;
+            animation: typing 3s steps(30) 1s 1 normal both, blink 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        
+        /* Hexagon particles */
+        .hex-particle {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            opacity: 0.3;
+            animation: hexFloat linear infinite;
+            z-index: 3;
+        }
+        
+        @keyframes hexFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* CTA Button */
+        .cta-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-top: 5rem;
         }
         
         .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem 3rem;
-            background: rgba(88, 101, 242, 0.3);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            color: white;
+            display: inline-block;
+            padding: 1.5rem 4rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            font-size: 1.3rem;
+            color: #fff;
             text-decoration: none;
-            box-shadow: 0 10px 40px rgba(88, 101, 242, 0.4);
-            transition: all 0.3s ease;
-            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            border: 3px solid var(--neon-blue);
+            border-radius: 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 
+                0 0 20px var(--neon-blue),
+                inset 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
         
         .cta-button:hover {
-            background: rgba(88, 101, 242, 0.5);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(88, 101, 242, 0.6);
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 40px var(--neon-pink),
+                inset 0 0 40px rgba(255, 0, 255, 0.3);
+            border-color: var(--neon-pink);
         }
         
-        .discord-icon {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .discord-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            width: 250px;
-            height: 70px;
-            background: rgba(88, 101, 242, 0.3);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 10px 40px rgba(88, 101, 242, 0.4);
-            transition: all 0.1s ease-out;
-            z-index: 100;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-        
-        .discord-btn:hover {
-            background: rgba(88, 101, 242, 0.5);
-            box-shadow: 0 15px 50px rgba(88, 101, 242, 0.6);
-        }
-        
-        /* Audio control */
-        .audio-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-        
-        .audio-control:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        
-        .audio-control svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-        
+        /* Feature Cards */
         .features {
-            margin-top: 4rem;
+            position: relative;
+            z-index: 10;
             display: flex;
             gap: 2rem;
             justify-content: center;
+            margin-top: 5rem;
             flex-wrap: wrap;
+            padding: 0 2rem;
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
+            width: 280px;
             padding: 2rem;
-            width: 250px;
-            text-align: center;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid var(--neon-blue);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            clip-path: polygon(
+                0 0, calc(100% - 20px) 0, 100% 20px,
+                100% 100%, 20px 100%, 0 calc(100% - 20px)
+            );
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 243, 255, 0.5);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
         }
         
         .feature-icon {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
+            filter: drop-shadow(0 0 20px var(--neon-blue));
         }
         
         .feature-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: white;
             margin-bottom: 0.5rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
         }
         
         .feature-desc {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
         }
         
-        @media (max-width: 768px) {
-            .discord-btn {
-                top: 20px;
-                right: 20px;
-                width: 60px;
-                height: 60px;
-                font-size: 0;
-                padding: 0;
+        /* Discord Button (Top Right) */
+        .discord-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 1rem 2rem;
+            background: rgba(88, 101, 242, 0.2);
+            border: 2px solid #5865f2;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
+        }
+        
+        .discord-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(88, 101, 242, 0.8);
+            background: rgba(88, 101, 242, 0.4);
+        }
+        
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 243, 255, 0.2);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+        
+        .audio-control:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 0 40px var(--neon-blue);
+        }
+        
+        .audio-control svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--neon-blue);
+        }
+        
+        /* Mouse Trail */
+        .trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            animation: trailFade 0.5s ease-out;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+        
+        @keyframes trailFade {
+            0% {
+                opacity: 1;
+                transform: scale(1);
             }
-            
-            .discord-btn svg {
-                margin: 0;
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-3d {
+                font-size: 3rem;
             }
             
             .features {
                 flex-direction: column;
                 align-items: center;
+            }
+            
+            .discord-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -263,46 +470,59 @@
     <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="static/hapsetme2.mp3" type="audio/mpeg">
+        <source src="static/hapsetme2.mp3" type="audio/mpeg">
+        <source src="static/hapsetme2.mp3" type="audio/mpeg">
     </audio>
     
-    <!-- Particles -->
-    <div id="particles"></div>
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
     
-    <div class="logo-3d">HAPSETME</div>
+    <!-- Scanline Effect -->
+    <div class="scanline"></div>
     
-    <div class="container">
-        <div class="subtitle">Database Search & Community</div>
-        
+    <!-- Glowing Orbs -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    
+    <!-- Hexagon Particles Container -->
+    <div id="hexParticles"></div>
+    
+    <!-- Main Content -->
+    <div class="logo-container">
+        <div class="logo-3d">HAPSETME</div>
+        <div class="subtitle">DATABASE SEARCH & COMMUNITY</div>
+    </div>
+    
+    <div class="cta-container">
         <a href="https://discord.gg/hapsetme" target="_blank" class="cta-button">
-            <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
-            </svg>
-            Discord'a Katıl
+            JOIN DISCORD
         </a>
+    </div>
+    
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <div class="feature-title">Database Search</div>
+            <div class="feature-desc">Gelişmiş Sorgu Sistemi</div>
+        </div>
         
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">🔍</div>
-                <div class="feature-title">Database Search</div>
-                <div class="feature-desc">HapsetmeDiscord.Vip üzerinden güçlü arama</div>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔑</div>
-                <div class="feature-title">Key System</div>
-                <div class="feature-desc">Güvenli erişim kontrolü</div>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-title">Fast Results</div>
-                <div class="feature-desc">Hızlı ve güvenilir sonuçlar</div>
-            </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔑</div>
+            <div class="feature-title">Key System</div>
+            <div class="feature-desc">Güvenli erişim kontrolü ve yetkilendirme</div>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">Fast Results</div>
+            <div class="feature-desc">Anlık sonuçlar ve DM üzerinden güvenli iletişim</div>
         </div>
     </div>
     
-    <a href="https://discord.gg/hapsetme" target="_blank" class="discord-btn" id="discordBtn">
-        <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+    <!-- Discord Button -->
+    <a href="https://discord.gg/hapsetme" target="_blank" class="discord-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
         </svg>
         discord.gg/hapsetme
@@ -319,34 +539,33 @@
         const bgMusic = document.getElementById('bgMusic');
         const audioControl = document.getElementById('audioControl');
         const audioIcon = document.getElementById('audioIcon');
-        const discordBtn = document.getElementById('discordBtn');
         
         let musicPlaying = false;
         
-        // Create particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particlesContainer.appendChild(particle);
+        // Create hexagon particles
+        function createHexParticles() {
+            const container = document.getElementById('hexParticles');
+            for (let i = 0; i < 20; i++) {
+                const hex = document.createElement('div');
+                hex.className = 'hex-particle';
+                hex.style.left = Math.random() * 100 + '%';
+                hex.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                hex.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(hex);
             }
         }
         
-        createParticles();
+        createHexParticles();
         
-        // Audio control
-        bgMusic.volume = 0.5;
+        // Music control
+        bgMusic.volume = 0.4;
         
-        // Try to play immediately
+        // Try autoplay
         bgMusic.play().then(() => {
             musicPlaying = true;
-            console.log('Music started automatically');
+            console.log('🎵 Music started');
         }).catch(e => {
-            console.log('Autoplay blocked, waiting for user interaction');
+            console.log('⏸️ Autoplay blocked');
             musicPlaying = false;
         });
         
@@ -356,36 +575,57 @@
                 audioIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
                 musicPlaying = false;
             } else {
-                bgMusic.play().catch(e => console.log('Autoplay blocked:', e));
+                bgMusic.play();
                 audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
                 musicPlaying = true;
             }
         });
         
-        // Try to autoplay music on first click
+        // Auto-start music on first interaction
         document.addEventListener('click', () => {
             if (!musicPlaying) {
                 bgMusic.play().then(() => {
                     musicPlaying = true;
                     audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-                }).catch(e => {});
+                }).catch(() => {});
             }
         }, { once: true });
         
-        // Mouse tracking for Discord button - rotate based on mouse position
+        // Mouse trail effect
+        let lastTrailTime = 0;
         document.addEventListener('mousemove', (e) => {
-            const rect = discordBtn.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+            const now = Date.now();
+            if (now - lastTrailTime > 50) {
+                const trail = document.createElement('div');
+                trail.className = 'trail';
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+                document.body.appendChild(trail);
+                
+                setTimeout(() => trail.remove(), 500);
+                lastTrailTime = now;
+            }
+        });
+        
+        // Parallax effect on cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+            });
             
-            const x = e.clientX;
-            const y = e.clientY;
-            
-            // Calculate rotation based on distance from button center
-            const rotateX = ((y - centerY) / window.innerHeight) * -20;
-            const rotateY = ((x - centerX) / window.innerWidth) * 20;
-            
-            discordBtn.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
         });
     </script>
 </body>
