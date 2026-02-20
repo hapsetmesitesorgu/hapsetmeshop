@@ -3,29 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Search - hapsetme</title>
+    <title>HAPSETME</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #13131a;
-            --bg-tertiary: #1a1a24;
-            --accent-primary: #6366f1;
-            --accent-secondary: #8b5cf6;
-            --text-primary: #e4e4e7;
-            --text-secondary: #a1a1aa;
-            --border-color: #27272a;
-            --success: #10b981;
-            --error: #ef4444;
-        }
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
         }
+        
         body::before {
             content: '';
             position: fixed;
@@ -33,219 +26,186 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
             pointer-events: none;
-            z-index: 0;
+            animation: pulse 8s ease-in-out infinite;
         }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 2rem;
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
-        .modal-overlay.hidden { display: none; }
-        .modal-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 1.5rem;
-            padding: 3rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        
+        .logo-3d {
+            position: absolute;
+            top: 15%;
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: #fff;
+            text-transform: uppercase;
+            transform: perspective(1000px) rotateX(15deg);
+            text-shadow: 
+                0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 3px 0 #bbb,
+                0 4px 0 #b9b9b9,
+                0 5px 0 #aaa,
+                0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 5px rgba(0,0,0,.2),
+                0 5px 10px rgba(0,0,0,.25),
+                0 10px 20px rgba(0,0,0,.2),
+                0 20px 40px rgba(0,0,0,.15);
+            animation: float 6s ease-in-out infinite;
+            z-index: 10;
         }
-        .modal-logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin-bottom: 0.5rem;
+        
+        @keyframes float {
+            0%, 100% { transform: perspective(1000px) rotateX(15deg) translateY(0px); }
+            50% { transform: perspective(1000px) rotateX(15deg) translateY(-20px); }
         }
-        .modal-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-        .modal-info-box {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        .modal-ip { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .modal-ip-value {
-            color: var(--accent-primary);
-            font-weight: 600;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-        }
-        .modal-form-group { margin-bottom: 1.5rem; }
-        .modal-form-label {
-            display: block;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        .modal-form-input {
-            width: 100%;
-            padding: 1rem 1.25rem;
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border-color);
-            border-radius: 0.75rem;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: 'Courier New', monospace;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-        .modal-form-input:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        }
-        .modal-submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border: none;
-            border-radius: 0.75rem;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .modal-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-        .modal-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .modal-warning {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid #f59e0b;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: #fbbf24;
-        }
-        .modal-warning strong { display: block; margin-bottom: 0.5rem; }
+        
         .container {
             position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            width: 100%;
+            z-index: 5;
+            width: 90%;
+            max-width: 500px;
+            margin-top: 200px;
         }
-        header { text-align: center; margin-bottom: 3rem; padding-top: 2rem; }
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
-        .tagline { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; }
-        .main-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        .stats-bar {
-            display: flex;
-            gap: 1rem;
-            padding: 1.25rem;
-            background: var(--bg-tertiary);
-            border-radius: 0.75rem;
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
             margin-bottom: 2rem;
         }
-        .stat-item { flex: 1; text-align: center; }
-        .stat-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            margin-bottom: 0.25rem;
+        
+        .form-group {
+            margin-bottom: 1.5rem;
         }
-        .stat-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
-        .search-label {
+        
+        .form-label {
             display: block;
             margin-bottom: 0.75rem;
             font-weight: 600;
             font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
         }
-        .search-input-wrapper { display: flex; gap: 0.75rem; }
-        .search-input {
-            flex: 1;
+        
+        .form-input {
+            width: 100%;
             padding: 1rem 1.25rem;
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 0.75rem;
-            color: var(--text-primary);
+            color: #fff;
             font-size: 1rem;
+            transition: all 0.3s ease;
             outline: none;
         }
-        .search-input:focus {
-            border-color: var(--accent-primary);
+        
+        .form-input:focus {
+            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(255, 255, 255, 0.12);
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
-        .search-btn {
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             border: none;
             border-radius: 0.75rem;
             color: white;
             font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .results-section { display: none; margin-top: 2rem; }
-        .results-box {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            max-height: 500px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            white-space: pre-wrap;
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
         }
+        
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .status-message {
             padding: 1rem;
             border-radius: 0.75rem;
             margin-top: 1rem;
             display: none;
+            text-align: center;
+            font-size: 0.9rem;
         }
-        .status-message.success { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); }
-        .status-message.error { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: var(--error); }
-        footer { margin-top: auto; padding: 2rem; text-align: center; }
-        .discord-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: #5865f2;
+        
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+        
+        .status-message.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+        
+        .discord-btn {
+            position: fixed;
+            width: 200px;
+            height: 60px;
+            background: rgba(88, 101, 242, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
             color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
             text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 40px rgba(88, 101, 242, 0.4);
+            transition: all 0.15s ease-out;
+            z-index: 100;
+            cursor: pointer;
         }
+        
+        .discord-btn:hover {
+            background: rgba(88, 101, 242, 1);
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(88, 101, 242, 0.6);
+        }
+        
+        .discord-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
         .spinner {
             display: inline-block;
             width: 16px;
@@ -255,261 +215,244 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .success-screen {
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+        
+        .success-username {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
-</body>
-</html>
-
-<body>
-    <div class="modal-overlay" id="keyModal">
-        <div class="modal-card">
-            <h1 class="modal-logo">hapsetme</h1>
-            <p class="modal-subtitle">Key ile Giriş Yap</p>
-            <div class="modal-info-box">
-                <div class="modal-ip">IP Adresiniz</div>
-                <div class="modal-ip-value" id="modalIp">Tespit ediliyor...</div>
-            </div>
-            <form id="keyForm">
-                <div class="modal-form-group">
-                    <label class="modal-form-label">Access Key</label>
-                    <input type="text" id="keyInput" class="modal-form-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" required>
-                </div>
-                <button type="submit" class="modal-submit-btn" id="modalBtn">
-                    <span id="modalBtnText">Giriş Yap</span>
-                </button>
-                <div class="status-message" id="modalStatus"></div>
-            </form>
-            <div class="modal-warning">
-                <strong>⚠️ Önemli</strong>
-                Key ilk kullanımda IP'nize bağlanır. Farklı IP = Key silinir.
-            </div>
-        </div>
-    </div>
-
+    <div class="logo-3d">HAPSETME</div>
+    
     <div class="container">
-        <header>
-            <h1 class="logo">hapsetme</h1>
-            <p class="tagline">Advanced Database Search</p>
-        </header>
-        <div class="main-card">
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-value" id="today">0</div>
-                    <div class="stat-label">Bugün</div>
+        <!-- Key Input Screen -->
+        <div class="card" id="keyScreen">
+            <h2 class="card-title">🔑 Key Girişi</h2>
+            <form id="keyForm">
+                <div class="form-group">
+                    <label class="form-label">Access Key</label>
+                    <input 
+                        type="text" 
+                        id="keyInput" 
+                        class="form-input" 
+                        placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        required
+                    >
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="remaining">30</div>
-                    <div class="stat-label">Kalan</div>
+                <button type="submit" class="btn-submit" id="keyBtn">
+                    <span id="keyBtnText">Devam Et</span>
+                </button>
+                <div class="status-message" id="keyStatus"></div>
+            </form>
+        </div>
+        
+        <!-- Username Selection Screen -->
+        <div class="card hidden" id="usernameScreen">
+            <h2 class="card-title">👤 Kullanıcı Adı Seç</h2>
+            <form id="usernameForm">
+                <div class="form-group">
+                    <label class="form-label">Kullanıcı Adın</label>
+                    <input 
+                        type="text" 
+                        id="usernameInput" 
+                        class="form-input" 
+                        placeholder="Kullanıcı adını gir"
+                        minlength="3"
+                        maxlength="20"
+                        required
+                    >
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="total">0</div>
-                    <div class="stat-label">Toplam</div>
-                </div>
-            </div>
-            <div class="search-section">
-                <label class="search-label">Arama Sorgusu</label>
-                <div class="search-input-wrapper">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Email, username, phone...">
-                    <button class="search-btn" id="searchBtn">
-                        <span id="btnText">Ara</span>
-                    </button>
-                </div>
-            </div>
-            <div class="status-message" id="status"></div>
-            <div class="results-section" id="results">
-                <div class="results-box" id="resultsBox"></div>
+                <button type="submit" class="btn-submit" id="usernameBtn">
+                    <span id="usernameBtnText">Kayıt Ol</span>
+                </button>
+                <div class="status-message" id="usernameStatus"></div>
+            </form>
+        </div>
+        
+        <!-- Success Screen -->
+        <div class="card hidden" id="successScreen">
+            <div class="success-screen">
+                <div class="success-icon">✨</div>
+                <div class="success-title">Hoş Geldin!</div>
+                <div class="success-username" id="displayUsername"></div>
+                <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    Üyeliğin başarıyla oluşturuldu
+                </p>
             </div>
         </div>
     </div>
-    <footer>
-        <a href="https://discord.gg/hapsetme" target="_blank" class="discord-link">
-            Discord Sunucumuza Katıl
-        </a>
-    </footer>
+    
+    <a href="https://discord.gg/hapsetme" target="_blank" class="discord-btn" id="discordBtn">
+        <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+        </svg>
+        discord.gg/hapsetme
+    </a>
 
     <script>
-        // IMPORTANT: Change this to your backend URL
-        // For local testing: http://localhost:5000
-        // For production: http://YOUR_PUBLIC_IP:5000
         const BACKEND = 'http://localhost:5000';
         
-        const keyModal = document.getElementById('keyModal');
+        const keyScreen = document.getElementById('keyScreen');
+        const usernameScreen = document.getElementById('usernameScreen');
+        const successScreen = document.getElementById('successScreen');
+        
         const keyForm = document.getElementById('keyForm');
         const keyInput = document.getElementById('keyInput');
-        const modalBtn = document.getElementById('modalBtn');
-        const modalBtnText = document.getElementById('modalBtnText');
-        const modalStatus = document.getElementById('modalStatus');
-        const modalIp = document.getElementById('modalIp');
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const btnText = document.getElementById('btnText');
-        const status = document.getElementById('status');
-        const results = document.getElementById('results');
-        const resultsBox = document.getElementById('resultsBox');
-        const today = document.getElementById('today');
-        const remaining = document.getElementById('remaining');
-        const total = document.getElementById('total');
+        const keyBtn = document.getElementById('keyBtn');
+        const keyBtnText = document.getElementById('keyBtnText');
+        const keyStatus = document.getElementById('keyStatus');
         
-        let authenticated = false;
-        let currentResults = '';
-        let currentQuery = '';
+        const usernameForm = document.getElementById('usernameForm');
+        const usernameInput = document.getElementById('usernameInput');
+        const usernameBtn = document.getElementById('usernameBtn');
+        const usernameBtnText = document.getElementById('usernameBtnText');
+        const usernameStatus = document.getElementById('usernameStatus');
         
-        // Test backend connection on load
-        async function testBackendConnection() {
-            try {
-                const res = await fetch(`${BACKEND}/api/health`, {
-                    method: 'GET',
-                    signal: AbortSignal.timeout(5000)
-                });
-                if (res.ok) {
-                    console.log('✅ Backend bağlantısı başarılı');
-                    return true;
-                } else {
-                    console.error('❌ Backend yanıt verdi ama hata döndü:', res.status);
-                    showModalStatus(`Backend hatası: ${res.status}`, 'error');
-                    return false;
-                }
-            } catch (e) {
-                console.error('❌ Backend bağlantı hatası:', e);
-                showModalStatus(`Backend bağlantı hatası: ${BACKEND} adresine ulaşılamıyor. Flask uygulamasının çalıştığından emin olun.`, 'error');
-                return false;
-            }
-        }
+        const displayUsername = document.getElementById('displayUsername');
+        const discordBtn = document.getElementById('discordBtn');
         
-        // Test connection on page load
-        testBackendConnection();
+        let validatedKey = null;
         
-        // Get IP
-        fetch('https://api.ipify.org?format=json')
-            .then(r => r.json())
-            .then(d => modalIp.textContent = d.ip)
-            .catch(() => modalIp.textContent = 'Tespit edilemedi');
+        // Mouse tracking for Discord button
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            const btnWidth = 200;
+            const btnHeight = 60;
+            
+            discordBtn.style.left = `${x - btnWidth / 2}px`;
+            discordBtn.style.top = `${y - btnHeight / 2}px`;
+        });
         
-        // Check auth
-        checkAuth();
-        
+        // Key form submission
         keyForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const key = keyInput.value.trim();
-            if (!key) return showModalStatus('Key girin', 'error');
             
-            modalBtn.disabled = true;
-            modalBtnText.innerHTML = '<span class="spinner"></span>';
+            if (!key) {
+                showStatus(keyStatus, 'Key girin', 'error');
+                return;
+            }
+            
+            keyBtn.disabled = true;
+            keyBtnText.innerHTML = '<span class="spinner"></span>';
             
             try {
                 const res = await fetch(`${BACKEND}/api/validate-registration-key`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({key})
+                    body: JSON.stringify({ key })
                 });
+                
                 const data = await res.json();
                 
                 if (data.success) {
-                    showModalStatus('Key doğrulandı! Yönlendiriliyorsun...', 'success');
+                    validatedKey = key;
+                    showStatus(keyStatus, 'Key doğrulandı! ✓', 'success');
+                    
                     setTimeout(() => {
-                        authenticated = true;
-                        keyModal.classList.add('hidden');
-                        loadStats();
+                        keyScreen.classList.add('hidden');
+                        usernameScreen.classList.remove('hidden');
                     }, 1000);
                 } else {
-                    showModalStatus(data.error, 'error');
-                    modalBtn.disabled = false;
-                    modalBtnText.textContent = 'Giriş Yap';
+                    showStatus(keyStatus, data.error, 'error');
+                    keyBtn.disabled = false;
+                    keyBtnText.textContent = 'Devam Et';
                 }
             } catch (e) {
                 console.error('Key validation error:', e);
-                showModalStatus(`Bağlantı hatası: ${BACKEND} adresine ulaşılamıyor. Flask uygulamasını başlatın: python app.py`, 'error');
-                modalBtn.disabled = false;
-                modalBtnText.textContent = 'Giriş Yap';
+                showStatus(keyStatus, 'Bağlantı hatası. Backend çalışıyor mu?', 'error');
+                keyBtn.disabled = false;
+                keyBtnText.textContent = 'Devam Et';
             }
         });
         
-        searchBtn.addEventListener('click', performSearch);
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performSearch();
-        });
-        
-        async function checkAuth() {
-            try {
-                const res = await fetch(`${BACKEND}/api/stats`, {credentials: 'include'});
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.success) {
-                        authenticated = true;
-                        keyModal.classList.add('hidden');
-                        loadStats();
-                    }
-                }
-            } catch (e) {}
-        }
-        
-        async function loadStats() {
-            try {
-                const res = await fetch(`${BACKEND}/api/stats`, {credentials: 'include'});
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.success) {
-                        today.textContent = data.stats.today_usage;
-                        remaining.textContent = data.stats.remaining;
-                        total.textContent = data.stats.total_searches;
-                    }
-                }
-            } catch (e) {}
-        }
-        
-        async function performSearch() {
-            if (!authenticated) return showStatus('Lütfen giriş yapın', 'error');
+        // Username form submission
+        usernameForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
             
-            const query = searchInput.value.trim();
-            if (!query) return showStatus('Sorgu girin', 'error');
+            if (!username || username.length < 3) {
+                showStatus(usernameStatus, 'Kullanıcı adı en az 3 karakter olmalı', 'error');
+                return;
+            }
             
-            currentQuery = query;
-            searchBtn.disabled = true;
-            btnText.innerHTML = '<span class="spinner"></span>';
-            results.style.display = 'none';
-            showStatus('Aranıyor...', 'info');
+            usernameBtn.disabled = true;
+            usernameBtnText.innerHTML = '<span class="spinner"></span>';
             
             try {
-                const res = await fetch(`${BACKEND}/api/search`, {
+                const res = await fetch(`${BACKEND}/api/register`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({query})
+                    body: JSON.stringify({ 
+                        key: validatedKey,
+                        username: username,
+                        password: 'default123' // Temporary password
+                    })
                 });
+                
                 const data = await res.json();
                 
-                if (data.success && data.found) {
-                    currentResults = data.data;
-                    resultsBox.textContent = data.data;
-                    results.style.display = 'block';
-                    showStatus(`${data.count} sonuç bulundu!`, 'success');
-                    today.textContent = data.used;
-                    remaining.textContent = data.remaining;
+                if (data.success) {
+                    showStatus(usernameStatus, 'Kayıt başarılı! ✓', 'success');
+                    
+                    setTimeout(() => {
+                        usernameScreen.classList.add('hidden');
+                        successScreen.classList.remove('hidden');
+                        displayUsername.textContent = username;
+                    }, 1000);
                 } else {
-                    showStatus(data.error || 'Sonuç yok', 'error');
+                    showStatus(usernameStatus, data.error, 'error');
+                    usernameBtn.disabled = false;
+                    usernameBtnText.textContent = 'Kayıt Ol';
                 }
             } catch (e) {
-                showStatus('Bağlantı hatası', 'error');
-            } finally {
-                searchBtn.disabled = false;
-                btnText.textContent = 'Ara';
+                console.error('Registration error:', e);
+                showStatus(usernameStatus, 'Bağlantı hatası', 'error');
+                usernameBtn.disabled = false;
+                usernameBtnText.textContent = 'Kayıt Ol';
             }
-        }
+        });
         
-        function showStatus(msg, type) {
-            status.textContent = msg;
-            status.className = `status-message ${type}`;
-            status.style.display = 'block';
-            setTimeout(() => status.style.display = 'none', 5000);
-        }
-        
-        function showModalStatus(msg, type) {
-            modalStatus.textContent = msg;
-            modalStatus.className = `status-message ${type}`;
-            modalStatus.style.display = 'block';
+        function showStatus(element, message, type) {
+            element.textContent = message;
+            element.className = `status-message ${type}`;
+            element.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            }
         }
     </script>
 </body>
