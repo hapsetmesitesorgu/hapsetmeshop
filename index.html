@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Search - hapsetme</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #13131a;
@@ -22,9 +17,7 @@
             --border-color: #27272a;
             --success: #10b981;
             --error: #ef4444;
-            --warning: #f59e0b;
         }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-primary);
@@ -32,10 +25,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
         }
-
-        /* Animated background */
         body::before {
             content: '';
             position: fixed;
@@ -43,99 +33,91 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
         }
-
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-top: 2rem;
+        .modal-overlay.hidden { display: none; }
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
-
-        .logo {
-            font-size: 2.5rem;
+        .modal-logo {
+            font-size: 2rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+            text-align: center;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
         }
-
-        .tagline {
+        .modal-subtitle {
+            text-align: center;
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        /* Main card */
-        .main-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .main-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Search section */
-        .search-section {
             margin-bottom: 2rem;
+            font-size: 0.95rem;
         }
-
-        .search-label {
+        .modal-info-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .modal-ip { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .modal-ip-value {
+            color: var(--accent-primary);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+        }
+        .modal-form-group { margin-bottom: 1.5rem; }
+        .modal-form-label {
             display: block;
             margin-bottom: 0.75rem;
             font-weight: 600;
             font-size: 0.95rem;
-            color: var(--text-primary);
         }
-
-        .search-input-wrapper {
-            position: relative;
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .search-input {
-            flex: 1;
+        .modal-form-input {
+            width: 100%;
             padding: 1rem 1.25rem;
             background: var(--bg-tertiary);
             border: 2px solid var(--border-color);
             border-radius: 0.75rem;
             color: var(--text-primary);
             font-size: 1rem;
+            font-family: 'Courier New', monospace;
             transition: all 0.3s ease;
             outline: none;
         }
-
-        .search-input:focus {
+        .modal-form-input:focus {
             border-color: var(--accent-primary);
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
-
-        .search-btn {
-            padding: 1rem 2rem;
+        .modal-submit-btn {
+            width: 100%;
+            padding: 1rem;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             border: none;
             border-radius: 0.75rem;
@@ -144,25 +126,47 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            white-space: nowrap;
         }
-
-        .search-btn:hover {
+        .modal-submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
         }
-
-        .search-btn:active {
-            transform: translateY(0);
+        .modal-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .modal-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #fbbf24;
         }
-
-        .search-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .modal-warning strong { display: block; margin-bottom: 0.5rem; }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
         }
-
-        /* Stats bar */
+        header { text-align: center; margin-bottom: 3rem; padding-top: 2rem; }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .tagline { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; }
+        .main-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
         .stats-bar {
             display: flex;
             gap: 1rem;
@@ -171,59 +175,46 @@
             border-radius: 0.75rem;
             margin-bottom: 2rem;
         }
-
-        .stat-item {
-            flex: 1;
-            text-align: center;
-        }
-
+        .stat-item { flex: 1; text-align: center; }
         .stat-value {
             font-size: 1.75rem;
             font-weight: 700;
             color: var(--accent-primary);
             margin-bottom: 0.25rem;
         }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+        .search-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
-
-        /* Results section */
-        .results-section {
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .results-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .download-btn {
-            padding: 0.75rem 1.5rem;
+        .search-input-wrapper { display: flex; gap: 0.75rem; }
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
             background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
             color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        .search-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        .download-btn:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-        }
-
+        .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-section { display: none; margin-top: 2rem; }
         .results-box {
             background: var(--bg-tertiary);
             border: 1px solid var(--border-color);
@@ -233,45 +224,17 @@
             overflow-y: auto;
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
-            line-height: 1.6;
             white-space: pre-wrap;
-            word-break: break-all;
         }
-
-        /* Status messages */
         .status-message {
-            padding: 1rem 1.25rem;
+            padding: 1rem;
             border-radius: 0.75rem;
             margin-top: 1rem;
-            font-weight: 500;
             display: none;
         }
-
-        .status-message.success {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--success);
-            color: var(--success);
-        }
-
-        .status-message.error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--error);
-            color: var(--error);
-        }
-
-        .status-message.info {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        /* Footer */
-        footer {
-            margin-top: auto;
-            padding: 2rem;
-            text-align: center;
-        }
-
+        .status-message.success { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); }
+        .status-message.error { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: var(--error); }
+        footer { margin-top: auto; padding: 2rem; text-align: center; }
         .discord-link {
             display: inline-flex;
             align-items: center;
@@ -282,16 +245,7 @@
             text-decoration: none;
             border-radius: 0.5rem;
             font-weight: 600;
-            transition: all 0.3s ease;
         }
-
-        .discord-link:hover {
-            background: #4752c4;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
-        }
-
-        /* Loading spinner */
         .spinner {
             display: inline-block;
             width: 16px;
@@ -301,225 +255,231 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .main-card {
-                padding: 1.5rem;
-            }
-
-            .search-input-wrapper {
-                flex-direction: column;
-            }
-
-            .stats-bar {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .results-header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: stretch;
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+</body>
+</html>
+
+<body>
+    <div class="modal-overlay" id="keyModal">
+        <div class="modal-card">
+            <h1 class="modal-logo">hapsetme</h1>
+            <p class="modal-subtitle">Key ile Giriş Yap</p>
+            <div class="modal-info-box">
+                <div class="modal-ip">IP Adresiniz</div>
+                <div class="modal-ip-value" id="modalIp">Tespit ediliyor...</div>
+            </div>
+            <form id="keyForm">
+                <div class="modal-form-group">
+                    <label class="modal-form-label">Access Key</label>
+                    <input type="text" id="keyInput" class="modal-form-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" required>
+                </div>
+                <button type="submit" class="modal-submit-btn" id="modalBtn">
+                    <span id="modalBtnText">Giriş Yap</span>
+                </button>
+                <div class="status-message" id="modalStatus"></div>
+            </form>
+            <div class="modal-warning">
+                <strong>⚠️ Önemli</strong>
+                Key ilk kullanımda IP'nize bağlanır. Farklı IP = Key silinir.
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1 class="logo">hapsetme</h1>
-            <p class="tagline">Advanced Database Search System</p>
+            <p class="tagline">Advanced Database Search</p>
         </header>
-
         <div class="main-card">
             <div class="stats-bar">
                 <div class="stat-item">
-                    <div class="stat-value" id="todayCount">0</div>
+                    <div class="stat-value" id="today">0</div>
                     <div class="stat-label">Bugün</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="remainingCount">30</div>
+                    <div class="stat-value" id="remaining">30</div>
                     <div class="stat-label">Kalan</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="totalCount">0</div>
+                    <div class="stat-value" id="total">0</div>
                     <div class="stat-label">Toplam</div>
                 </div>
             </div>
-
             <div class="search-section">
-                <label class="search-label" for="searchInput">Arama Sorgusu</label>
+                <label class="search-label">Arama Sorgusu</label>
                 <div class="search-input-wrapper">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        class="search-input" 
-                        placeholder="Email, username, phone..."
-                        autocomplete="off"
-                    >
+                    <input type="text" id="searchInput" class="search-input" placeholder="Email, username, phone...">
                     <button class="search-btn" id="searchBtn">
                         <span id="btnText">Ara</span>
                     </button>
                 </div>
             </div>
-
-            <div class="status-message" id="statusMessage"></div>
-
-            <div class="results-section" id="resultsSection">
-                <div class="results-header">
-                    <h3 class="results-title">Sonuçlar</h3>
-                    <button class="download-btn" id="downloadBtn">İndir</button>
-                </div>
+            <div class="status-message" id="status"></div>
+            <div class="results-section" id="results">
                 <div class="results-box" id="resultsBox"></div>
             </div>
         </div>
     </div>
-
     <footer>
         <a href="https://discord.gg/hapsetme" target="_blank" class="discord-link">
-            <svg width="20" height="20" viewBox="0 0 71 55" fill="currentColor">
-                <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/>
-            </svg>
             Discord Sunucumuza Katıl
         </a>
     </footer>
 
     <script>
-        const BACKEND_URL = 'http://YOUR_PUBLIC_IP:5000'; // Bot owner will update this
-        
+        const BACKEND = 'http://YOUR_PUBLIC_IP:5000';
+        const keyModal = document.getElementById('keyModal');
+        const keyForm = document.getElementById('keyForm');
+        const keyInput = document.getElementById('keyInput');
+        const modalBtn = document.getElementById('modalBtn');
+        const modalBtnText = document.getElementById('modalBtnText');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalIp = document.getElementById('modalIp');
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         const btnText = document.getElementById('btnText');
-        const statusMessage = document.getElementById('statusMessage');
-        const resultsSection = document.getElementById('resultsSection');
+        const status = document.getElementById('status');
+        const results = document.getElementById('results');
         const resultsBox = document.getElementById('resultsBox');
-        const downloadBtn = document.getElementById('downloadBtn');
+        const today = document.getElementById('today');
+        const remaining = document.getElementById('remaining');
+        const total = document.getElementById('total');
         
-        const todayCount = document.getElementById('todayCount');
-        const remainingCount = document.getElementById('remainingCount');
-        const totalCount = document.getElementById('totalCount');
-        
+        let authenticated = false;
         let currentResults = '';
         let currentQuery = '';
         
-        // Load stats on page load
-        loadStats();
+        // Get IP
+        fetch('https://api.ipify.org?format=json')
+            .then(r => r.json())
+            .then(d => modalIp.textContent = d.ip)
+            .catch(() => modalIp.textContent = 'Tespit edilemedi');
         
-        // Search on Enter key
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
+        // Check auth
+        checkAuth();
+        
+        keyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const key = keyInput.value.trim();
+            if (!key) return showModalStatus('Key girin', 'error');
+            
+            modalBtn.disabled = true;
+            modalBtnText.innerHTML = '<span class="spinner"></span>';
+            
+            try {
+                const res = await fetch(`${BACKEND}/api/submit-key`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    body: JSON.stringify({key})
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    showModalStatus('Giriş başarılı!', 'success');
+                    setTimeout(() => {
+                        authenticated = true;
+                        keyModal.classList.add('hidden');
+                        loadStats();
+                    }, 1000);
+                } else {
+                    showModalStatus(data.error, 'error');
+                    modalBtn.disabled = false;
+                    modalBtnText.textContent = 'Giriş Yap';
+                }
+            } catch (e) {
+                showModalStatus('Bağlantı hatası', 'error');
+                modalBtn.disabled = false;
+                modalBtnText.textContent = 'Giriş Yap';
             }
         });
         
         searchBtn.addEventListener('click', performSearch);
-        downloadBtn.addEventListener('click', downloadResults);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+        
+        async function checkAuth() {
+            try {
+                const res = await fetch(`${BACKEND}/api/stats`, {credentials: 'include'});
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success) {
+                        authenticated = true;
+                        keyModal.classList.add('hidden');
+                        loadStats();
+                    }
+                }
+            } catch (e) {}
+        }
         
         async function loadStats() {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/stats`, {
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
+                const res = await fetch(`${BACKEND}/api/stats`, {credentials: 'include'});
+                if (res.ok) {
+                    const data = await res.json();
                     if (data.success) {
-                        todayCount.textContent = data.stats.today_usage;
-                        remainingCount.textContent = data.stats.remaining;
-                        totalCount.textContent = data.stats.total_searches;
+                        today.textContent = data.stats.today_usage;
+                        remaining.textContent = data.stats.remaining;
+                        total.textContent = data.stats.total_searches;
                     }
                 }
-            } catch (error) {
-                console.error('Stats load error:', error);
-            }
+            } catch (e) {}
         }
         
         async function performSearch() {
-            const query = searchInput.value.trim();
+            if (!authenticated) return showStatus('Lütfen giriş yapın', 'error');
             
-            if (!query) {
-                showStatus('Lütfen bir sorgu girin', 'error');
-                return;
-            }
+            const query = searchInput.value.trim();
+            if (!query) return showStatus('Sorgu girin', 'error');
             
             currentQuery = query;
-            
-            // Disable button
             searchBtn.disabled = true;
             btnText.innerHTML = '<span class="spinner"></span>';
-            
-            // Hide previous results
-            resultsSection.style.display = 'none';
+            results.style.display = 'none';
             showStatus('Aranıyor...', 'info');
             
             try {
-                const response = await fetch(`${BACKEND_URL}/api/search`, {
+                const res = await fetch(`${BACKEND}/api/search`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
-                    body: JSON.stringify({ query })
+                    body: JSON.stringify({query})
                 });
+                const data = await res.json();
                 
-                const data = await response.json();
-                
-                if (data.success) {
-                    if (data.found) {
-                        currentResults = data.data;
-                        resultsBox.textContent = data.data;
-                        resultsSection.style.display = 'block';
-                        showStatus(`${data.count} sonuç bulundu!`, 'success');
-                        
-                        // Update stats
-                        todayCount.textContent = data.used;
-                        remainingCount.textContent = data.remaining;
-                    } else {
-                        showStatus('Sonuç bulunamadı', 'error');
-                    }
+                if (data.success && data.found) {
+                    currentResults = data.data;
+                    resultsBox.textContent = data.data;
+                    results.style.display = 'block';
+                    showStatus(`${data.count} sonuç bulundu!`, 'success');
+                    today.textContent = data.used;
+                    remaining.textContent = data.remaining;
                 } else {
-                    showStatus(data.error || 'Arama başarısız', 'error');
+                    showStatus(data.error || 'Sonuç yok', 'error');
                 }
-            } catch (error) {
-                showStatus('Bağlantı hatası. Bot çevrimdışı olabilir.', 'error');
-                console.error('Search error:', error);
+            } catch (e) {
+                showStatus('Bağlantı hatası', 'error');
             } finally {
                 searchBtn.disabled = false;
                 btnText.textContent = 'Ara';
             }
         }
         
-        function downloadResults() {
-            const blob = new Blob([currentResults], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${currentQuery}_${new Date().toISOString().slice(0,10)}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        function showStatus(msg, type) {
+            status.textContent = msg;
+            status.className = `status-message ${type}`;
+            status.style.display = 'block';
+            setTimeout(() => status.style.display = 'none', 5000);
         }
         
-        function showStatus(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${type}`;
-            statusMessage.style.display = 'block';
-            
-            setTimeout(() => {
-                if (type !== 'info') {
-                    statusMessage.style.display = 'none';
-                }
-            }, 5000);
+        function showModalStatus(msg, type) {
+            modalStatus.textContent = msg;
+            modalStatus.className = `status-message ${type}`;
+            modalStatus.style.display = 'block';
         }
     </script>
 </body>
