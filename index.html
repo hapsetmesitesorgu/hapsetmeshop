@@ -311,7 +311,7 @@
 </head>
 <body>
     <!-- Background Music -->
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop autoplay>
         <source src="/static/hapsetme.mp3" type="audio/mpeg">
     </audio>
     
@@ -437,6 +437,17 @@
         createParticles();
         
         // Audio control
+        bgMusic.volume = 0.5; // Set volume to 50%
+        
+        // Try to play immediately
+        bgMusic.play().then(() => {
+            musicPlaying = true;
+            console.log('Music started automatically');
+        }).catch(e => {
+            console.log('Autoplay blocked, waiting for user interaction');
+            musicPlaying = false;
+        });
+        
         audioControl.addEventListener('click', () => {
             if (musicPlaying) {
                 bgMusic.pause();
