@@ -970,3 +970,493 @@
             <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
         </svg>
     </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" id="closeLogin"></button>
+            <div class="modal-header">
+                <h2 class="modal-title">Giriş Yap</h2>
+                <p class="modal-subtitle">Hesabınıza erişin</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-message" id="loginMessage"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="kullaniciadi" required>
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" id="closeLogin"></button>
+            <div class="modal-header">
+                <h2 class="modal-title">Giriş Yap</h2>
+                <p class="modal-subtitle">Hesabınıza erişin</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-message" id="loginMessage"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="kullaniciadi" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="form-submit">Giriş Yap</button>
+                </form>
+                <div class="form-toggle">
+                    Hesabınız yok mu? <a id="switchToRegister">Kayıt Ol</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <button class="modal-close" id="closeRegister"></button>
+            <div class="modal-header">
+                <h2 class="modal-title">Kayıt Ol</h2>
+                <p class="modal-subtitle">Yeni hesap oluşturun</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-message" id="registerMessage"></div>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">Erişim Anahtarı</label>
+                        <input type="text" class="form-input" id="registerKey" placeholder="Discord'dan aldığınız anahtar" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-input" id="registerUsername" placeholder="kullaniciadi" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" class="form-input" id="registerPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="form-submit">Kayıt Ol</button>
+                </form>
+                <div class="form-toggle">
+                    Zaten hesabınız var mı? <a id="switchToLogin">Giriş Yap</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIG ====================
+        const API_URL = 'http://localhost:5000';
+        
+        // ==================== ELEMENTS ====================
+        const loading = document.getElementById('loading');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const ctaRegisterBtn = document.getElementById('ctaRegisterBtn');
+        
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const closeRegister = document.getElementById('closeRegister');
+        
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginMessage = document.getElementById('loginMessage');
+        const registerMessage = document.getElementById('registerMessage');
+        
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+
+        let isPlaying = false;
+
+        // ==================== PARTICLES ====================
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.3 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(74, 144, 226, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(25, Math.floor((canvas.width * canvas.height) / 40000));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            animationId = requestAnimationFrame(animateParticles);
+        }
+
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                resizeCanvas();
+                initParticles();
+            }, 250);
+        });
+
+        // ==================== 3D CARD EFFECTS ====================
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
+
+        // ==================== MUSIC ====================
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                isPlaying = false;
+            } else {
+                bgMusic.play().catch(() => {});
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                isPlaying = true;
+            }
+        });
+
+        document.addEventListener('click', () => {
+            if (!isPlaying) {
+                bgMusic.play().then(() => {
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                    isPlaying = true;
+                }).catch(() => {});
+            }
+        }, { once: true });
+
+        // ==================== MODALS ====================
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+            registerModal.classList.remove('active');
+        });
+
+        registerBtn.addEventListener('click', () => {
+            registerModal.classList.add('active');
+            loginModal.classList.remove('active');
+        });
+
+        getStartedBtn.addEventListener('click', () => {
+            registerModal.classList.add('active');
+        });
+
+        ctaRegisterBtn.addEventListener('click', () => {
+            registerModal.classList.add('active');
+        });
+
+        closeLogin.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            clearForm('login');
+        });
+
+        closeRegister.addEventListener('click', () => {
+            registerModal.classList.remove('active');
+            clearForm('register');
+        });
+
+        switchToRegister.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            registerModal.classList.add('active');
+            clearForm('login');
+        });
+
+        switchToLogin.addEventListener('click', () => {
+            registerModal.classList.remove('active');
+            loginModal.classList.add('active');
+            clearForm('register');
+        });
+
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+                clearForm('login');
+            }
+        });
+
+        registerModal.addEventListener('click', (e) => {
+            if (e.target === registerModal) {
+                registerModal.classList.remove('active');
+                clearForm('register');
+            }
+        });
+
+        // ==================== FORMS ====================
+        function clearForm(type) {
+            if (type === 'login') {
+                loginForm.reset();
+                loginMessage.className = 'form-message';
+                loginMessage.textContent = '';
+            } else {
+                registerForm.reset();
+                registerMessage.className = 'form-message';
+                registerMessage.textContent = '';
+            }
+        }
+
+        function showMessage(element, message, type) {
+            element.className = `form-message ${type}`;
+            element.textContent = message;
+        }
+
+        // ==================== LOGIN ====================
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showMessage(loginMessage, 'Tüm alanları doldurun', 'error');
+                return;
+            }
+
+            const submitBtn = loginForm.querySelector('.form-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Giriş yapılıyor...';
+
+            try {
+                const response = await fetch(`${API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(loginMessage, 'Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+                    sessionStorage.setItem('user', JSON.stringify(data.user));
+                    sessionStorage.setItem('token', data.token);
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1500);
+                } else {
+                    showMessage(loginMessage, data.error || 'Giriş başarısız', 'error');
+                }
+            } catch (error) {
+                showMessage(loginMessage, 'Bağlantı hatası. Backend çalışıyor mu?', 'error');
+                console.error('Login error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Giriş Yap';
+            }
+        });
+
+        // ==================== REGISTER ====================
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const key = document.getElementById('registerKey').value.trim();
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            
+            if (!key || !username || !password) {
+                showMessage(registerMessage, 'Tüm alanları doldurun', 'error');
+                return;
+            }
+
+            if (username.length < 3) {
+                showMessage(registerMessage, 'Kullanıcı adı en az 3 karakter olmalı', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage(registerMessage, 'Şifre en az 6 karakter olmalı', 'error');
+                return;
+            }
+
+            const submitBtn = registerForm.querySelector('.form-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Kayıt yapılıyor...';
+
+            try {
+                const response = await fetch(`${API_URL}/api/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key, username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(registerMessage, 'Kayıt başarılı! Giriş yapabilirsiniz.', 'success');
+                    
+                    setTimeout(() => {
+                        registerModal.classList.remove('active');
+                        loginModal.classList.add('active');
+                        clearForm('register');
+                        document.getElementById('loginUsername').value = username;
+                    }, 1500);
+                } else {
+                    showMessage(registerMessage, data.error || 'Kayıt başarısız', 'error');
+                }
+            } catch (error) {
+                showMessage(registerMessage, 'Bağlantı hatası. Backend çalışıyor mu?', 'error');
+                console.error('Register error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kayıt Ol';
+            }
+        });
+
+        // ==================== STATS COUNTER ====================
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-count'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString('tr-TR');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString('tr-TR');
+                }
+            }, 16);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target.querySelector('.stat-value');
+                    if (counter && counter.textContent === '0') {
+                        animateCounter(counter);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-item').forEach(el => statsObserver.observe(el));
+
+        // ==================== SMOOTH SCROLL ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ==================== LOADING ====================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loading.classList.add('hide');
+            }, 800);
+        });
+
+        // ==================== KEYBOARD ====================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                loginModal.classList.remove('active');
+                registerModal.classList.remove('active');
+                clearForm('login');
+                clearForm('register');
+            }
+        });
+
+        // ==================== VISIBILITY ====================
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (isPlaying) bgMusic.pause();
+            } else {
+                if (isPlaying) bgMusic.play().catch(() => {});
+            }
+        });
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            fadeObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
