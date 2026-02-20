@@ -3,465 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAPSETME - Database Search</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>HAPSETME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
-            --neon-blue: #00f3ff;
-            --neon-pink: #ff00ff;
-            --neon-purple: #9d00ff;
-            --dark-bg: #0a0a0f;
+            --primary: #00D9FF;
+            --secondary: #FF006B;
+            --accent: #7B2FFF;
+            --dark: #0A0E27;
+            --darker: #050816;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Orbitron', sans-serif;
-            background: #0a0a0f;
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--darker);
             color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
         
-        /* Animated Grid Background */
-        .grid-bg {
+        /* Animated Background */
+        .bg-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
             z-index: 1;
         }
         
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
-        }
-        
-        /* Scanline Effect */
-        .scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .hero-content {
+            max-width: 1400px;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                transparent 50%,
-                rgba(0, 243, 255, 0.03) 50%
-            );
-            background-size: 100% 4px;
-            animation: scan 8s linear infinite;
-            pointer-events: none;
-            z-index: 999;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
         }
         
-        @keyframes scan {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-        }
-        
-        /* Glowing Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 15s ease-in-out infinite;
-            z-index: 2;
-        }
-        
-        .orb1 {
-            width: 400px;
-            height: 400px;
-            background: var(--neon-blue);
-            top: -200px;
-            left: -200px;
-            animation-delay: 0s;
-        }
-        
-        .orb2 {
-            width: 500px;
-            height: 500px;
-            background: var(--neon-pink);
-            bottom: -250px;
-            right: -250px;
-            animation-delay: 5s;
-        }
-        
-        .orb3 {
-            width: 350px;
-            height: 350px;
-            background: var(--neon-purple);
-            top: 50%;
-            left: 50%;
-            animation-delay: 10s;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(100px, -100px) scale(1.1); }
-            66% { transform: translate(-100px, 100px) scale(0.9); }
-        }
-        
-        /* Main Logo with Glitch */
-        .logo-container {
+        /* Main Title */
+        .title-wrapper {
             position: relative;
-            z-index: 10;
-            text-align: center;
-            margin-top: 15vh;
         }
         
-        .logo-3d {
-            font-size: clamp(4rem, 15vw, 10rem);
-            font-weight: 900;
-            letter-spacing: 0.2em;
-            color: #fff;
-            text-transform: uppercase;
-            position: relative;
-            display: inline-block;
-            text-shadow: 
-                0 0 10px var(--neon-blue),
-                0 0 20px var(--neon-blue),
-                0 0 40px var(--neon-blue),
-                0 0 80px var(--neon-blue),
-                0 0 120px var(--neon-blue);
-            animation: glitch 3s infinite, glow 2s ease-in-out infinite;
-        }
-        
-        @keyframes glitch {
-            0%, 90%, 100% { transform: translate(0); }
-            91% { transform: translate(-2px, 2px); }
-            92% { transform: translate(2px, -2px); }
-            93% { transform: translate(-2px, 2px); }
-            94% { transform: translate(2px, -2px); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { 
-                text-shadow: 
-                    0 0 10px var(--neon-blue),
-                    0 0 20px var(--neon-blue),
-                    0 0 40px var(--neon-blue);
-            }
-            50% { 
-                text-shadow: 
-                    0 0 20px var(--neon-pink),
-                    0 0 40px var(--neon-pink),
-                    0 0 80px var(--neon-pink),
-                    0 0 120px var(--neon-pink);
-            }
-        }
-        
-        .logo-3d::before,
-        .logo-3d::after {
-            content: 'HAPSETME';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .logo-3d::before {
-            color: #ff00ff;
-            animation: glitch-1 2.5s infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-        }
-        
-        .logo-3d::after {
-            color: #00f3ff;
-            animation: glitch-2 2.5s infinite;
-            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-        }
-        
-        @keyframes glitch-1 {
-            0%, 100% { transform: translate(0); }
-            33% { transform: translate(-5px, 0); }
-        }
-        
-        @keyframes glitch-2 {
-            0%, 100% { transform: translate(0); }
-            33% { transform: translate(5px, 0); }
-        }
-        
-        /* Subtitle with typing effect */
-        .subtitle {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            color: var(--neon-blue);
-            margin-top: 2rem;
-            font-weight: 400;
-            letter-spacing: 0.3em;
-            overflow: hidden;
-            border-right: 3px solid var(--neon-blue);
-            white-space: nowrap;
-            animation: typing 3s steps(30) 1s 1 normal both, blink 0.75s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-        
-        /* Hexagon particles */
-        .hex-particle {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
-            opacity: 0.3;
-            animation: hexFloat linear infinite;
-            z-index: 3;
-        }
-        
-        @keyframes hexFloat {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        /* CTA Button */
-        .cta-container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            margin-top: 5rem;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 1.5rem 4rem;
-            font-size: 1.5rem;
+        .title {
+            font-size: clamp(4rem, 12vw, 11rem);
             font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
-            border: 3px solid var(--neon-blue);
-            border-radius: 0;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .title-line {
+            display: block;
+            overflow: hidden;
+        }
+        
+        .title-line span {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 3rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 
-                0 0 20px var(--neon-blue),
-                inset 0 0 20px rgba(0, 243, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
         }
         
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 217, 255, 0.3);
         }
         
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0, 217, 255, 0.5);
         }
         
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 
-                0 0 40px var(--neon-pink),
-                inset 0 0 40px rgba(255, 0, 255, 0.3);
-            border-color: var(--neon-pink);
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
         }
         
         /* Feature Cards */
-        .features {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin-top: 5rem;
-            flex-wrap: wrap;
-            padding: 0 2rem;
+        .features-grid {
+            display: grid;
+            gap: 1.5rem;
         }
         
         .feature-card {
-            width: 280px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 2rem;
-            background: rgba(10, 10, 15, 0.8);
-            border: 2px solid var(--neon-blue);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            transition: all 0.3s;
-            clip-path: polygon(
-                0 0, calc(100% - 20px) 0, 100% 20px,
-                100% 100%, 20px 100%, 0 calc(100% - 20px)
-            );
         }
         
         .feature-card::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0, 243, 255, 0.5);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .feature-card:hover::before {
-            opacity: 1;
+            transform: scaleX(1);
+        }
+        
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 217, 255, 0.3);
+            transform: translateX(10px);
         }
         
         .feature-icon {
-            font-size: 4rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
-            filter: drop-shadow(0 0 20px var(--neon-blue));
+            display: block;
         }
         
         .feature-title {
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--neon-blue);
-            text-transform: uppercase;
+            color: var(--primary);
         }
         
         .feature-desc {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
             line-height: 1.6;
         }
         
-        /* Discord Button (Top Right) */
-        .discord-btn {
+        /* Floating Nav */
+        .floating-nav {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 1rem 2rem;
-            background: rgba(88, 101, 242, 0.2);
-            border: 2px solid #5865f2;
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
+            top: 2rem;
+            right: 2rem;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
+            gap: 1rem;
             z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
         }
         
-        .discord-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(88, 101, 242, 0.8);
-            background: rgba(88, 101, 242, 0.4);
-        }
-        
-        /* Audio Control */
-        .audio-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 243, 255, 0.2);
-            border: 2px solid var(--neon-blue);
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px var(--neon-blue);
         }
         
-        .audio-control:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 0 40px var(--neon-blue);
+        .nav-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: var(--primary);
+            transform: scale(1.1);
         }
         
-        .audio-control svg {
-            width: 30px;
-            height: 30px;
-            fill: var(--neon-blue);
+        .nav-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
         }
         
-        /* Mouse Trail */
-        .trail {
+        /* Stats Bar */
+        .stats-bar {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--neon-blue);
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0;
-            animation: trailFade 0.5s ease-out;
-            box-shadow: 0 0 20px var(--neon-blue);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-around;
+            z-index: 50;
         }
         
-        @keyframes trailFade {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0);
-            }
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.3rem;
         }
         
         /* Responsive */
-        @media (max-width: 768px) {
-            .logo-3d {
-                font-size: 3rem;
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
             }
             
-            .features {
+            .title {
+                font-size: clamp(3rem, 10vw, 6rem);
+            }
+            
+            .stats-bar {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .floating-nav {
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .cta-group {
                 flex-direction: column;
-                align-items: center;
             }
             
-            .discord-btn {
-                padding: 0.75rem 1rem;
-                font-size: 0.9rem;
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -470,162 +313,231 @@
     <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="static/hapsetme2.mp3" type="audio/mpeg">
-        <source src="static/hapsetme2.mp3" type="audio/mpeg">
-        <source src="static/hapsetme2.mp3" type="audio/mpeg">
     </audio>
     
-    <!-- Grid Background -->
-    <div class="grid-bg"></div>
+    <!-- Animated Background Canvas -->
+    <canvas class="bg-canvas" id="bgCanvas"></canvas>
     
-    <!-- Scanline Effect -->
-    <div class="scanline"></div>
-    
-    <!-- Glowing Orbs -->
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
-    
-    <!-- Hexagon Particles Container -->
-    <div id="hexParticles"></div>
-    
-    <!-- Main Content -->
-    <div class="logo-container">
-        <div class="logo-3d">HAPSETME</div>
-        <div class="subtitle">DATABASE SEARCH & COMMUNITY</div>
-    </div>
-    
-    <div class="cta-container">
-        <a href="https://discord.gg/hapsetme" target="_blank" class="cta-button">
-            JOIN DISCORD
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <div class="nav-btn" id="audioBtn" title="Müzik">
+            <svg id="audioIcon" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            </svg>
+        </div>
+        <a href="https://discord.gg/hapsetme" target="_blank" class="nav-btn" title="Discord">
+            <svg viewBox="0 0 24 24">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
         </a>
     </div>
     
-    <div class="features">
-        <div class="feature-card">
-            <div class="feature-icon">🔍</div>
-            <div class="feature-title">Database Search</div>
-            <div class="feature-desc">Gelişmiş Sorgu Sistemi</div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="title-wrapper">
+                <h1 class="title">
+                    <span class="title-line"><span>HAPSETME</span></span>
+                </h1>
+                <p class="subtitle">// Database Search & Community Platform</p>
+                
+                <div class="cta-group">
+                    <a href="https://discord.gg/hapsetme" target="_blank" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                        </svg>
+                        Discord'a Katıl
+                    </a>
+                    <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+                        Özellikleri Keşfet
+                    </button>
+                </div>
+            </div>
+            
+            <div class="features-grid" id="features">
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3 class="feature-title">Advanced Search</h3>
+                    <p class="feature-desc">Breach.vip entegrasyonu ile güçlü ve hızlı arama sistemi</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔐</span>
+                    <h3 class="feature-title">Secure Access</h3>
+                    <p class="feature-desc">Key tabanlı güvenli erişim kontrolü ve yetkilendirme</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-title">Instant Results</h3>
+                    <p class="feature-desc">Anlık sonuçlar ve DM üzerinden güvenli iletişim</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">🔑</div>
-            <div class="feature-title">Key System</div>
-            <div class="feature-desc">Güvenli erişim kontrolü ve yetkilendirme</div>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">⚡</div>
-            <div class="feature-title">Fast Results</div>
-            <div class="feature-desc">Anlık sonuçlar ve DM üzerinden güvenli iletişim</div>
-        </div>
-    </div>
+    </section>
     
-    <!-- Discord Button -->
-    <a href="https://discord.gg/hapsetme" target="_blank" class="discord-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
-        </svg>
-        discord.gg/hapsetme
-    </a>
-    
-    <!-- Audio Control -->
-    <div class="audio-control" id="audioControl" title="Müzik Aç/Kapat">
-        <svg id="audioIcon" viewBox="0 0 24 24">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value" id="statUsers">1000+</div>
+            <div class="stat-label">Kullanıcı</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="statSearches">50K+</div>
+            <div class="stat-label">Arama</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="statUptime">99.9%</div>
+            <div class="stat-label">Uptime</div>
+        </div>
     </div>
 
     <script>
-        const bgMusic = document.getElementById('bgMusic');
-        const audioControl = document.getElementById('audioControl');
-        const audioIcon = document.getElementById('audioIcon');
+        // Background Canvas Animation
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
         
-        let musicPlaying = false;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         
-        // Create hexagon particles
-        function createHexParticles() {
-            const container = document.getElementById('hexParticles');
-            for (let i = 0; i < 20; i++) {
-                const hex = document.createElement('div');
-                hex.className = 'hex-particle';
-                hex.style.left = Math.random() * 100 + '%';
-                hex.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                hex.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(hex);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 217, 255, 0.5)';
+                ctx.fill();
             }
         }
         
-        createHexParticles();
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
         
-        // Music control
-        bgMusic.volume = 0.4;
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 217, 255, ${0.2 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
         
-        // Try autoplay
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Music Control
+        const bgMusic = document.getElementById('bgMusic');
+        const audioBtn = document.getElementById('audioBtn');
+        const audioIcon = document.getElementById('audioIcon');
+        let musicPlaying = false;
+        
+        bgMusic.volume = 0.3;
+        
         bgMusic.play().then(() => {
             musicPlaying = true;
-            console.log('🎵 Music started');
-        }).catch(e => {
-            console.log('⏸️ Autoplay blocked');
+        }).catch(() => {
             musicPlaying = false;
         });
         
-        audioControl.addEventListener('click', () => {
+        audioBtn.addEventListener('click', () => {
             if (musicPlaying) {
                 bgMusic.pause();
-                audioIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+                audioIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71z"/>';
                 musicPlaying = false;
             } else {
                 bgMusic.play();
-                audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+                audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
                 musicPlaying = true;
             }
         });
         
-        // Auto-start music on first interaction
+        // Auto-play on first interaction
         document.addEventListener('click', () => {
             if (!musicPlaying) {
                 bgMusic.play().then(() => {
                     musicPlaying = true;
-                    audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+                    audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
                 }).catch(() => {});
             }
         }, { once: true });
         
-        // Mouse trail effect
-        let lastTrailTime = 0;
-        document.addEventListener('mousemove', (e) => {
-            const now = Date.now();
-            if (now - lastTrailTime > 50) {
-                const trail = document.createElement('div');
-                trail.className = 'trail';
-                trail.style.left = e.clientX + 'px';
-                trail.style.top = e.clientY + 'px';
-                document.body.appendChild(trail);
-                
-                setTimeout(() => trail.remove(), 500);
-                lastTrailTime = now;
-            }
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         });
         
-        // Parallax effect on cards
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-            });
+        // Animate stats on load
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            let current = start;
             
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
+            const timer = setInterval(() => {
+                current += increment;
+                obj.textContent = current + (id === 'statUptime' ? '%' : '+');
+                if (current === end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+        
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                animateValue('statUsers', 0, 1000, 2000);
+                animateValue('statSearches', 0, 50, 2000);
+                animateValue('statUptime', 0, 99, 2000);
+            }, 500);
         });
     </script>
 </body>
