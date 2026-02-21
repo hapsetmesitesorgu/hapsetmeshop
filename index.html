@@ -1275,6 +1275,57 @@
             color: var(--primary-dark);
         }
         
+        /* Music Controls */
+        .music-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .music-control-btn {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .music-control-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .music-control-btn:hover {
+            background: var(--primary);
+        }
+        
+        .music-control-btn:hover svg {
+            fill: white;
+        }
+        
+        /* Song Info */
+        .song-info {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            border: 2px solid var(--border);
+            max-width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .song-info {
+            background: var(--bg-white);
+            border-color: var(--border);
+        }
+        
+        .song-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
         @media (max-width: 768px) {
             .controls-container {
                 right: 20px;
@@ -1289,6 +1340,20 @@
             .control-btn svg {
                 width: 22px;
                 height: 22px;
+            }
+            
+            .music-control-btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .song-info {
+                max-width: 150px;
+                padding: 10px 12px;
+            }
+            
+            .song-title {
+                font-size: 11px;
             }
         }
         
@@ -1481,8 +1546,8 @@
     <canvas id="particles"></canvas>
 
     <!-- Background Music -->
-    <audio id="bgMusic" loop>
-        <source src="static/hapsetme2.mp3" type="audio/mpeg">
+    <audio id="bgMusic">
+        <!-- Songs will be loaded dynamically -->
     </audio>
 
     <!-- Navigation -->
@@ -1782,14 +1847,33 @@
             <span id="langText">TR</span>
         </div>
         
-        <!-- Music Button -->
-        <div class="control-btn" id="musicBtn" title="Müzik">
-            <svg id="playIcon" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-            <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;">
-                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-            </svg>
+        <!-- Music Controls -->
+        <div class="music-controls">
+            <div class="control-btn music-control-btn" id="prevBtn" title="Önceki Şarkı">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+            </div>
+            
+            <div class="control-btn" id="musicBtn" title="Müzik">
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;">
+                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                </svg>
+            </div>
+            
+            <div class="control-btn music-control-btn" id="nextBtn" title="Sonraki Şarkı">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Song Info -->
+        <div class="song-info" id="songInfo">
+            <div class="song-title">Şarkı Yükleniyor...</div>
         </div>
     </div>
 
@@ -1804,6 +1888,22 @@
         let particlesArray = [];
         let currentLang = localStorage.getItem('language') || 'tr';
         let currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Music playlist
+        const playlist = [
+            'static/hapsetme1.mp3',
+            'static/hapsetme2.mp3',
+            'static/hapsetme3.mp3',
+            'static/hapsetme4.mp3',
+            'static/hapsetme5.mp3',
+            'static/hapsetme6.mp3',
+            'static/hapsetme7.mp3',
+            'static/hapsetme8.mp3',
+            'static/hapsetme9.mp3',
+            'static/hapsetme10.mp3'
+        ];
+        
+        let currentSongIndex = 0;
         
         // ==================== i18n TRANSLATIONS ====================
         const translations = {
@@ -2029,7 +2129,10 @@
             sunIcon: document.getElementById('sunIcon'),
             moonIcon: document.getElementById('moonIcon'),
             langToggle: document.getElementById('langToggle'),
-            langText: document.getElementById('langText')
+            langText: document.getElementById('langText'),
+            prevBtn: document.getElementById('prevBtn'),
+            nextBtn: document.getElementById('nextBtn'),
+            songInfo: document.getElementById('songInfo')
         };
         
         // ==================== THEME MANAGEMENT ====================
@@ -2251,7 +2354,42 @@
         }
         
         // ==================== MUSIC CONTROLS ====================
+        function loadSong(index) {
+            if (index < 0 || index >= playlist.length) return;
+            
+            currentSongIndex = index;
+            const song = playlist[index];
+            
+            elements.bgMusic.src = song;
+            
+            // Update song info
+            const songName = song.split('/').pop().replace('.mp3', '');
+            const songTitle = songName.charAt(0).toUpperCase() + songName.slice(1);
+            elements.songInfo.querySelector('.song-title').textContent = `♪ ${songTitle}`;
+            
+            // If music was playing, continue playing
+            if (musicPlaying) {
+                elements.bgMusic.play().catch(err => {
+                    console.log('Playback error:', err);
+                });
+            }
+        }
+        
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            loadSong(currentSongIndex);
+        }
+        
+        function previousSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+        }
+        
         function initMusic() {
+            // Load first song
+            loadSong(0);
+            
+            // Play/Pause button
             elements.musicBtn.addEventListener('click', () => {
                 if (musicPlaying) {
                     elements.bgMusic.pause();
@@ -2267,6 +2405,27 @@
                     elements.musicBtn.classList.add('playing');
                 }
                 musicPlaying = !musicPlaying;
+            });
+            
+            // Next button
+            elements.nextBtn.addEventListener('click', () => {
+                nextSong();
+            });
+            
+            // Previous button
+            elements.prevBtn.addEventListener('click', () => {
+                previousSong();
+            });
+            
+            // Auto-play next song when current ends
+            elements.bgMusic.addEventListener('ended', () => {
+                nextSong();
+            });
+            
+            // Handle errors (skip to next song)
+            elements.bgMusic.addEventListener('error', () => {
+                console.log('Song failed to load, skipping...');
+                nextSong();
             });
             
             // Try autoplay
