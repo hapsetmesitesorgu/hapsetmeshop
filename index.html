@@ -2834,23 +2834,11 @@
                 nextSong();
             });
             
-            // Handle errors (skip to next song)
+            // Handle errors - don't auto-skip to prevent infinite loop
             elements.bgMusic.addEventListener('error', () => {
-                console.log('Song failed to load, skipping...');
-                nextSong();
+                console.log('Song failed to load');
+                stopMusic();
             });
-            
-            // Try autoplay after delay
-            setTimeout(() => {
-                elements.bgMusic.play().then(() => {
-                    musicPlaying = true;
-                    elements.musicPlayIcon.style.display = 'none';
-                    elements.musicPauseIcon.style.display = 'block';
-                    elements.musicPlayBtn.classList.add('playing');
-                }).catch(() => {
-                    console.log('Autoplay blocked - user interaction required');
-                });
-            }, 1000);
         }
         
         // ==================== NAVIGATION ====================
@@ -3313,4 +3301,3 @@
     </script>
 </body>
 </html>
-
