@@ -148,7 +148,13 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.5;
+            opacity: 0.6;
+            filter: blur(1px);
+        }
+        
+        [data-theme="dark"] #particles {
+            opacity: 0.4;
+            filter: blur(1.5px);
         }
         
         /* ==================== NAVIGATION ==================== */
@@ -580,26 +586,28 @@
         }
         
         .feature-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 50px 45px;
-            border-radius: 20px;
+            border-radius: 24px;
             border: 2px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            animation: borderPulse 3s ease-in-out infinite;
+            box-shadow: 
+                0 8px 32px rgba(220, 38, 38, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
         
-        @keyframes borderPulse {
-            0%, 100% {
-                border-color: var(--border);
-                box-shadow: 0 0 0 rgba(220, 38, 38, 0);
-            }
-            50% {
-                border-color: var(--primary);
-                box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
-            }
+        [data-theme="dark"] .feature-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
         
         .feature-card::before {
@@ -612,7 +620,7 @@
             background: var(--gradient-primary);
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s ease;
         }
         
         .feature-card::after {
@@ -622,16 +630,25 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.08), transparent 70%);
+            background: radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.12), transparent 70%);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.5s ease;
         }
         
         .feature-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px rgba(220, 38, 38, 0.15);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(220, 38, 38, 0.2),
+                0 0 0 1px rgba(220, 38, 38, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
             border-color: var(--primary);
-            animation: none;
+        }
+        
+        [data-theme="dark"] .feature-card:hover {
+            box-shadow: 
+                0 30px 60px rgba(239, 68, 68, 0.3),
+                0 0 0 1px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         
         .feature-card:hover::before {
@@ -1266,23 +1283,45 @@
         }
         
         .music-player-main {
-            background: white;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(220, 38, 38, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
             border: 2px solid var(--border);
             min-width: 320px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         [data-theme="dark"] .music-player-main {
-            background: var(--bg-white);
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(239, 68, 68, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
             border-color: var(--border);
         }
         
         .music-player-main:hover {
-            box-shadow: 0 15px 50px rgba(220, 38, 38, 0.2);
+            box-shadow: 
+                0 20px 60px rgba(220, 38, 38, 0.25),
+                0 0 0 1px rgba(220, 38, 38, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
             border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        [data-theme="dark"] .music-player-main:hover {
+            box-shadow: 
+                0 20px 60px rgba(239, 68, 68, 0.4),
+                0 0 0 1px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         
         .music-header {
@@ -1435,26 +1474,45 @@
         .music-toggle-btn {
             width: 40px;
             height: 40px;
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 50%;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid var(--border);
         }
         
         [data-theme="dark"] .music-toggle-btn {
-            background: var(--bg-white);
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
             border-color: var(--border);
         }
         
         .music-toggle-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(220, 38, 38, 0.2);
+            transform: scale(1.15);
+            box-shadow: 
+                0 12px 35px rgba(220, 38, 38, 0.25),
+                0 0 0 1px rgba(220, 38, 38, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
             border-color: var(--primary);
+        }
+        
+        [data-theme="dark"] .music-toggle-btn:hover {
+            box-shadow: 
+                0 12px 35px rgba(239, 68, 68, 0.4),
+                0 0 0 1px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         
         .music-toggle-btn svg {
@@ -1482,28 +1540,47 @@
         .control-btn {
             width: 50px;
             height: 50px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 14px;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid var(--border);
             position: relative;
             overflow: hidden;
         }
         
         [data-theme="dark"] .control-btn {
-            background: var(--bg-white);
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
             border-color: var(--border);
         }
         
         .control-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+            box-shadow: 
+                0 12px 35px rgba(220, 38, 38, 0.25),
+                0 0 0 1px rgba(220, 38, 38, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
             border-color: var(--primary);
+        }
+        
+        [data-theme="dark"] .control-btn:hover {
+            box-shadow: 
+                0 12px 35px rgba(239, 68, 68, 0.4),
+                0 0 0 1px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         
         .control-btn svg {
@@ -2507,10 +2584,21 @@
                 this.canvas = canvas;
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-                this.opacity = Math.random() * 0.5 + 0.2;
+                this.size = Math.random() * 4 + 1;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.speedY = Math.random() * 0.8 - 0.4;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                this.color = this.getRandomRedShade();
+            }
+            
+            getRandomRedShade() {
+                const reds = [
+                    'rgba(220, 38, 38,',   // Primary red
+                    'rgba(239, 68, 68,',   // Lighter red
+                    'rgba(248, 113, 113,', // Light red
+                    'rgba(252, 165, 165,'  // Lightest red
+                ];
+                return reds[Math.floor(Math.random() * reds.length)];
             }
             
             update() {
@@ -2524,10 +2612,17 @@
             }
             
             draw(ctx) {
-                ctx.fillStyle = `rgba(220, 38, 38, ${this.opacity})`;
+                // Draw glow
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color + '0.5)';
+                
+                ctx.fillStyle = this.color + this.opacity + ')';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
+                
+                // Reset shadow
+                ctx.shadowBlur = 0;
             }
         }
         
@@ -2543,8 +2638,8 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             
-            // Create particles - enhanced count for better visual effect
-            for (let i = 0; i < 50; i++) {
+            // Create more particles for richer effect
+            for (let i = 0; i < 80; i++) {
                 particlesArray.push(new Particle(canvas));
             }
             
@@ -2556,20 +2651,28 @@
                     particle.draw(ctx);
                 });
                 
-                // Draw connections
+                // Draw connections with glow
                 for (let i = 0; i < particlesArray.length; i++) {
                     for (let j = i + 1; j < particlesArray.length; j++) {
                         const dx = particlesArray[i].x - particlesArray[j].x;
                         const dy = particlesArray[i].y - particlesArray[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                        if (distance < 150) {
-                            ctx.strokeStyle = `rgba(220, 38, 38, ${0.15 * (1 - distance / 150)})`;
-                            ctx.lineWidth = 1;
+                        if (distance < 180) {
+                            const opacity = 0.2 * (1 - distance / 180);
+                            
+                            // Draw glowing line
+                            ctx.strokeStyle = `rgba(220, 38, 38, ${opacity})`;
+                            ctx.lineWidth = 1.5;
+                            ctx.shadowBlur = 5;
+                            ctx.shadowColor = `rgba(220, 38, 38, ${opacity * 0.5})`;
+                            
                             ctx.beginPath();
                             ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
                             ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
                             ctx.stroke();
+                            
+                            ctx.shadowBlur = 0;
                         }
                     }
                 }
