@@ -621,6 +621,9 @@
                 0 4px 16px rgba(220, 38, 38, 0.08),
                 inset 0 1px 0 rgba(255, 255, 255, 0.6);
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 15;
+            pointer-events: auto;
         }
         
         [data-theme="dark"] .product-embed {
@@ -674,11 +677,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
             font-family: 'Inter', sans-serif;
+            position: relative;
+            z-index: 20;
+            pointer-events: auto;
         }
         
         .product-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
+        }
+        
+        .product-button:active {
+            transform: translateY(0);
         }
         
         [data-theme="dark"] .feature-card {
@@ -701,6 +711,7 @@
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.5s ease;
+            pointer-events: none;
         }
         
         .feature-card::after {
@@ -713,6 +724,7 @@
             background: radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.12), transparent 70%);
             opacity: 0;
             transition: opacity 0.5s ease;
+            pointer-events: none;
         }
         
         .feature-card:hover {
@@ -2302,144 +2314,131 @@
         
         // ==================== THEME MANAGEMENT ====================
         function applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            currentTheme = theme;
-            
-            if (theme === 'dark') {
-                elements.sunIcon.style.display = 'none';
-                elements.moonIcon.style.display = 'block';
-            } else {
-                elements.sunIcon.style.display = 'block';
-                elements.moonIcon.style.display = 'none';
+            try {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                currentTheme = theme;
+                
+                if (elements.sunIcon && elements.moonIcon) {
+                    if (theme === 'dark') {
+                        elements.sunIcon.style.display = 'none';
+                        elements.moonIcon.style.display = 'block';
+                    } else {
+                        elements.sunIcon.style.display = 'block';
+                        elements.moonIcon.style.display = 'none';
+                    }
+                }
+                console.log('Theme applied:', theme);
+            } catch (error) {
+                console.error('Error in applyTheme:', error);
             }
         }
         
         function toggleTheme() {
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            applyTheme(newTheme);
+            try {
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                console.log('Toggling theme from', currentTheme, 'to', newTheme);
+                applyTheme(newTheme);
+            } catch (error) {
+                console.error('Error in toggleTheme:', error);
+            }
         }
         
         // ==================== LANGUAGE MANAGEMENT ====================
         function translatePage(lang) {
-            const t = translations[lang];
+            try {
+                const t = translations[lang];
+                if (!t) {
+                    console.error('Translation not found for language:', lang);
+                    return;
+                }
+                
+                // Navigation - Market page only has one nav link
+                const navLinks = document.querySelectorAll('.nav-link');
+                if (navLinks[0]) navLinks[0].textContent = lang === 'tr' ? 'Anasayfa' : 'Home';
             
-            // Navigation
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks[0].textContent = t.features || 'Anasayfa';
-            navLinks[1].textContent = t.features || 'Özellikler';
-            navLinks[2].textContent = t.howItWorks || 'Nasıl Çalışır';
-            navLinks[3].textContent = t.discord || 'Discord';
+            // Market page specific elements
+            const sectionBadge = document.querySelector('.section-badge');
+            const sectionTitle = document.querySelector('.section-title');
+            const sectionSubtitle = document.querySelector('.section-subtitle');
             
-            // Hero
-            document.querySelector('.hero-badge').innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
-                </svg>
-                ${t.premiumPlatform}
-            `;
-            document.querySelector('.hero-title').textContent = t.heroTitle;
-            document.querySelector('.hero-subtitle').textContent = t.heroSubtitle;
-            document.querySelector('.hero-cta .btn-white').innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
-                </svg>
-                ${t.joinDiscord}
-            `;
-            document.querySelector('.btn-outline.btn-lg').textContent = t.exploreFeatures;
+            if (sectionBadge) sectionBadge.textContent = lang === 'tr' ? 'ÜRÜNLER' : 'PRODUCTS';
+            if (sectionTitle) sectionTitle.textContent = lang === 'tr' ? 'Neden HAPSETME?' : 'Why HAPSETME?';
+            if (sectionSubtitle) sectionSubtitle.textContent = lang === 'tr' ? 'İhtiyacınıza uygun paketi seçin ve hemen kullanmaya başlayın' : 'Choose the package that suits your needs and start using it right away';
             
-            const heroStats = document.querySelectorAll('.hero-stat-label');
-            heroStats[0].textContent = t.queries;
-            heroStats[1].textContent = t.users;
-            heroStats[2].textContent = t.successRate;
+            // Product buttons
+            const productButtons = document.querySelectorAll('.product-button');
+            productButtons.forEach(btn => {
+                btn.textContent = lang === 'tr' ? 'Satın Al' : 'Buy Now';
+            });
             
-            document.querySelector('.scroll-indicator span').textContent = t.explore;
-            
-            // Features
-            document.querySelector('.features .section-badge').textContent = t.featuresBadge;
-            document.querySelector('.features .section-title').textContent = t.featuresTitle;
-            document.querySelector('.features .section-subtitle').textContent = t.featuresSubtitle;
-            
-            const featureTitles = document.querySelectorAll('.feature-title');
-            const featureDescs = document.querySelectorAll('.feature-desc');
-            featureTitles[0].textContent = t.feature1Title;
-            featureDescs[0].textContent = t.feature1Desc;
-            featureTitles[1].textContent = t.feature2Title;
-            featureDescs[1].textContent = t.feature2Desc;
-            featureTitles[2].textContent = t.feature3Title;
-            featureDescs[2].textContent = t.feature3Desc;
-            featureTitles[3].textContent = t.feature4Title;
-            featureDescs[3].textContent = t.feature4Desc;
-            featureTitles[4].textContent = t.feature5Title;
-            featureDescs[4].textContent = t.feature5Desc;
-            featureTitles[5].textContent = t.feature6Title;
-            featureDescs[5].textContent = t.feature6Desc;
-            
-            // Stats
-            const statLabels = document.querySelectorAll('.stat-label');
-            statLabels[0].textContent = t.totalQueries;
-            statLabels[1].textContent = t.activeUsers;
-            statLabels[2].textContent = t.databases;
-            statLabels[3].textContent = t.successRateLabel;
-            
-            // How It Works
-            document.querySelector('.how-it-works .section-badge').textContent = t.howItWorksBadge;
-            document.querySelector('.how-it-works .section-title').textContent = t.howItWorksTitle;
-            document.querySelector('.how-it-works .section-subtitle').textContent = t.howItWorksSubtitle;
-            
-            const stepTitles = document.querySelectorAll('.step-title');
-            const stepDescs = document.querySelectorAll('.step-desc');
-            stepTitles[0].textContent = t.step1Title;
-            stepDescs[0].textContent = t.step1Desc;
-            stepTitles[1].textContent = t.step2Title;
-            stepDescs[1].textContent = t.step2Desc;
-            stepTitles[2].textContent = t.step3Title;
-            stepDescs[2].textContent = t.step3Desc;
-            
-            // CTA
-            document.querySelector('.cta-title').textContent = t.ctaTitle;
-            document.querySelector('.cta-subtitle').textContent = t.ctaSubtitle;
+            // CTA Section
+            const ctaTitle = document.querySelector('.cta-title');
+            const ctaSubtitle = document.querySelector('.cta-subtitle');
+            if (ctaTitle) ctaTitle.textContent = lang === 'tr' ? 'Hemen Satın Alın' : 'Buy Now';
+            if (ctaSubtitle) ctaSubtitle.textContent = lang === 'tr' ? 'Discord sunucumuza katılın ve size uygun paketi seçerek hemen kullanmaya başlayın' : 'Join our Discord server and choose the package that suits you to start using it right away';
             
             // Footer
-            document.querySelector('.footer-desc').textContent = t.footerDesc;
-            document.querySelectorAll('.footer-column h4')[0].textContent = t.platformTitle;
-            document.querySelectorAll('.footer-column h4')[1].textContent = t.supportTitle;
-            document.querySelectorAll('.footer-column h4')[2].textContent = t.legalTitle;
+            const footerDesc = document.querySelector('.footer-desc');
+            if (footerDesc) footerDesc.textContent = lang === 'tr' ? 'Premium veri sorgulama platformu. Discord entegrasyonu ile güvenli, hızlı ve güvenilir hizmet.' : 'Premium data query platform. Secure, fast and reliable service with Discord integration.';
+            
+            const footerColumns = document.querySelectorAll('.footer-column h4');
+            if (footerColumns[0]) footerColumns[0].textContent = lang === 'tr' ? 'Platform' : 'Platform';
+            if (footerColumns[1]) footerColumns[1].textContent = lang === 'tr' ? 'Destek' : 'Support';
+            if (footerColumns[2]) footerColumns[2].textContent = lang === 'tr' ? 'Yasal' : 'Legal';
             
             const footerLinks = document.querySelectorAll('.footer-links a');
-            footerLinks[0].textContent = t.features;
-            footerLinks[1].textContent = t.howItWorks;
-            footerLinks[2].textContent = t.discord;
-            footerLinks[3].textContent = t.commands;
-            footerLinks[4].textContent = t.discordServer;
-            footerLinks[5].textContent = t.helpCenter;
-            footerLinks[6].textContent = t.contact;
-            footerLinks[7].textContent = t.privacy;
-            footerLinks[8].textContent = t.terms;
-            footerLinks[9].textContent = t.cookies;
+            if (footerLinks[0]) footerLinks[0].textContent = lang === 'tr' ? 'Özellikler' : 'Features';
+            if (footerLinks[1]) footerLinks[1].textContent = lang === 'tr' ? 'Nasıl Çalışır' : 'How It Works';
+            if (footerLinks[2]) footerLinks[2].textContent = 'Discord';
+            if (footerLinks[3]) footerLinks[3].textContent = lang === 'tr' ? 'Komutlar' : 'Commands';
+            if (footerLinks[4]) footerLinks[4].textContent = lang === 'tr' ? 'Discord Sunucusu' : 'Discord Server';
+            if (footerLinks[5]) footerLinks[5].textContent = lang === 'tr' ? 'Yardım Merkezi' : 'Help Center';
+            if (footerLinks[6]) footerLinks[6].textContent = lang === 'tr' ? 'İletişim' : 'Contact';
+            if (footerLinks[7]) footerLinks[7].textContent = lang === 'tr' ? 'Gizlilik Politikası' : 'Privacy Policy';
+            if (footerLinks[8]) footerLinks[8].textContent = lang === 'tr' ? 'Kullanım Koşulları' : 'Terms of Service';
+            if (footerLinks[9]) footerLinks[9].textContent = lang === 'tr' ? 'Çerez Politikası' : 'Cookie Policy';
             
-            document.querySelector('.footer-copyright').innerHTML = `
-                ${t.copyright} | 
-                <a href="https://discord.gg/hapsetme" target="_blank" class="footer-link">discord.gg/hapsetme</a>
-            `;
+            const footerCopyright = document.querySelector('.footer-copyright');
+            if (footerCopyright) {
+                footerCopyright.innerHTML = `
+                    ${lang === 'tr' ? '© 2024 HAPSETME. Tüm hakları saklıdır.' : '© 2024 HAPSETME. All rights reserved.'} | 
+                    <a href="https://discord.gg/hapsetme" target="_blank" class="footer-link">discord.gg/hapsetme</a>
+                `;
+            }
             
-            // CTA
-            document.querySelector('.loading-text').textContent = t.loading;
+            // Loading text
+            const loadingText = document.querySelector('.loading-text');
+            if (loadingText) loadingText.textContent = lang === 'tr' ? 'Yükleniyor...' : 'Loading...';
             
             // Tooltips
-            elements.themeToggle.title = t.themeToggle;
-            elements.langToggle.title = t.langToggle;
+            if (elements.themeToggle) elements.themeToggle.title = lang === 'tr' ? 'Tema Değiştir' : 'Toggle Theme';
+            if (elements.langToggle) elements.langToggle.title = lang === 'tr' ? 'Dil Değiştir' : 'Change Language';
             
             localStorage.setItem('language', lang);
             currentLang = lang;
+            
+            console.log('Language changed to:', lang);
+            } catch (error) {
+                console.error('Error in translatePage:', error);
+            }
         }
         
         function toggleLanguage() {
-            const newLang = currentLang === 'tr' ? 'en' : 'tr';
-            elements.langText.textContent = newLang.toUpperCase();
-            translatePage(newLang);
-            localStorage.setItem('language', newLang);
-            currentLang = newLang;
+            try {
+                const newLang = currentLang === 'tr' ? 'en' : 'tr';
+                console.log('Toggling language from', currentLang, 'to', newLang);
+                
+                if (elements.langText) {
+                    elements.langText.textContent = newLang.toUpperCase();
+                }
+                
+                translatePage(newLang);
+                localStorage.setItem('language', newLang);
+                currentLang = newLang;
+            } catch (error) {
+                console.error('Error in toggleLanguage:', error);
+            }
         }
         
         // ==================== PARTICLES SYSTEM ====================
@@ -2991,10 +2990,20 @@
         
         function initControls() {
             // Theme toggle
-            elements.themeToggle.addEventListener('click', toggleTheme);
+            if (elements.themeToggle) {
+                elements.themeToggle.addEventListener('click', toggleTheme);
+                console.log('✅ Theme toggle initialized');
+            } else {
+                console.error('❌ Theme toggle element not found');
+            }
             
             // Language toggle
-            elements.langToggle.addEventListener('click', toggleLanguage);
+            if (elements.langToggle) {
+                elements.langToggle.addEventListener('click', toggleLanguage);
+                console.log('✅ Language toggle initialized');
+            } else {
+                console.error('❌ Language toggle element not found');
+            }
         }
         
         // Start when DOM is ready
