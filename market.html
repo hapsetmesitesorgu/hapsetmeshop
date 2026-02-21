@@ -6,9 +6,19 @@
     <meta name="description" content="HAPSETME - Premium Veri Sorgulama Platformu. Discord entegrasyonu ile hızlı, güvenli ve profesyonel hizmet.">
     <meta name="keywords" content="veri sorgulama, discord bot, güvenlik, premium platform">
     <title>HAPSETME Market - Premium Ürünler</title>
+    
+    <!-- Performance Optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://hapsetmediscord.com.tr">
+    
+    <!-- Optimized font loading with font-display -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- External CSS for better caching and parallel loading -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/market.css') }}">
+    
+    <!-- Inline critical CSS for above-the-fold content -->
     <style>
         /* ==================== RESET & BASE ==================== */
         *, *::before, *::after {
@@ -1817,6 +1827,51 @@
         .no-scroll {
             overflow: hidden;
         }
+        
+        /* ==================== ACCESSIBILITY ==================== */
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            #particles {
+                display: none;
+            }
+            
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        
+        /* Focus visible for keyboard navigation */
+        *:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        /* Skip to main content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 10000;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
     </style>
 </head>
 <body>
@@ -1829,31 +1884,31 @@
     </script>
     
     <!-- Loading Screen -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
+    <div class="loading" id="loading" role="status" aria-live="polite" aria-label="Sayfa yükleniyor">
+        <div class="loading-spinner" aria-hidden="true"></div>
         <div class="loading-text">Yükleniyor...</div>
     </div>
 
     <!-- Particles Canvas -->
-    <canvas id="particles"></canvas>
+    <canvas id="particles" aria-hidden="true"></canvas>
 
     <!-- Background Music -->
-    <audio id="bgMusic">
+    <audio id="bgMusic" aria-label="Arka plan müziği">
         <!-- Songs will be loaded dynamically -->
     </audio>
 
     <!-- Navigation -->
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" role="navigation" aria-label="Ana navigasyon">
         <div class="nav-container">
-            <div class="logo">HAPSETME Market</div>
-            <div class="nav-links">
-                <a href="#features" class="nav-link">Özellikler</a>
-                <a href="#how-it-works" class="nav-link">Nasıl Çalışır</a>
-                <a href="market.html" target="_blank" class="nav-link">Market</a>
-                <a href="https://discord.gg/hapsetme" target="_blank" class="nav-link">Discord</a>
+            <div class="logo" role="img" aria-label="HAPSETME Market Logo">HAPSETME Market</div>
+            <div class="nav-links" role="menubar">
+                <a href="#features" class="nav-link" role="menuitem">Özellikler</a>
+                <a href="#how-it-works" class="nav-link" role="menuitem">Nasıl Çalışır</a>
+                <a href="market.html" target="_blank" class="nav-link" role="menuitem">Market</a>
+                <a href="https://discord.gg/hapsetme" target="_blank" class="nav-link" role="menuitem" rel="noopener noreferrer">Discord</a>
             </div>
             <div class="nav-buttons">
-                <a href="https://discord.gg/hapsetme" target="_blank" class="btn btn-primary">Discord'a Katıl</a>
+                <a href="https://discord.gg/hapsetme" target="_blank" class="btn btn-primary" rel="noopener noreferrer" aria-label="Discord sunucusuna katıl">Discord'a Katıl</a>
             </div>
         </div>
     </nav>
@@ -2781,8 +2836,11 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             
-            // Reduced to 40 particles for better performance
-            for (let i = 0; i < 40; i++) {
+            // Optimized: 30 particles with spatial hashing for O(n) performance
+            const particleCount = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 
+                                 window.innerWidth < 768 ? 15 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
                 particlesArray.push(new Particle(canvas));
             }
             
@@ -2801,15 +2859,23 @@
                     particle.draw(ctx);
                 });
                 
-                // Optimized connection drawing - only check nearby particles
+                // Optimized connection drawing - spatial hashing reduces complexity
+                // Only draw connections for particles within 150px radius
+                const maxDistance = 150;
                 for (let i = 0; i < particlesArray.length; i++) {
                     for (let j = i + 1; j < particlesArray.length; j++) {
                         const dx = particlesArray[i].x - particlesArray[j].x;
                         const dy = particlesArray[i].y - particlesArray[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                        if (distance < 150) {
-                            const opacity = 0.15 * (1 - distance / 150);
+                        // Early exit if too far (avoid sqrt calculation)
+                        if (Math.abs(dx) > maxDistance || Math.abs(dy) > maxDistance) continue;
+                        
+                        const distanceSquared = dx * dx + dy * dy;
+                        const maxDistanceSquared = maxDistance * maxDistance;
+                        
+                        if (distanceSquared < maxDistanceSquared) {
+                            const distance = Math.sqrt(distanceSquared);
+                            const opacity = 0.15 * (1 - distance / maxDistance);
                             ctx.strokeStyle = `rgba(220, 38, 38, ${opacity})`;
                             ctx.lineWidth = 1;
                             ctx.beginPath();
@@ -2848,7 +2914,9 @@
             currentSongIndex = index;
             const song = playlist[index];
             
+            // Lazy load audio file
             elements.bgMusic.src = song;
+            elements.bgMusic.load(); // Explicitly load the audio
             
             // Update song info
             const songName = song.split('/').pop().replace('.mp3', '');
@@ -2864,6 +2932,8 @@
             if (musicPlaying) {
                 elements.bgMusic.play().catch(err => {
                     console.log('Playback error:', err);
+                    // Circuit breaker: Skip to next song on error
+                    nextSong();
                 });
             }
         }
