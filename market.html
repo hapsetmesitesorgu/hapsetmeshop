@@ -2237,63 +2237,6 @@
         </div>
     </div>
 
-    <!-- Music Player -->
-    <div class="music-player">
-        <div class="music-toggle-btn" id="musicToggle" title="Müzik Çalar">
-            <svg viewBox="0 0 24 24">
-                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-            </svg>
-        </div>
-        
-        <div class="music-player-main" id="musicPlayerMain">
-            <div class="music-header">
-                <button class="music-play-btn" id="musicPlayBtn">
-                    <svg id="musicPlayIcon" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    <svg id="musicPauseIcon" viewBox="0 0 24 24" style="display:none;">
-                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-                    </svg>
-                </button>
-                
-                <div class="music-info">
-                    <div class="music-song-name" id="musicSongName">Şarkı Yükleniyor...</div>
-                    <div class="music-artist">HAPSETME</div>
-                </div>
-            </div>
-            
-            <div class="music-progress-container">
-                <div class="music-progress-bar" id="musicProgressBar">
-                    <div class="music-progress-fill" id="musicProgressFill"></div>
-                </div>
-                <div class="music-time">
-                    <span id="musicCurrentTime">0:00</span>
-                    <span id="musicDuration">0:00</span>
-                </div>
-            </div>
-            
-            <div class="music-controls">
-                <button class="music-control-btn" id="musicPrevBtn" title="Önceki">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                    </svg>
-                </button>
-                
-                <button class="music-control-btn stop-btn" id="musicStopBtn" title="Durdur">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 6h12v12H6z"/>
-                    </svg>
-                </button>
-                
-                <button class="music-control-btn" id="musicNextBtn" title="Sonraki">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
 
 
     <script>
@@ -2301,19 +2244,9 @@
         const API_BASE = 'https://hapsetmediscord.com.tr';
         
         // ==================== STATE MANAGEMENT ====================
-        let musicPlaying = false;
         let particlesArray = [];
         let currentLang = localStorage.getItem('language') || 'tr';
         let currentTheme = localStorage.getItem('theme') || 'light';
-        
-        // Music playlist - Available songs
-        const playlist = [
-            '/static/hapsetme1.mp3',
-            '/static/hapsetme2.mp3',
-            '/static/hapsetme3.mp3'
-        ];
-        
-        let currentSongIndex = 0;
         
         // ==================== i18n TRANSLATIONS ====================
         const translations = {
@@ -2531,27 +2464,13 @@
         const elements = {
             loading: document.getElementById('loading'),
             nav: document.getElementById('nav'),
-            bgMusic: document.getElementById('bgMusic'),
             particles: document.getElementById('particles'),
             scrollIndicator: document.getElementById('scrollIndicator'),
             themeToggle: document.getElementById('themeToggle'),
             sunIcon: document.getElementById('sunIcon'),
             moonIcon: document.getElementById('moonIcon'),
             langToggle: document.getElementById('langToggle'),
-            langText: document.getElementById('langText'),
-            musicToggle: document.getElementById('musicToggle'),
-            musicPlayerMain: document.getElementById('musicPlayerMain'),
-            musicPlayBtn: document.getElementById('musicPlayBtn'),
-            musicPlayIcon: document.getElementById('musicPlayIcon'),
-            musicPauseIcon: document.getElementById('musicPauseIcon'),
-            musicPrevBtn: document.getElementById('musicPrevBtn'),
-            musicStopBtn: document.getElementById('musicStopBtn'),
-            musicNextBtn: document.getElementById('musicNextBtn'),
-            musicSongName: document.getElementById('musicSongName'),
-            musicProgressBar: document.getElementById('musicProgressBar'),
-            musicProgressFill: document.getElementById('musicProgressFill'),
-            musicCurrentTime: document.getElementById('musicCurrentTime'),
-            musicDuration: document.getElementById('musicDuration')
+            langText: document.getElementById('langText')
         };
         
         // ==================== THEME MANAGEMENT ====================
@@ -2682,7 +2601,6 @@
             // Tooltips
             elements.themeToggle.title = t.themeToggle;
             elements.langToggle.title = t.langToggle;
-            if (elements.musicToggle) elements.musicToggle.title = t.musicToggle;
             
             localStorage.setItem('language', lang);
             currentLang = lang;
@@ -2791,170 +2709,6 @@
             }
             
             animateParticles(0);
-        }
-        
-        // ==================== MUSIC CONTROLS ====================
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        function updateProgress() {
-            const audio = elements.bgMusic;
-            if (audio.duration) {
-                const progress = (audio.currentTime / audio.duration) * 100;
-                elements.musicProgressFill.style.width = `${progress}%`;
-                elements.musicCurrentTime.textContent = formatTime(audio.currentTime);
-                elements.musicDuration.textContent = formatTime(audio.duration);
-            }
-        }
-        
-        function loadSong(index) {
-            if (index < 0 || index >= playlist.length) return;
-            
-            currentSongIndex = index;
-            const song = playlist[index];
-            
-            elements.bgMusic.src = song;
-            
-            // Update song info
-            const songName = song.split('/').pop().replace('.mp3', '');
-            const songTitle = songName.charAt(0).toUpperCase() + songName.slice(1);
-            elements.musicSongName.textContent = songTitle;
-            
-            // Reset progress
-            elements.musicProgressFill.style.width = '0%';
-            elements.musicCurrentTime.textContent = '0:00';
-            elements.musicDuration.textContent = '0:00';
-            
-            // If music was playing, continue playing
-            if (musicPlaying) {
-                elements.bgMusic.play().catch(err => {
-                    console.log('Playback error:', err);
-                });
-            }
-        }
-        
-        function nextSong() {
-            if (playlist.length <= 1) return;
-            currentSongIndex = (currentSongIndex + 1) % playlist.length;
-            loadSong(currentSongIndex);
-        }
-        
-        function previousSong() {
-            if (playlist.length <= 1) return;
-            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-            loadSong(currentSongIndex);
-        }
-        
-        function stopMusic() {
-            elements.bgMusic.pause();
-            elements.bgMusic.currentTime = 0;
-            elements.musicPlayIcon.style.display = 'block';
-            elements.musicPauseIcon.style.display = 'none';
-            elements.musicPlayBtn.classList.remove('playing');
-            musicPlaying = false;
-            
-            // Reset progress
-            elements.musicProgressFill.style.width = '0%';
-            elements.musicCurrentTime.textContent = '0:00';
-        }
-        
-        function togglePlay() {
-            if (musicPlaying) {
-                elements.bgMusic.pause();
-                elements.musicPlayIcon.style.display = 'block';
-                elements.musicPauseIcon.style.display = 'none';
-                elements.musicPlayBtn.classList.remove('playing');
-            } else {
-                elements.bgMusic.play().catch(err => {
-                    console.log('Music autoplay blocked:', err);
-                });
-                elements.musicPlayIcon.style.display = 'none';
-                elements.musicPauseIcon.style.display = 'block';
-                elements.musicPlayBtn.classList.add('playing');
-            }
-            musicPlaying = !musicPlaying;
-        }
-        
-        function initMusic() {
-            // Load first song
-            loadSong(0);
-            
-            // Toggle player visibility
-            elements.musicToggle.addEventListener('click', () => {
-                elements.musicPlayerMain.classList.toggle('collapsed');
-            });
-            
-            // Play/Pause button
-            elements.musicPlayBtn.addEventListener('click', togglePlay);
-            
-            // Stop button
-            elements.musicStopBtn.addEventListener('click', stopMusic);
-            
-            // Next button
-            elements.musicNextBtn.addEventListener('click', () => {
-                nextSong();
-            });
-            
-            // Previous button
-            elements.musicPrevBtn.addEventListener('click', () => {
-                previousSong();
-            });
-            
-            // Progress bar click to seek
-            elements.musicProgressBar.addEventListener('click', (e) => {
-                const rect = elements.musicProgressBar.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const percentage = x / rect.width;
-                elements.bgMusic.currentTime = percentage * elements.bgMusic.duration;
-            });
-            
-            // Update progress continuously
-            elements.bgMusic.addEventListener('timeupdate', updateProgress);
-            
-            // Update duration when metadata loads
-            elements.bgMusic.addEventListener('loadedmetadata', () => {
-                elements.musicDuration.textContent = formatTime(elements.bgMusic.duration);
-            });
-            
-            // Auto-play next song when current ends
-            elements.bgMusic.addEventListener('ended', () => {
-                if (playlist.length > 1) {
-                    nextSong();
-                } else {
-                    // Loop the same song
-                    elements.bgMusic.currentTime = 0;
-                    elements.bgMusic.play();
-                }
-            });
-            
-            // Handle errors (skip to next song)
-            elements.bgMusic.addEventListener('error', (e) => {
-                console.log('Song failed to load:', e);
-                if (playlist.length > 1) {
-                    nextSong();
-                } else {
-                    stopMusic();
-                    if (elements.musicSongName) {
-                        elements.musicSongName.textContent = 'Müzik yüklenemedi';
-                    }
-                }
-            });
-            
-            // Try autoplay after delay
-            setTimeout(() => {
-                elements.bgMusic.play().then(() => {
-                    musicPlaying = true;
-                    elements.musicPlayIcon.style.display = 'none';
-                    elements.musicPauseIcon.style.display = 'block';
-                    elements.musicPlayBtn.classList.add('playing');
-                }).catch(() => {
-                    console.log('Autoplay blocked - user interaction required');
-                });
-            }, 1000);
         }
         
         // ==================== NAVIGATION ====================
@@ -3390,7 +3144,6 @@
                 
                 // Initialize all features
                 initParticles();
-                initMusic();
                 initNavigation();
                 initStatsCounters();
                 initScrollReveal();
