@@ -1642,8 +1642,25 @@
     <!-- Apply theme before page renders to prevent flash -->
     <script>
         (function() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            
+            // FAILSAFE: Force hide loading screen after 3 seconds no matter what
+            setTimeout(function() {
+                const loading = document.getElementById('loading');
+                if (loading && loading.style.display !== 'none') {
+                    console.warn('⚠️ FAILSAFE: Force hiding loading screen');
+                    loading.style.opacity = '0';
+                    loading.style.transition = 'opacity 0.3s';
+                    setTimeout(function() {
+                        loading.style.display = 'none';
+                    }, 300);
+                }
+            }, 3000);
         })();
     </script>
     
@@ -2084,8 +2101,16 @@
         
         // ==================== STATE MANAGEMENT ====================
         let particlesArray = [];
-        let currentLang = localStorage.getItem('language') || 'tr';
-        let currentTheme = localStorage.getItem('theme') || 'light';
+        let currentLang = 'tr';
+        let currentTheme = 'light';
+        
+        // Safely get from localStorage
+        try {
+            currentLang = localStorage.getItem('language') || 'tr';
+            currentTheme = localStorage.getItem('theme') || 'light';
+        } catch (e) {
+            console.warn('⚠️ localStorage not available:', e);
+        }
         
         // ==================== i18n TRANSLATIONS ====================
         const translations = {
@@ -2316,7 +2341,11 @@
         function applyTheme(theme) {
             try {
                 document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme);
+                try {
+                    localStorage.setItem('theme', theme);
+                } catch (e) {
+                    console.warn('localStorage not available:', e);
+                }
                 currentTheme = theme;
                 
                 if (elements.sunIcon && elements.moonIcon) {
@@ -2328,9 +2357,9 @@
                         elements.moonIcon.style.display = 'none';
                     }
                 }
-                console.log('Theme applied:', theme);
+                console.log('✅ Theme applied:', theme);
             } catch (error) {
-                console.error('Error in applyTheme:', error);
+                console.error('❌ Error in applyTheme:', error);
             }
         }
         
@@ -2483,7 +2512,11 @@ Market page specific elements
                 if (elements.themeToggle) elements.themeToggle.title = lang === 'tr' ? 'Tema Değiştir' : 'Toggle Theme';
                 if (elements.langToggle) elements.langToggle.title = lang === 'tr' ? 'Dil Değiştir' : 'Change Language';
                 
-                localStorage.setItem('language', lang);
+                try {
+                    localStorage.setItem('language', lang);
+                } catch (e) {
+                    console.warn('⚠️ Could not save language to localStorage:', e);
+                }
                 currentLang = lang;
                 
                 console.log('✅ Language changed to:', lang);
@@ -2502,10 +2535,14 @@ Market page specific elements
                 }
                 
                 translatePage(newLang);
-                localStorage.setItem('language', newLang);
+                try {
+                    localStorage.setItem('language', newLang);
+                } catch (e) {
+                    console.warn('⚠️ Could not save language to localStorage:', e);
+                }
                 currentLang = newLang;
             } catch (error) {
-                console.error('Error in toggleLanguage:', error);
+                console.error('❌ Error in toggleLanguage:', error);
             }
         }
         
@@ -2550,26 +2587,37 @@ Market page specific elements
         }
         
         function initParticles() {
-            const canvas = elements.particles;
-            const ctx = canvas.getContext('2d');
-            let animationFrameId;
-            let lastTime = 0;
-            const fps = 30;
-            const interval = 1000 / fps;
-            
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            
-            // Reduced to 30 particles for better mobile performance
-            const particleCount = window.innerWidth < 768 ? 20 : 30;
-            for (let i = 0; i < particleCount; i++) {
-                particlesArray.push(new Particle(canvas));
-            }
+            try {
+                const canvas = elements.particles;
+                if (!canvas) {
+                    console.warn('⚠️ Particles canvas not found');
+                    return;
+                }
+                
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    console.warn('⚠️ Canvas context not available');
+                    return;
+                }
+                
+                let animationFrameId;
+                let lastTime = 0;
+                const fps = 30;
+                const interval = 1000 / fps;
+                
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                
+                // Reduced to 30 particles for better mobile performance
+                const particleCount = window.innerWidth < 768 ? 20 : 30;
+                for (let i = 0; i < particleCount; i++) {
+                    particlesArray.push(new Particle(canvas));
+                }
             
             function animateParticles(currentTime) {
                 animationFrameId = requestAnimationFrame(animateParticles);
@@ -2607,17 +2655,24 @@ Market page specific elements
             }
             
             animateParticles(0);
+            console.log('✅ Particles initialized');
+            } catch (error) {
+                console.error('❌ Error initializing particles:', error);
+            }
         }
         
         // ==================== NAVIGATION ====================
         function initNavigation() {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    elements.nav.classList.add('scrolled');
-                } else {
-                    elements.nav.classList.remove('scrolled');
-                }
-            });
+            try {
+                window.addEventListener('scroll', () => {
+                    if (elements.nav) {
+                        if (window.scrollY > 100) {
+                            elements.nav.classList.add('scrolled');
+                        } else {
+                            elements.nav.classList.remove('scrolled');
+                        }
+                    }
+                });
             
             // Smooth scroll
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2636,13 +2691,21 @@ Market page specific elements
                 });
             });
             
-            // Scroll indicator
-            if (elements.scrollIndicator) {
-                elements.scrollIndicator.addEventListener('click', () => {
-                    document.querySelector('.features').scrollIntoView({
-                        behavior: 'smooth'
+                // Scroll indicator
+                if (elements.scrollIndicator) {
+                    elements.scrollIndicator.addEventListener('click', () => {
+                        const featuresSection = document.querySelector('.features');
+                        if (featuresSection) {
+                            featuresSection.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
                     });
-                });
+                }
+                
+                console.log('✅ Navigation initialized');
+            } catch (error) {
+                console.error('❌ Error initializing navigation:', error);
             }
         }
         
@@ -2653,15 +2716,23 @@ Market page specific elements
         const STATS_INCREMENT_INTERVAL = 15 * 60 * 1000; // 15 minutes
         
         function getStoredStats() {
-            const stored = localStorage.getItem('hapsetme_stats');
-            if (stored) {
-                return JSON.parse(stored);
+            try {
+                const stored = localStorage.getItem('hapsetme_stats');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                console.warn('⚠️ Could not read stats from localStorage:', e);
             }
             return null;
         }
         
         function saveStats(stats) {
-            localStorage.setItem('hapsetme_stats', JSON.stringify(stats));
+            try {
+                localStorage.setItem('hapsetme_stats', JSON.stringify(stats));
+            } catch (e) {
+                console.warn('⚠️ Could not save stats to localStorage:', e);
+            }
         }
         
         function incrementStats(stats) {
@@ -2746,7 +2817,8 @@ Market page specific elements
         }
         
         async function initStatsCounters() {
-            const stats = await fetchRealStats();
+            try {
+                const stats = await fetchRealStats();
             
             // Update data-count attributes with real values
             const heroStatValues = document.querySelectorAll('.hero-stat-value');
@@ -2774,104 +2846,166 @@ Market page specific elements
             
             allStatValues.forEach(stat => observer.observe(stat));
             
-            // Set up periodic increment check (every minute)
-            setInterval(async () => {
-                const currentStats = await fetchRealStats();
-                // Update displayed values if they changed
-                heroStatValues[0].setAttribute('data-count', currentStats.total_queries);
-                heroStatValues[1].setAttribute('data-count', currentStats.active_users);
-                statValues[0].setAttribute('data-count', currentStats.total_queries);
-                statValues[1].setAttribute('data-count', currentStats.active_users);
-            }, 60000); // Check every minute
+                // Set up periodic increment check (every minute)
+                setInterval(async () => {
+                    try {
+                        const currentStats = await fetchRealStats();
+                        // Update displayed values if they changed
+                        if (heroStatValues[0]) heroStatValues[0].setAttribute('data-count', currentStats.total_queries);
+                        if (heroStatValues[1]) heroStatValues[1].setAttribute('data-count', currentStats.active_users);
+                        if (statValues[0]) statValues[0].setAttribute('data-count', currentStats.total_queries);
+                        if (statValues[1]) statValues[1].setAttribute('data-count', currentStats.active_users);
+                    } catch (error) {
+                        console.error('❌ Error updating stats:', error);
+                    }
+                }, 60000); // Check every minute
+                
+                console.log('✅ Stats counters initialized');
+            } catch (error) {
+                console.error('❌ Error initializing stats:', error);
+            }
         }
         
         // ==================== SCROLL REVEAL ====================
         function initScrollReveal() {
-            const reveals = document.querySelectorAll('.reveal');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+            try {
+                const reveals = document.querySelectorAll('.reveal');
+                
+                if (reveals.length === 0) {
+                    console.warn('⚠️ No reveal elements found');
+                    return;
+                }
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        }
+                    });
+                }, {
+                    threshold: 0.15,
+                    rootMargin: '0px 0px -50px 0px'
                 });
-            }, {
-                threshold: 0.15,
-                rootMargin: '0px 0px -50px 0px'
-            });
-            
-            reveals.forEach(reveal => observer.observe(reveal));
+                
+                reveals.forEach(reveal => observer.observe(reveal));
+                console.log('✅ Scroll reveal initialized');
+            } catch (error) {
+                console.error('❌ Error initializing scroll reveal:', error);
+            }
         }
         
         // ==================== 3D CARD EFFECTS ====================
         function init3DCards() {
-            // Only enable on desktop for performance
-            if (window.innerWidth < 768) return;
-            
-            const cards = document.querySelectorAll('.feature-card');
-            
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
+            try {
+                // Only enable on desktop for performance
+                if (window.innerWidth < 768) {
+                    console.log('⚠️ 3D cards disabled on mobile');
+                    return;
+                }
+                
+                const cards = document.querySelectorAll('.feature-card');
+                
+                if (cards.length === 0) {
+                    console.warn('⚠️ No feature cards found');
+                    return;
+                }
+                
+                cards.forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = (y - centerY) / 10;
+                        const rotateY = (centerX - x) / 10;
+                        
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.02)`;
+                    });
                     
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    const rotateX = (y - centerY) / 10;
-                    const rotateY = (centerX - x) / 10;
-                    
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.02)`;
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = '';
+                    });
                 });
                 
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = '';
-                });
-            });
+                console.log('✅ 3D cards initialized');
+            } catch (error) {
+                console.error('❌ Error initializing 3D cards:', error);
+            }
         }
         
         // ==================== LOADING SCREEN ====================
         function hideLoading() {
-            setTimeout(() => {
-                if (elements.loading) {
-                    elements.loading.classList.add('hide');
+            try {
+                const loadingEl = document.getElementById('loading');
+                if (loadingEl) {
                     setTimeout(() => {
-                        elements.loading.style.display = 'none';
-                    }, 600);
+                        loadingEl.classList.add('hide');
+                        setTimeout(() => {
+                            loadingEl.style.display = 'none';
+                        }, 600);
+                    }, 500);
+                    console.log('✅ Loading screen hidden');
+                } else {
+                    console.warn('⚠️ Loading element not found');
                 }
-            }, 800);
+            } catch (error) {
+                console.error('❌ Error hiding loading:', error);
+                // Force hide anyway
+                const loadingEl = document.getElementById('loading');
+                if (loadingEl) loadingEl.style.display = 'none';
+            }
         }
         
         // ==================== INITIALIZATION ====================
-        function init() {
+        async function init() {
             console.log('🚀 HAPSETME Market Platform Initializing...');
+            
+            // CRITICAL: Hide loading screen IMMEDIATELY
+            hideLoading();
             
             try {
                 // Apply saved theme immediately
-                applyTheme(currentTheme);
+                try {
+                    applyTheme(currentTheme);
+                } catch (e) {
+                    console.error('❌ Theme error:', e);
+                }
                 
                 // Apply saved language
-                if (elements.langText) {
-                    elements.langText.textContent = currentLang.toUpperCase();
-                }
-                if (currentLang === 'en') {
-                    translatePage('en');
+                try {
+                    if (elements.langText) {
+                        elements.langText.textContent = currentLang.toUpperCase();
+                    }
+                    if (currentLang === 'en') {
+                        translatePage('en');
+                    }
+                } catch (e) {
+                    console.error('❌ Language error:', e);
                 }
                 
-                // Initialize all features
-                initParticles();
-                initNavigation();
-                initStatsCounters();
-                initScrollReveal();
-                init3DCards();
-                initControls();
+                // Initialize all features (each wrapped in try-catch)
+                try { initParticles(); } catch (e) { console.error('❌ Particles error:', e); }
+                try { initNavigation(); } catch (e) { console.error('❌ Navigation error:', e); }
+                try { initScrollReveal(); } catch (e) { console.error('❌ Scroll reveal error:', e); }
+                try { init3DCards(); } catch (e) { console.error('❌ 3D cards error:', e); }
+                try { initControls(); } catch (e) { console.error('❌ Controls error:', e); }
+                
+                // Initialize stats asynchronously (don't block page load)
+                try {
+                    initStatsCounters().catch(err => {
+                        console.error('❌ Stats initialization failed:', err);
+                    });
+                } catch (e) {
+                    console.error('❌ Stats error:', e);
+                }
                 
                 console.log('✅ HAPSETME Market Platform Ready!');
             } catch (error) {
-                console.error('❌ Initialization error:', error);
-            } finally {
-                // Always hide loading screen
+                console.error('❌ Critical initialization error:', error);
+                // Ensure loading screen is hidden even on error
                 hideLoading();
             }
         }
