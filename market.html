@@ -2325,10 +2325,11 @@
             const t = translations[lang];
             
             // Navigation
-            document.querySelector('.nav-link[href="#features"]').textContent = t.features;
-            document.querySelector('.nav-link[href="#how-it-works"]').textContent = t.howItWorks;
-            document.querySelector('.nav-link[href="market.html"]').textContent = t.market;
-            document.querySelector('.nav-link[href*="discord"]').textContent = t.discord;
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks[0].textContent = t.features || 'Anasayfa';
+            navLinks[1].textContent = t.features || 'Özellikler';
+            navLinks[2].textContent = t.howItWorks || 'Nasıl Çalışır';
+            navLinks[3].textContent = t.discord || 'Discord';
             
             // Hero
             document.querySelector('.hero-badge').innerHTML = `
@@ -2437,6 +2438,8 @@
             const newLang = currentLang === 'tr' ? 'en' : 'tr';
             elements.langText.textContent = newLang.toUpperCase();
             translatePage(newLang);
+            localStorage.setItem('language', newLang);
+            currentLang = newLang;
         }
         
         // ==================== PARTICLES SYSTEM ====================
