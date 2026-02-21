@@ -18,49 +18,49 @@
         }
         
         :root {
-            --primary: #4A90E2;
-            --primary-dark: #357ABD;
-            --secondary: #7B68EE;
-            --accent: #00D4FF;
+            --primary: #DC2626;
+            --primary-dark: #991B1B;
+            --secondary: #EF4444;
+            --accent: #F87171;
             --success: #10B981;
             --warning: #F59E0B;
-            --error: #EF4444;
-            --bg-light: #F8FAFC;
+            --error: #DC2626;
+            --bg-light: #FEF2F2;
             --bg-white: #FFFFFF;
-            --bg-dark: #0F172A;
+            --bg-dark: #1A0B0B;
             --text-dark: #1E293B;
             --text-gray: #64748B;
             --text-light: #94A3B8;
-            --border: #E2E8F0;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --gradient-primary: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%);
-            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-accent: linear-gradient(135deg, #00D4FF 0%, #4A90E2 100%);
+            --border: #FEE2E2;
+            --shadow-sm: 0 1px 2px 0 rgba(220, 38, 38, 0.05);
+            --shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(220, 38, 38, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(220, 38, 38, 0.1);
+            --gradient-primary: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+            --gradient-hero: linear-gradient(135deg, #DC2626 0%, #7F1D1D 100%);
+            --gradient-accent: linear-gradient(135deg, #F87171 0%, #DC2626 100%);
         }
         
-        /* ==================== DARK THEME ==================== */
+        /* ==================== DARK RED THEME ==================== */
         [data-theme="dark"] {
-            --primary: #5BA3FF;
-            --primary-dark: #4A90E2;
-            --secondary: #9B8AFF;
-            --accent: #00E5FF;
-            --bg-light: #0F172A;
-            --bg-white: #1E293B;
-            --bg-dark: #0A0F1E;
-            --text-dark: #F1F5F9;
-            --text-gray: #CBD5E1;
-            --text-light: #94A3B8;
-            --border: #334155;
+            --primary: #FCA5A5;
+            --primary-dark: #F87171;
+            --secondary: #EF4444;
+            --accent: #FEE2E2;
+            --bg-light: #1A0B0B;
+            --bg-white: #2D1515;
+            --bg-dark: #0A0404;
+            --text-dark: #FFFFFF;
+            --text-gray: #FEE2E2;
+            --text-light: #FCA5A5;
+            --border: #450A0A;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-            --gradient-primary: linear-gradient(135deg, #5BA3FF 0%, #9B8AFF 100%);
-            --gradient-hero: linear-gradient(135deg, #7B8CFF 0%, #9B6FD4 100%);
-            --gradient-accent: linear-gradient(135deg, #00E5FF 0%, #5BA3FF 100%);
+            --gradient-primary: linear-gradient(135deg, #FCA5A5 0%, #EF4444 100%);
+            --gradient-hero: linear-gradient(135deg, #DC2626 0%, #450A0A 100%);
+            --gradient-accent: linear-gradient(135deg, #FEE2E2 0%, #FCA5A5 100%);
         }
         
         [data-theme="dark"] body {
@@ -69,7 +69,7 @@
         }
         
         [data-theme="dark"] .nav {
-            background: rgba(30, 41, 59, 0.95);
+            background: rgba(45, 21, 21, 0.95);
             border-bottom-color: var(--border);
         }
         
@@ -96,10 +96,11 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-light);
             color: var(--text-dark);
-            line-height: 1.6;
+            line-height: 1.8;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            letter-spacing: 0.01em;
         }
         
         ::selection {
@@ -116,7 +117,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.4;
+            opacity: 0.5;
         }
         
         /* ==================== NAVIGATION ==================== */
@@ -243,12 +244,12 @@
         .btn-primary {
             background: var(--gradient-primary);
             color: white;
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
         }
         
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.6);
         }
         
         .btn-secondary {
@@ -551,11 +552,23 @@
             background: white;
             padding: 50px 45px;
             border-radius: 20px;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            animation: borderPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes borderPulse {
+            0%, 100% {
+                border-color: var(--border);
+                box-shadow: 0 0 0 rgba(220, 38, 38, 0);
+            }
+            50% {
+                border-color: var(--primary);
+                box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
+            }
         }
         
         .feature-card::before {
@@ -578,15 +591,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(74, 144, 226, 0.05), transparent 70%);
+            background: radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.08), transparent 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
         
         .feature-card:hover {
             transform: translateY(-12px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 25px 50px rgba(220, 38, 38, 0.15);
             border-color: var(--primary);
+            animation: none;
         }
         
         .feature-card:hover::before {
@@ -606,15 +620,26 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
             position: relative;
             z-index: 1;
             transition: all 0.4s ease;
+            animation: iconGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconGlow {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+            }
+            50% {
+                box-shadow: 0 15px 40px rgba(220, 38, 38, 0.5);
+            }
         }
         
         .feature-card:hover .feature-icon {
             transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.5);
+            animation: none;
         }
         
         .feature-icon svg {
@@ -736,8 +761,20 @@
             font-size: 36px;
             font-weight: 800;
             color: white;
-            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
             position: relative;
+            animation: stepPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes stepPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 40px rgba(220, 38, 38, 0.5);
+            }
         }
         
         .step-number::after {
@@ -749,7 +786,13 @@
             bottom: -10px;
             border: 2px dashed var(--primary);
             border-radius: 50%;
-            opacity: 0.3;
+            opacity: 0.4;
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         
         .step-title {
@@ -779,9 +822,19 @@
             background: var(--gradient-primary);
             padding: 90px 70px;
             border-radius: 30px;
-            box-shadow: 0 30px 70px rgba(74, 144, 226, 0.35);
+            box-shadow: 0 30px 70px rgba(220, 38, 38, 0.35);
             position: relative;
             overflow: hidden;
+            animation: ctaBorder 3s ease-in-out infinite;
+        }
+        
+        @keyframes ctaBorder {
+            0%, 100% {
+                box-shadow: 0 30px 70px rgba(220, 38, 38, 0.35);
+            }
+            50% {
+                box-shadow: 0 35px 80px rgba(220, 38, 38, 0.5);
+            }
         }
         
         .cta-container::before {
@@ -1881,7 +1934,7 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        const API_BASE = window.location.origin;
+        const API_BASE = 'https://hapsetmediscord.com.tr';
         
         // ==================== STATE MANAGEMENT ====================
         let musicPlaying = false;
@@ -1889,18 +1942,18 @@
         let currentLang = localStorage.getItem('language') || 'tr';
         let currentTheme = localStorage.getItem('theme') || 'light';
         
-        // Music playlist
+        // Music playlist - HTTPS protocol
         const playlist = [
-            'static/hapsetme1.mp3',
-            'static/hapsetme2.mp3',
-            'static/hapsetme3.mp3',
-            'static/hapsetme4.mp3',
-            'static/hapsetme5.mp3',
-            'static/hapsetme6.mp3',
-            'static/hapsetme7.mp3',
-            'static/hapsetme8.mp3',
-            'static/hapsetme9.mp3',
-            'static/hapsetme10.mp3'
+            'https://hapsetmediscord.com.tr/static/hapsetme1.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme2.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme3.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme4.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme5.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme6.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme7.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme8.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme9.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme10.mp3'
         ];
         
         let currentSongIndex = 0;
@@ -2297,7 +2350,7 @@
             }
             
             draw(ctx) {
-                ctx.fillStyle = `rgba(74, 144, 226, ${this.opacity})`;
+                ctx.fillStyle = `rgba(220, 38, 38, ${this.opacity})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -2316,8 +2369,8 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             
-            // Create particles
-            for (let i = 0; i < 25; i++) {
+            // Create particles - enhanced count for better visual effect
+            for (let i = 0; i < 50; i++) {
                 particlesArray.push(new Particle(canvas));
             }
             
@@ -2337,7 +2390,7 @@
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
                         if (distance < 150) {
-                            ctx.strokeStyle = `rgba(74, 144, 226, ${0.15 * (1 - distance / 150)})`;
+                            ctx.strokeStyle = `rgba(220, 38, 38, ${0.15 * (1 - distance / 150)})`;
                             ctx.lineWidth = 1;
                             ctx.beginPath();
                             ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
