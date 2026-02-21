@@ -2306,18 +2306,9 @@
         let currentLang = localStorage.getItem('language') || 'tr';
         let currentTheme = localStorage.getItem('theme') || 'light';
         
-        // Music playlist - HTTPS protocol
+        // Music playlist - Only available songs
         const playlist = [
-            'https://hapsetmediscord.com.tr/static/hapsetme1.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme2.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme3.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme4.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme5.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme6.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme7.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme8.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme9.mp3',
-            'https://hapsetmediscord.com.tr/static/hapsetme10.mp3'
+            '/static/hapsetme2.mp3'
         ];
         
         let currentSongIndex = 0;
@@ -2689,7 +2680,7 @@
             // Tooltips
             elements.themeToggle.title = t.themeToggle;
             elements.langToggle.title = t.langToggle;
-            elements.musicBtn.title = t.musicToggle;
+            if (elements.musicToggle) elements.musicToggle.title = t.musicToggle;
             
             localStorage.setItem('language', lang);
             currentLang = lang;
@@ -2845,11 +2836,13 @@
         }
         
         function nextSong() {
+            if (playlist.length <= 1) return;
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
             loadSong(currentSongIndex);
         }
         
         function previousSong() {
+            if (playlist.length <= 1) return;
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
             loadSong(currentSongIndex);
         }
@@ -2927,13 +2920,26 @@
             
             // Auto-play next song when current ends
             elements.bgMusic.addEventListener('ended', () => {
-                nextSong();
+                if (playlist.length > 1) {
+                    nextSong();
+                } else {
+                    // Loop the same song
+                    elements.bgMusic.currentTime = 0;
+                    elements.bgMusic.play();
+                }
             });
             
             // Handle errors (skip to next song)
-            elements.bgMusic.addEventListener('error', () => {
-                console.log('Song failed to load, skipping...');
-                nextSong();
+            elements.bgMusic.addEventListener('error', (e) => {
+                console.log('Song failed to load:', e);
+                if (playlist.length > 1) {
+                    nextSong();
+                } else {
+                    stopMusic();
+                    if (elements.musicSongName) {
+                        elements.musicSongName.textContent = 'Müzik yüklenemedi';
+                    }
+                }
             });
             
             // Try autoplay after delay
@@ -3405,3 +3411,7 @@
             document.addEventListener('DOMContentLoaded', init);
         } else {
             init();
+        }
+    </script>
+</body>
+</html>
