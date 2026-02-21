@@ -2210,9 +2210,11 @@
         let currentLang = localStorage.getItem('language') || 'tr';
         let currentTheme = localStorage.getItem('theme') || 'light';
         
-        // Music playlist - Only available songs
+        // Music playlist - Available songs
         const playlist = [
-            '/static/hapsetme2.mp3'
+            '/static/hapsetme1.mp3',
+            '/static/hapsetme2.mp3',
+            '/static/hapsetme3.mp3'
         ];
         
         let currentSongIndex = 0;
@@ -3265,26 +3267,32 @@
         function init() {
             console.log('🚀 HAPSETME Platform Initializing...');
             
-            // Apply saved theme immediately
-            applyTheme(currentTheme);
-            
-            // Apply saved language
-            elements.langText.textContent = currentLang.toUpperCase();
-            if (currentLang === 'en') {
-                translatePage('en');
+            try {
+                // Apply saved theme immediately
+                applyTheme(currentTheme);
+                
+                // Apply saved language
+                elements.langText.textContent = currentLang.toUpperCase();
+                if (currentLang === 'en') {
+                    translatePage('en');
+                }
+                
+                // Initialize all features
+                initParticles();
+                initMusic();
+                initNavigation();
+                initStatsCounters();
+                initScrollReveal();
+                init3DCards();
+                initControls();
+                
+                console.log('✅ HAPSETME Platform Ready!');
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+            } finally {
+                // Always hide loading screen
+                hideLoading();
             }
-            
-            // Initialize all features
-            initParticles();
-            initMusic();
-            initNavigation();
-            initStatsCounters();
-            initScrollReveal();
-            init3DCards();
-            initControls();
-            hideLoading();
-            
-            console.log('✅ HAPSETME Platform Ready!');
         }
         
         function initControls() {
