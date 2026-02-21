@@ -2728,7 +2728,15 @@
             currentSongIndex = index;
             const song = playlist[index];
             
+            console.log('Loading song:', song, 'Index:', index);
+            
+            // Stop current playback
+            elements.bgMusic.pause();
+            elements.bgMusic.currentTime = 0;
+            
+            // Load new song
             elements.bgMusic.src = song;
+            elements.bgMusic.load();
             
             // Update song info
             const songName = song.split('/').pop().replace('.mp3', '');
@@ -2744,6 +2752,10 @@
             if (musicPlaying) {
                 elements.bgMusic.play().catch(err => {
                     console.log('Playback error:', err);
+                    musicPlaying = false;
+                    elements.musicPlayIcon.style.display = 'block';
+                    elements.musicPauseIcon.style.display = 'none';
+                    elements.musicPlayBtn.classList.remove('playing');
                 });
             }
         }
@@ -2779,15 +2791,25 @@
                 elements.musicPlayIcon.style.display = 'block';
                 elements.musicPauseIcon.style.display = 'none';
                 elements.musicPlayBtn.classList.remove('playing');
+                musicPlaying = false;
             } else {
-                elements.bgMusic.play().catch(err => {
-                    console.log('Music autoplay blocked:', err);
-                });
-                elements.musicPlayIcon.style.display = 'none';
-                elements.musicPauseIcon.style.display = 'block';
-                elements.musicPlayBtn.classList.add('playing');
+                const playPromise = elements.bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        elements.musicPlayIcon.style.display = 'none';
+                        elements.musicPauseIcon.style.display = 'block';
+                        elements.musicPlayBtn.classList.add('playing');
+                        musicPlaying = true;
+                        console.log('Music playing:', playlist[currentSongIndex]);
+                    }).catch(err => {
+                        console.log('Music playback error:', err);
+                        elements.musicPlayIcon.style.display = 'block';
+                        elements.musicPauseIcon.style.display = 'none';
+                        elements.musicPlayBtn.classList.remove('playing');
+                        musicPlaying = false;
+                    });
+                }
             }
-            musicPlaying = !musicPlaying;
         }
         
         function initMusic() {
@@ -2806,12 +2828,14 @@
             elements.musicStopBtn.addEventListener('click', stopMusic);
             
             // Next button
-            elements.musicNextBtn.addEventListener('click', () => {
+            elements.musicNextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 nextSong();
             });
             
             // Previous button
-            elements.musicPrevBtn.addEventListener('click', () => {
+            elements.musicPrevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 previousSong();
             });
             
@@ -2820,7 +2844,9 @@
                 const rect = elements.musicProgressBar.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const percentage = x / rect.width;
-                elements.bgMusic.currentTime = percentage * elements.bgMusic.duration;
+                if (elements.bgMusic.duration) {
+                    elements.bgMusic.currentTime = percentage * elements.bgMusic.duration;
+                }
             });
             
             // Update progress continuously
@@ -2838,18 +2864,23 @@
                 } else {
                     // Loop the same song
                     elements.bgMusic.currentTime = 0;
-                    elements.bgMusic.play();
+                    elements.bgMusic.play().catch(err => console.log('Loop play error:', err));
                 }
             });
             
             // Handle errors - don't auto-skip to prevent infinite loop
             elements.bgMusic.addEventListener('error', (e) => {
-                console.log('Song failed to load:', e);
+                console.log('Song failed to load:', playlist[currentSongIndex], e);
                 stopMusic();
                 // Show error message
                 if (elements.musicSongName) {
                     elements.musicSongName.textContent = 'Müzik yüklenemedi';
                 }
+            });
+            
+            // Handle successful load
+            elements.bgMusic.addEventListener('canplay', () => {
+                console.log('Song loaded successfully:', playlist[currentSongIndex]);
             });
         }
         
