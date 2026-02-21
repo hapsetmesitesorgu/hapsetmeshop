@@ -2415,8 +2415,6 @@
                 if (scrollText) scrollText.textContent = lang === 'tr' ? 'Keşfet' : 'Explore';
                 
                 // Products Section
-Market page specific elements
-                // Products Section
                 const sectionBadge = document.querySelector('.section-badge');
                 const sectionTitle = document.querySelector('.section-title');
                 const sectionSubtitle = document.querySelector('.section-subtitle');
@@ -2425,15 +2423,166 @@ Market page specific elements
                 if (sectionTitle) sectionTitle.textContent = lang === 'tr' ? 'Premium Ürünlerimiz' : 'Our Premium Products';
                 if (sectionSubtitle) sectionSubtitle.textContent = lang === 'tr' ? 'İhtiyacınıza uygun paketi seçin ve hemen kullanmaya başlayın' : 'Choose the package that suits your needs and start using it right away';
                 
-                // Product buttons
-                const productButtons = document.querySelectorAll('.product-button');
-                productButtons.forEach(btn => {
-                    const originalText = btn.textContent.trim();
-                    if (originalText === 'Satın Al' || originalText === 'Buy Now') {
-                        btn.textContent = lang === 'tr' ? 'Satın Al' : 'Buy Now';
-                    } else if (originalText === 'İletişime Geç' || originalText === 'Contact Us') {
-                        btn.textContent = lang === 'tr' ? 'İletişime Geç' : 'Contact Us';
+                // Product Cards Translation
+                const productData = lang === 'tr' ? [
+                    {
+                        title: 'Premium Key (1 Aylık)',
+                        desc: '1 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı ve öncelikli destek.',
+                        price: '₺299',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Premium Key (3 Aylık)',
+                        desc: '3 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı, öncelikli destek ve %15 indirim.',
+                        price: '₺749',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Premium Key (6 Aylık)',
+                        desc: '6 ay süreyle tüm özelliklere sınırsız erişim. Günlük 200 sorgulama hakkı ve premium destek.',
+                        price: '₺1.499',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Premium Key (Yıllık)',
+                        desc: '1 yıl süreyle tüm özelliklere sınırsız erişim. Sınırsız sorgulama ve özel hesap yöneticisi.',
+                        price: '₺2.499',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'VIP Erişim',
+                        desc: 'Ömür boyu VIP erişim. Tüm veritabanlarına sınırsız erişim, API kullanımı ve özel özellikler.',
+                        price: '₺4.999',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Özel Veritabanı Erişimi',
+                        desc: 'Özel ve güncel veritabanlarına 3 ay erişim. Standart paketlerde bulunmayan veriler.',
+                        price: '₺1.999',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'API Erişimi',
+                        desc: 'Kendi uygulamanızda kullanabileceğiniz API erişimi. Aylık 10.000 istek limiti.',
+                        price: '₺3.499',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Toplu Sorgulama Paketi',
+                        desc: '1000 adet toplu sorgulama kredisi. Excel/CSV dosyası ile toplu sorgulama yapın.',
+                        price: '₺599',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Öncelikli Destek',
+                        desc: '7/24 öncelikli destek hizmeti. Tüm sorularınıza 1 saat içinde yanıt garantisi.',
+                        price: '₺199/ay',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Özel Bot Kurulumu',
+                        desc: 'Kendi Discord sunucunuz için özel bot kurulumu ve yapılandırma hizmeti.',
+                        price: '₺2.999',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Eğitim Paketi',
+                        desc: 'Platform kullanımı ve veri analizi konusunda 2 saatlik birebir eğitim.',
+                        price: '₺499',
+                        button: 'Satın Al'
+                    },
+                    {
+                        title: 'Kurumsal Paket',
+                        desc: 'Kurumlar için özel çözümler. Sınırsız kullanıcı, API, özel özellikler ve SLA garantisi.',
+                        price: 'Teklif Alın',
+                        button: 'İletişime Geç'
                     }
+                ] : [
+                    {
+                        title: 'Premium Key (1 Month)',
+                        desc: 'Unlimited access to all features for 1 month. 50 daily queries and priority support.',
+                        price: '₺299',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Premium Key (3 Months)',
+                        desc: 'Unlimited access to all features for 3 months. 50 daily queries, priority support and 15% discount.',
+                        price: '₺749',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Premium Key (6 Months)',
+                        desc: 'Unlimited access to all features for 6 months. 200 daily queries and premium support.',
+                        price: '₺1.499',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Premium Key (Annual)',
+                        desc: 'Unlimited access to all features for 1 year. Unlimited queries and dedicated account manager.',
+                        price: '₺2.499',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'VIP Access',
+                        desc: 'Lifetime VIP access. Unlimited access to all databases, API usage and exclusive features.',
+                        price: '₺4.999',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Custom Database Access',
+                        desc: '3-month access to exclusive and up-to-date databases. Data not available in standard packages.',
+                        price: '₺1.999',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'API Access',
+                        desc: 'API access for use in your own application. Monthly limit of 10,000 requests.',
+                        price: '₺3.499',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Bulk Query Package',
+                        desc: '1000 bulk query credits. Perform bulk queries with Excel/CSV files.',
+                        price: '₺599',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Priority Support',
+                        desc: '24/7 priority support service. Guaranteed response to all your questions within 1 hour.',
+                        price: '₺199/mo',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Custom Bot Setup',
+                        desc: 'Custom bot installation and configuration service for your own Discord server.',
+                        price: '₺2.999',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Training Package',
+                        desc: '2-hour one-on-one training on platform usage and data analysis.',
+                        price: '₺499',
+                        button: 'Buy Now'
+                    },
+                    {
+                        title: 'Enterprise Package',
+                        desc: 'Custom solutions for enterprises. Unlimited users, API, custom features and SLA guarantee.',
+                        price: 'Get Quote',
+                        button: 'Contact Us'
+                    }
+                ];
+                
+                // Apply translations to product cards
+                const featureTitles = document.querySelectorAll('.feature-title');
+                const featureDescs = document.querySelectorAll('.feature-desc');
+                const productPrices = document.querySelectorAll('.product-price');
+                const productButtons = document.querySelectorAll('.product-button');
+                
+                productData.forEach((product, index) => {
+                    if (featureTitles[index]) featureTitles[index].textContent = product.title;
+                    if (featureDescs[index]) featureDescs[index].textContent = product.desc;
+                    if (productPrices[index]) productPrices[index].textContent = product.price;
+                    if (productButtons[index]) productButtons[index].textContent = product.button;
                 });
                 
                 // Stats Section
@@ -2470,10 +2619,19 @@ Market page specific elements
                 
                 const ctaButtons = document.querySelectorAll('.cta-buttons .btn');
                 if (ctaButtons[0]) {
-                    const btnText = ctaButtons[0].childNodes[2];
-                    if (btnText) btnText.textContent = lang === 'tr' ? ' Discord\'a Katıl' : ' Join Discord';
+                    // Find the text node after the SVG
+                    const textNodes = Array.from(ctaButtons[0].childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+                    if (textNodes.length > 0) {
+                        textNodes[0].textContent = lang === 'tr' ? ' Discord\'a Katıl' : ' Join Discord';
+                    }
                 }
-                if (ctaButtons[1]) ctaButtons[1].textContent = lang === 'tr' ? 'Ana Sayfa' : 'Home';
+                if (ctaButtons[1]) {
+                    // Find the text node after the SVG
+                    const textNodes = Array.from(ctaButtons[1].childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+                    if (textNodes.length > 0) {
+                        textNodes[0].textContent = lang === 'tr' ? ' Ana Sayfa' : ' Home';
+                    }
+                }
                 
                 // Footer
                 const footerDesc = document.querySelector('.footer-desc');
