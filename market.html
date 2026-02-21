@@ -588,7 +588,7 @@
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 40px 35px;
+            padding: 50px 45px;
             border-radius: 24px;
             border: 2px solid var(--border);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -599,96 +599,6 @@
             box-shadow: 
                 0 8px 32px rgba(220, 38, 38, 0.08),
                 inset 0 1px 0 rgba(255, 255, 255, 0.5);
-            aspect-ratio: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: stretch;
-        }
-        
-        .product-embed {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(220, 38, 38, 0.15);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 
-                0 4px 16px rgba(220, 38, 38, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 15;
-            pointer-events: auto;
-        }
-        
-        [data-theme="dark"] .product-embed {
-            background: rgba(26, 26, 26, 0.5);
-            border-color: rgba(239, 68, 68, 0.2);
-            box-shadow: 
-                0 4px 16px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-        
-        .feature-card:hover .product-embed {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(220, 38, 38, 0.3);
-            box-shadow: 
-                0 8px 24px rgba(220, 38, 38, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-        }
-        
-        [data-theme="dark"] .feature-card:hover .product-embed {
-            background: rgba(26, 26, 26, 0.7);
-            border-color: rgba(239, 68, 68, 0.4);
-        }
-        
-        .product-price {
-            padding: 12px 20px;
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 12px;
-            font-size: 22px;
-            font-weight: 800;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover .product-price {
-            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
-            transform: scale(1.02);
-        }
-        
-        .product-button {
-            width: 100%;
-            padding: 12px 24px;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-            font-family: 'Inter', sans-serif;
-            position: relative;
-            z-index: 20;
-            pointer-events: auto;
-        }
-        
-        .product-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
-        }
-        
-        .product-button:active {
-            transform: translateY(0);
         }
         
         [data-theme="dark"] .feature-card {
@@ -711,7 +621,6 @@
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.5s ease;
-            pointer-events: none;
         }
         
         .feature-card::after {
@@ -724,7 +633,6 @@
             background: radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.12), transparent 70%);
             opacity: 0;
             transition: opacity 0.5s ease;
-            pointer-events: none;
         }
         
         .feature-card:hover {
@@ -752,20 +660,19 @@
         }
         
         .feature-icon {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: var(--gradient-primary);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
             position: relative;
             z-index: 1;
             transition: all 0.4s ease;
             animation: iconGlow 2s ease-in-out infinite;
-            flex-shrink: 0;
         }
         
         @keyframes iconGlow {
@@ -784,31 +691,27 @@
         }
         
         .feature-icon svg {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             fill: white;
         }
         
         .feature-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 12px;
+            margin-bottom: 18px;
             position: relative;
             z-index: 1;
-            line-height: 1.3;
-            flex-shrink: 0;
         }
         
         .feature-desc {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-gray);
-            line-height: 1.6;
+            line-height: 1.8;
             position: relative;
             z-index: 1;
-            flex-grow: 1;
-            margin-bottom: 15px;
         }
         
         /* ==================== STATS SECTION ==================== */
@@ -1367,6 +1270,276 @@
             display: block;
         }
         
+        /* ==================== MUSIC PLAYER ==================== */
+        .music-player {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .music-player-main {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(220, 38, 38, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--border);
+            min-width: 340px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        
+        [data-theme="dark"] .music-player-main {
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(239, 68, 68, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+        }
+        
+        .music-player-main:hover {
+            box-shadow: 
+                0 20px 60px rgba(220, 38, 38, 0.25),
+                0 0 0 1px rgba(220, 38, 38, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        [data-theme="dark"] .music-player-main:hover {
+            box-shadow: 
+                0 20px 60px rgba(239, 68, 68, 0.4),
+                0 0 0 1px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .music-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .music-play-btn {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        }
+        
+        .music-play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.5);
+        }
+        
+        .music-play-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+        
+        .music-play-btn.playing {
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes musicPulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(220, 38, 38, 0.7);
+            }
+        }
+        
+        .music-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .music-song-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .music-artist {
+            font-size: 12px;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+        
+        .music-progress-container {
+            margin-bottom: 16px;
+        }
+        
+        .music-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .music-progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+        
+        .music-progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+        }
+        
+        .music-time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-gray);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .music-control-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        [data-theme="dark"] .music-control-btn {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .music-control-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .music-control-btn:hover svg {
+            fill: white;
+        }
+        
+        .music-control-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-gray);
+            transition: fill 0.3s ease;
+        }
+        
+        .music-control-btn.stop-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .music-toggle-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 50%;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border);
+            will-change: transform;
+        }
+        
+        [data-theme="dark"] .music-toggle-btn {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+        }
+        
+        .music-toggle-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 
+                0 12px 35px rgba(220, 38, 38, 0.25),
+                0 0 0 1px rgba(220, 38, 38, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border-color: var(--primary);
+        }
+        
+        [data-theme="dark"] .music-toggle-btn:hover {
+            box-shadow: 
+                0 12px 35px rgba(239, 68, 68, 0.4),
+                0 0 0 1px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .music-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--primary);
+        }
+        
+        .music-player-main.collapsed {
+            display: none;
+        }
+        
         /* ==================== THEME & LANGUAGE TOGGLES ==================== */
         .controls-container {
             position: fixed;
@@ -1465,7 +1638,15 @@
                 height: 22px;
             }
             
-
+            .music-player {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .music-player-main {
+                min-width: 280px;
+                padding: 15px;
+            }
         }
         
         /* ==================== LOADING ==================== */
@@ -1594,11 +1775,6 @@
                 gap: 25px;
             }
             
-            .feature-card {
-                aspect-ratio: auto;
-                min-height: 420px;
-            }
-            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 40px;
@@ -1622,7 +1798,12 @@
                 padding: 35px 30px;
             }
             
-
+            .music-btn {
+                bottom: 25px;
+                right: 25px;
+                width: 55px;
+                height: 55px;
+            }
         }
         
         /* ==================== UTILITIES ==================== */
@@ -1642,25 +1823,8 @@
     <!-- Apply theme before page renders to prevent flash -->
     <script>
         (function() {
-            try {
-                const savedTheme = localStorage.getItem('theme') || 'light';
-                document.documentElement.setAttribute('data-theme', savedTheme);
-            } catch (e) {
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-            
-            // FAILSAFE: Force hide loading screen after 3 seconds no matter what
-            setTimeout(function() {
-                const loading = document.getElementById('loading');
-                if (loading && loading.style.display !== 'none') {
-                    console.warn('⚠️ FAILSAFE: Force hiding loading screen');
-                    loading.style.opacity = '0';
-                    loading.style.transition = 'opacity 0.3s';
-                    setTimeout(function() {
-                        loading.style.display = 'none';
-                    }, 300);
-                }
-            }, 3000);
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
         })();
     </script>
     
@@ -1681,11 +1845,11 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-container">
-            <a href="http://hapsetmediscord.com.tr/" class="logo" style="text-decoration: none;">HAPSETME Market</a>
+            <div class="logo">HAPSETME Market</div>
             <div class="nav-links">
-                <a href="http://hapsetmediscord.com.tr/" class="nav-link">Anasayfa</a>
-                <a href="http://hapsetmediscord.com.tr/#features" class="nav-link">Özellikler</a>
-                <a href="http://hapsetmediscord.com.tr/#how-it-works" class="nav-link">Nasıl Çalışır</a>
+                <a href="#features" class="nav-link">Özellikler</a>
+                <a href="#how-it-works" class="nav-link">Nasıl Çalışır</a>
+                <a href="market.html" target="_blank" class="nav-link">Market</a>
                 <a href="https://discord.gg/hapsetme" target="_blank" class="nav-link">Discord</a>
             </div>
             <div class="nav-buttons">
@@ -1745,10 +1909,8 @@
                     <p class="feature-desc">
                         1 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı ve öncelikli destek.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺299</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺299</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 2 -->
@@ -1760,12 +1922,10 @@
                     </div>
                     <h3 class="feature-title">Premium Key (3 Aylık)</h3>
                     <p class="feature-desc">
-                        3 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı, öncelikli destek ve %15 indirim.
+                        3 ay süreyle tüm özelliklere sınırsız erişim. Günlük 100 sorgulama hakkı ve VIP destek.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺749</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺799</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 3 -->
@@ -1779,10 +1939,8 @@
                     <p class="feature-desc">
                         6 ay süreyle tüm özelliklere sınırsız erişim. Günlük 200 sorgulama hakkı ve premium destek.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺1.499</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺1.499</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 4 -->
@@ -1796,10 +1954,8 @@
                     <p class="feature-desc">
                         1 yıl süreyle tüm özelliklere sınırsız erişim. Sınırsız sorgulama ve özel hesap yöneticisi.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺2.499</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺2.499</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 5 -->
@@ -1813,10 +1969,8 @@
                     <p class="feature-desc">
                         Ömür boyu VIP erişim. Tüm veritabanlarına sınırsız erişim, API kullanımı ve özel özellikler.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺4.999</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺4.999</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 6 -->
@@ -1830,10 +1984,8 @@
                     <p class="feature-desc">
                         Özel ve güncel veritabanlarına 3 ay erişim. Standart paketlerde bulunmayan veriler.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺1.999</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺1.999</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 7 -->
@@ -1847,10 +1999,8 @@
                     <p class="feature-desc">
                         Kendi uygulamanızda kullanabileceğiniz API erişimi. Aylık 10.000 istek limiti.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺3.499</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺3.499</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 8 -->
@@ -1864,10 +2014,8 @@
                     <p class="feature-desc">
                         1000 adet toplu sorgulama kredisi. Excel/CSV dosyası ile toplu sorgulama yapın.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺599</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺599</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 9 -->
@@ -1881,10 +2029,8 @@
                     <p class="feature-desc">
                         7/24 öncelikli destek hizmeti. Tüm sorularınıza 1 saat içinde yanıt garantisi.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺199/ay</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺199/ay</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 10 -->
@@ -1898,10 +2044,8 @@
                     <p class="feature-desc">
                         Kendi Discord sunucunuz için özel bot kurulumu ve yapılandırma hizmeti.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺2.999</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺2.999</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 11 -->
@@ -1915,10 +2059,8 @@
                     <p class="feature-desc">
                         Platform kullanımı ve veri analizi konusunda 2 saatlik birebir eğitim.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">₺499</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">Satın Al</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">₺499</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Satın Al</button>
                 </div>
 
                 <!-- Ürün 12 -->
@@ -1932,10 +2074,8 @@
                     <p class="feature-desc">
                         Kurumlar için özel çözümler. Sınırsız kullanıcı, API, özel özellikler ve SLA garantisi.
                     </p>
-                    <div class="product-embed">
-                        <div class="product-price">Teklif Alın</div>
-                        <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="product-button">İletişime Geç</button>
-                    </div>
+                    <div style="margin-top: 20px; padding: 12px 24px; background: var(--gradient-primary); color: white; border-radius: 12px; font-size: 24px; font-weight: 800; text-align: center;">Teklif Alın</div>
+                    <button onclick="window.open('https://discord.gg/hapsetme', '_blank')" class="btn btn-primary" style="width: 100%; margin-top: 20px;">İletişime Geç</button>
                 </div>
             </div>
         </div>
@@ -2013,11 +2153,11 @@
                     </svg>
                     Discord'a Katıl
                 </a>
-                <a href="http://hapsetmediscord.com.tr/" class="btn btn-outline btn-lg">
+                <a href="#features" class="btn btn-outline btn-lg">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
                     </svg>
-                    Ana Sayfa
+                    Discord'a Katıl
                 </a>
             </div>
         </div>
@@ -2093,24 +2233,90 @@
         </div>
     </div>
 
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-toggle-btn" id="musicToggle" title="Müzik Çalar">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+        </div>
+        
+        <div class="music-player-main" id="musicPlayerMain">
+            <div class="music-header">
+                <button class="music-play-btn" id="musicPlayBtn">
+                    <svg id="musicPlayIcon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="musicPauseIcon" viewBox="0 0 24 24" style="display:none;">
+                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                    </svg>
+                </button>
+                
+                <div class="music-info">
+                    <div class="music-song-name" id="musicSongName">Şarkı Yükleniyor...</div>
+                    <div class="music-artist">HAPSETME</div>
+                </div>
+            </div>
+            
+            <div class="music-progress-container">
+                <div class="music-progress-bar" id="musicProgressBar">
+                    <div class="music-progress-fill" id="musicProgressFill"></div>
+                </div>
+                <div class="music-time">
+                    <span id="musicCurrentTime">0:00</span>
+                    <span id="musicDuration">0:00</span>
+                </div>
+            </div>
+            
+            <div class="music-controls">
+                <button class="music-control-btn" id="musicPrevBtn" title="Önceki">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+                
+                <button class="music-control-btn stop-btn" id="musicStopBtn" title="Durdur">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 6h12v12H6z"/>
+                    </svg>
+                </button>
+                
+                <button class="music-control-btn" id="musicNextBtn" title="Sonraki">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
 
 
     <script>
         // ==================== CONFIGURATION ====================
-        const API_BASE = 'http://hapsetmediscord.com.tr';
+        const API_BASE = 'https://hapsetmediscord.com.tr';
         
         // ==================== STATE MANAGEMENT ====================
+        let musicPlaying = false;
         let particlesArray = [];
-        let currentLang = 'tr';
-        let currentTheme = 'light';
+        let currentLang = localStorage.getItem('language') || 'tr';
+        let currentTheme = localStorage.getItem('theme') || 'light';
         
-        // Safely get from localStorage
-        try {
-            currentLang = localStorage.getItem('language') || 'tr';
-            currentTheme = localStorage.getItem('theme') || 'light';
-        } catch (e) {
-            console.warn('⚠️ localStorage not available:', e);
-        }
+        // Music playlist - HTTPS protocol
+        const playlist = [
+            'https://hapsetmediscord.com.tr/static/hapsetme1.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme2.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme3.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme4.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme5.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme6.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme7.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme8.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme9.mp3',
+            'https://hapsetmediscord.com.tr/static/hapsetme10.mp3'
+        ];
+        
+        let currentSongIndex = 0;
         
         // ==================== i18n TRANSLATIONS ====================
         const translations = {
@@ -2328,251 +2534,99 @@
         const elements = {
             loading: document.getElementById('loading'),
             nav: document.getElementById('nav'),
+            bgMusic: document.getElementById('bgMusic'),
             particles: document.getElementById('particles'),
             scrollIndicator: document.getElementById('scrollIndicator'),
             themeToggle: document.getElementById('themeToggle'),
             sunIcon: document.getElementById('sunIcon'),
             moonIcon: document.getElementById('moonIcon'),
             langToggle: document.getElementById('langToggle'),
-            langText: document.getElementById('langText')
+            langText: document.getElementById('langText'),
+            musicToggle: document.getElementById('musicToggle'),
+            musicPlayerMain: document.getElementById('musicPlayerMain'),
+            musicPlayBtn: document.getElementById('musicPlayBtn'),
+            musicPlayIcon: document.getElementById('musicPlayIcon'),
+            musicPauseIcon: document.getElementById('musicPauseIcon'),
+            musicPrevBtn: document.getElementById('musicPrevBtn'),
+            musicStopBtn: document.getElementById('musicStopBtn'),
+            musicNextBtn: document.getElementById('musicNextBtn'),
+            musicSongName: document.getElementById('musicSongName'),
+            musicProgressBar: document.getElementById('musicProgressBar'),
+            musicProgressFill: document.getElementById('musicProgressFill'),
+            musicCurrentTime: document.getElementById('musicCurrentTime'),
+            musicDuration: document.getElementById('musicDuration')
         };
         
         // ==================== THEME MANAGEMENT ====================
         function applyTheme(theme) {
-            try {
-                document.documentElement.setAttribute('data-theme', theme);
-                try {
-                    localStorage.setItem('theme', theme);
-                } catch (e) {
-                    console.warn('localStorage not available:', e);
-                }
-                currentTheme = theme;
-                
-                if (elements.sunIcon && elements.moonIcon) {
-                    if (theme === 'dark') {
-                        elements.sunIcon.style.display = 'none';
-                        elements.moonIcon.style.display = 'block';
-                    } else {
-                        elements.sunIcon.style.display = 'block';
-                        elements.moonIcon.style.display = 'none';
-                    }
-                }
-                console.log('✅ Theme applied:', theme);
-            } catch (error) {
-                console.error('❌ Error in applyTheme:', error);
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+            
+            if (theme === 'dark') {
+                elements.sunIcon.style.display = 'none';
+                elements.moonIcon.style.display = 'block';
+            } else {
+                elements.sunIcon.style.display = 'block';
+                elements.moonIcon.style.display = 'none';
             }
         }
         
         function toggleTheme() {
-            try {
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                console.log('Toggling theme from', currentTheme, 'to', newTheme);
-                applyTheme(newTheme);
-            } catch (error) {
-                console.error('Error in toggleTheme:', error);
-            }
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(newTheme);
         }
         
         // ==================== LANGUAGE MANAGEMENT ====================
         function translatePage(lang) {
             try {
-                const t = translations[lang];
-                if (!t) {
-                    console.error('Translation not found for language:', lang);
-                    return;
-                }
-                
-                // Navigation
-                const navLinks = document.querySelectorAll('.nav-link');
-                if (navLinks[0]) navLinks[0].textContent = lang === 'tr' ? 'Anasayfa' : 'Home';
-                if (navLinks[1]) navLinks[1].textContent = lang === 'tr' ? 'Özellikler' : 'Features';
-                if (navLinks[2]) navLinks[2].textContent = lang === 'tr' ? 'Nasıl Çalışır' : 'How It Works';
-                if (navLinks[3]) navLinks[3].textContent = 'Discord';
+                // Product translations data
+                const productData = lang === 'tr' ? [
+                    { title: 'Premium Key (1 Aylık)', desc: '1 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı ve öncelikli destek.', price: '₺299', button: 'Satın Al' },
+                    { title: 'Premium Key (3 Aylık)', desc: '3 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı, öncelikli destek ve %15 indirim.', price: '₺749', button: 'Satın Al' },
+                    { title: 'Premium Key (6 Aylık)', desc: '6 ay süreyle tüm özelliklere sınırsız erişim. Günlük 200 sorgulama hakkı ve premium destek.', price: '₺1.499', button: 'Satın Al' },
+                    { title: 'Premium Key (Yıllık)', desc: '1 yıl süreyle tüm özelliklere sınırsız erişim. Sınırsız sorgulama ve özel hesap yöneticisi.', price: '₺2.499', button: 'Satın Al' },
+                    { title: 'VIP Erişim', desc: 'Ömür boyu VIP erişim. Tüm veritabanlarına sınırsız erişim, API kullanımı ve özel özellikler.', price: '₺4.999', button: 'Satın Al' },
+                    { title: 'Özel Veritabanı Erişimi', desc: 'Özel ve güncel veritabanlarına 3 ay erişim. Standart paketlerde bulunmayan veriler.', price: '₺1.999', button: 'Satın Al' },
+                    { title: 'API Erişimi', desc: 'Kendi uygulamanızda kullanabileceğiniz API erişimi. Aylık 10.000 istek limiti.', price: '₺3.499', button: 'Satın Al' },
+                    { title: 'Toplu Sorgulama Paketi', desc: '1000 adet toplu sorgulama kredisi. Excel/CSV dosyası ile toplu sorgulama yapın.', price: '₺599', button: 'Satın Al' },
+                    { title: 'Öncelikli Destek', desc: '7/24 öncelikli destek hizmeti. Tüm sorularınıza 1 saat içinde yanıt garantisi.', price: '₺199/ay', button: 'Satın Al' },
+                    { title: 'Özel Bot Kurulumu', desc: 'Kendi Discord sunucunuz için özel bot kurulumu ve yapılandırma hizmeti.', price: '₺2.999', button: 'Satın Al' },
+                    { title: 'Eğitim Paketi', desc: 'Platform kullanımı ve veri analizi konusunda 2 saatlik birebir eğitim.', price: '₺499', button: 'Satın Al' },
+                    { title: 'Kurumsal Paket', desc: 'Kurumlar için özel çözümler. Sınırsız kullanıcı, API, özel özellikler ve SLA garantisi.', price: 'Teklif Alın', button: 'İletişime Geç' }
+                ] : [
+                    { title: 'Premium Key (1 Month)', desc: 'Unlimited access to all features for 1 month. 50 daily queries and priority support.', price: '₺299', button: 'Buy Now' },
+                    { title: 'Premium Key (3 Months)', desc: 'Unlimited access to all features for 3 months. 50 daily queries, priority support and 15% discount.', price: '₺749', button: 'Buy Now' },
+                    { title: 'Premium Key (6 Months)', desc: 'Unlimited access to all features for 6 months. 200 daily queries and premium support.', price: '₺1.499', button: 'Buy Now' },
+                    { title: 'Premium Key (Annual)', desc: 'Unlimited access to all features for 1 year. Unlimited queries and dedicated account manager.', price: '₺2.499', button: 'Buy Now' },
+                    { title: 'VIP Access', desc: 'Lifetime VIP access. Unlimited access to all databases, API usage and exclusive features.', price: '₺4.999', button: 'Buy Now' },
+                    { title: 'Custom Database Access', desc: '3-month access to exclusive and up-to-date databases. Data not available in standard packages.', price: '₺1.999', button: 'Buy Now' },
+                    { title: 'API Access', desc: 'API access for use in your own application. Monthly limit of 10,000 requests.', price: '₺3.499', button: 'Buy Now' },
+                    { title: 'Bulk Query Package', desc: '1000 bulk query credits. Perform bulk queries with Excel/CSV files.', price: '₺599', button: 'Buy Now' },
+                    { title: 'Priority Support', desc: '24/7 priority support service. Guaranteed response to all your questions within 1 hour.', price: '₺199/mo', button: 'Buy Now' },
+                    { title: 'Custom Bot Setup', desc: 'Custom bot installation and configuration service for your own Discord server.', price: '₺2.999', button: 'Buy Now' },
+                    { title: 'Training Package', desc: '2-hour one-on-one training on platform usage and data analysis.', price: '₺499', button: 'Buy Now' },
+                    { title: 'Enterprise Package', desc: 'Custom solutions for enterprises. Unlimited users, API, custom features and SLA guarantee.', price: 'Get Quote', button: 'Contact Us' }
+                ];
                 
                 // Hero Section
-                const heroBadge = document.querySelector('.hero-badge');
-                if (heroBadge) {
-                    const badgeText = heroBadge.childNodes[2];
-                    if (badgeText) badgeText.textContent = lang === 'tr' ? ' Premium Market' : ' Premium Market';
-                }
-                
                 const heroTitle = document.querySelector('.hero-title');
                 if (heroTitle) heroTitle.textContent = lang === 'tr' ? 'Premium Ürünler' : 'Premium Products';
                 
                 const heroSubtitle = document.querySelector('.hero-subtitle');
                 if (heroSubtitle) heroSubtitle.textContent = lang === 'tr' ? 'Premium ürünlerimizle platformun tüm özelliklerine erişin. Discord üzerinden güvenli ödeme ve anında teslimat.' : 'Access all platform features with our premium products. Secure payment and instant delivery via Discord.';
                 
-                // Hero CTA buttons
-                const heroCTAButtons = document.querySelectorAll('.hero-cta .btn');
-                if (heroCTAButtons[0]) {
-                    const btnText = heroCTAButtons[0].childNodes[2];
-                    if (btnText) btnText.textContent = lang === 'tr' ? ' Discord\'a Katıl' : ' Join Discord';
-                }
-                if (heroCTAButtons[1]) heroCTAButtons[1].textContent = lang === 'tr' ? 'Ürünleri İncele' : 'View Products';
-                
-                // Scroll indicator
-                const scrollText = document.querySelector('.scroll-indicator span');
-                if (scrollText) scrollText.textContent = lang === 'tr' ? 'Keşfet' : 'Explore';
-                
                 // Products Section
                 const sectionBadge = document.querySelector('.section-badge');
-                const sectionTitle = document.querySelector('.section-title');
-                const sectionSubtitle = document.querySelector('.section-subtitle');
-                
                 if (sectionBadge) sectionBadge.textContent = lang === 'tr' ? 'ÜRÜNLER' : 'PRODUCTS';
+                
+                const sectionTitle = document.querySelector('.section-title');
                 if (sectionTitle) sectionTitle.textContent = lang === 'tr' ? 'Premium Ürünlerimiz' : 'Our Premium Products';
+                
+                const sectionSubtitle = document.querySelector('.section-subtitle');
                 if (sectionSubtitle) sectionSubtitle.textContent = lang === 'tr' ? 'İhtiyacınıza uygun paketi seçin ve hemen kullanmaya başlayın' : 'Choose the package that suits your needs and start using it right away';
                 
-                // Product Cards Translation
-                const productData = lang === 'tr' ? [
-                    {
-                        title: 'Premium Key (1 Aylık)',
-                        desc: '1 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı ve öncelikli destek.',
-                        price: '₺299',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Premium Key (3 Aylık)',
-                        desc: '3 ay süreyle tüm özelliklere sınırsız erişim. Günlük 50 sorgulama hakkı, öncelikli destek ve %15 indirim.',
-                        price: '₺749',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Premium Key (6 Aylık)',
-                        desc: '6 ay süreyle tüm özelliklere sınırsız erişim. Günlük 200 sorgulama hakkı ve premium destek.',
-                        price: '₺1.499',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Premium Key (Yıllık)',
-                        desc: '1 yıl süreyle tüm özelliklere sınırsız erişim. Sınırsız sorgulama ve özel hesap yöneticisi.',
-                        price: '₺2.499',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'VIP Erişim',
-                        desc: 'Ömür boyu VIP erişim. Tüm veritabanlarına sınırsız erişim, API kullanımı ve özel özellikler.',
-                        price: '₺4.999',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Özel Veritabanı Erişimi',
-                        desc: 'Özel ve güncel veritabanlarına 3 ay erişim. Standart paketlerde bulunmayan veriler.',
-                        price: '₺1.999',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'API Erişimi',
-                        desc: 'Kendi uygulamanızda kullanabileceğiniz API erişimi. Aylık 10.000 istek limiti.',
-                        price: '₺3.499',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Toplu Sorgulama Paketi',
-                        desc: '1000 adet toplu sorgulama kredisi. Excel/CSV dosyası ile toplu sorgulama yapın.',
-                        price: '₺599',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Öncelikli Destek',
-                        desc: '7/24 öncelikli destek hizmeti. Tüm sorularınıza 1 saat içinde yanıt garantisi.',
-                        price: '₺199/ay',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Özel Bot Kurulumu',
-                        desc: 'Kendi Discord sunucunuz için özel bot kurulumu ve yapılandırma hizmeti.',
-                        price: '₺2.999',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Eğitim Paketi',
-                        desc: 'Platform kullanımı ve veri analizi konusunda 2 saatlik birebir eğitim.',
-                        price: '₺499',
-                        button: 'Satın Al'
-                    },
-                    {
-                        title: 'Kurumsal Paket',
-                        desc: 'Kurumlar için özel çözümler. Sınırsız kullanıcı, API, özel özellikler ve SLA garantisi.',
-                        price: 'Teklif Alın',
-                        button: 'İletişime Geç'
-                    }
-                ] : [
-                    {
-                        title: 'Premium Key (1 Month)',
-                        desc: 'Unlimited access to all features for 1 month. 50 daily queries and priority support.',
-                        price: '₺299',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Premium Key (3 Months)',
-                        desc: 'Unlimited access to all features for 3 months. 50 daily queries, priority support and 15% discount.',
-                        price: '₺749',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Premium Key (6 Months)',
-                        desc: 'Unlimited access to all features for 6 months. 200 daily queries and premium support.',
-                        price: '₺1.499',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Premium Key (Annual)',
-                        desc: 'Unlimited access to all features for 1 year. Unlimited queries and dedicated account manager.',
-                        price: '₺2.499',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'VIP Access',
-                        desc: 'Lifetime VIP access. Unlimited access to all databases, API usage and exclusive features.',
-                        price: '₺4.999',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Custom Database Access',
-                        desc: '3-month access to exclusive and up-to-date databases. Data not available in standard packages.',
-                        price: '₺1.999',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'API Access',
-                        desc: 'API access for use in your own application. Monthly limit of 10,000 requests.',
-                        price: '₺3.499',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Bulk Query Package',
-                        desc: '1000 bulk query credits. Perform bulk queries with Excel/CSV files.',
-                        price: '₺599',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Priority Support',
-                        desc: '24/7 priority support service. Guaranteed response to all your questions within 1 hour.',
-                        price: '₺199/mo',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Custom Bot Setup',
-                        desc: 'Custom bot installation and configuration service for your own Discord server.',
-                        price: '₺2.999',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Training Package',
-                        desc: '2-hour one-on-one training on platform usage and data analysis.',
-                        price: '₺499',
-                        button: 'Buy Now'
-                    },
-                    {
-                        title: 'Enterprise Package',
-                        desc: 'Custom solutions for enterprises. Unlimited users, API, custom features and SLA guarantee.',
-                        price: 'Get Quote',
-                        button: 'Contact Us'
-                    }
-                ];
-                
-                // Apply translations to product cards
+                // Apply product translations
                 const featureTitles = document.querySelectorAll('.feature-title');
                 const featureDescs = document.querySelectorAll('.feature-desc');
                 const productPrices = document.querySelectorAll('.product-price');
@@ -2594,11 +2648,12 @@
                 
                 // How It Works Section
                 const howItWorksBadge = document.querySelectorAll('.section-badge')[1];
-                const howItWorksTitle = document.querySelectorAll('.section-title')[1];
-                const howItWorksSubtitle = document.querySelectorAll('.section-subtitle')[1];
-                
                 if (howItWorksBadge) howItWorksBadge.textContent = lang === 'tr' ? 'NASIL ÇALIŞIR' : 'HOW IT WORKS';
+                
+                const howItWorksTitle = document.querySelectorAll('.section-title')[1];
                 if (howItWorksTitle) howItWorksTitle.textContent = lang === 'tr' ? '3 Basit Adımda Başlayın' : 'Get Started in 3 Simple Steps';
+                
+                const howItWorksSubtitle = document.querySelectorAll('.section-subtitle')[1];
                 if (howItWorksSubtitle) howItWorksSubtitle.textContent = lang === 'tr' ? 'Hızlı ve kolay kayıt süreci ile dakikalar içinde platforma erişim sağlayın' : 'Access the platform in minutes with quick and easy registration process';
                 
                 const stepTitles = document.querySelectorAll('.step-title');
@@ -2613,25 +2668,10 @@
                 
                 // CTA Section
                 const ctaTitle = document.querySelector('.cta-title');
-                const ctaSubtitle = document.querySelector('.cta-subtitle');
                 if (ctaTitle) ctaTitle.textContent = lang === 'tr' ? 'Hemen Satın Alın' : 'Buy Now';
-                if (ctaSubtitle) ctaSubtitle.textContent = lang === 'tr' ? 'Discord sunucumuza katılın ve size uygun paketi seçerek hemen kullanmaya başlayın' : 'Join our Discord server and choose the package that suits you to start using it right away';
                 
-                const ctaButtons = document.querySelectorAll('.cta-buttons .btn');
-                if (ctaButtons[0]) {
-                    // Find the text node after the SVG
-                    const textNodes = Array.from(ctaButtons[0].childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
-                    if (textNodes.length > 0) {
-                        textNodes[0].textContent = lang === 'tr' ? ' Discord\'a Katıl' : ' Join Discord';
-                    }
-                }
-                if (ctaButtons[1]) {
-                    // Find the text node after the SVG
-                    const textNodes = Array.from(ctaButtons[1].childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
-                    if (textNodes.length > 0) {
-                        textNodes[0].textContent = lang === 'tr' ? ' Ana Sayfa' : ' Home';
-                    }
-                }
+                const ctaSubtitle = document.querySelector('.cta-subtitle');
+                if (ctaSubtitle) ctaSubtitle.textContent = lang === 'tr' ? 'Discord sunucumuza katılın ve size uygun paketi seçerek hemen kullanmaya başlayın' : 'Join our Discord server and choose the package that suits you to start using it right away';
                 
                 // Footer
                 const footerDesc = document.querySelector('.footer-desc');
@@ -2670,38 +2710,19 @@
                 if (elements.themeToggle) elements.themeToggle.title = lang === 'tr' ? 'Tema Değiştir' : 'Toggle Theme';
                 if (elements.langToggle) elements.langToggle.title = lang === 'tr' ? 'Dil Değiştir' : 'Change Language';
                 
-                try {
-                    localStorage.setItem('language', lang);
-                } catch (e) {
-                    console.warn('⚠️ Could not save language to localStorage:', e);
-                }
+                localStorage.setItem('language', lang);
                 currentLang = lang;
                 
-                console.log('✅ Language changed to:', lang);
+                console.log('✅ Translation applied:', lang);
             } catch (error) {
-                console.error('❌ Error in translatePage:', error);
+                console.error('❌ Translation error:', error);
             }
         }
         
         function toggleLanguage() {
-            try {
-                const newLang = currentLang === 'tr' ? 'en' : 'tr';
-                console.log('Toggling language from', currentLang, 'to', newLang);
-                
-                if (elements.langText) {
-                    elements.langText.textContent = newLang.toUpperCase();
-                }
-                
-                translatePage(newLang);
-                try {
-                    localStorage.setItem('language', newLang);
-                } catch (e) {
-                    console.warn('⚠️ Could not save language to localStorage:', e);
-                }
-                currentLang = newLang;
-            } catch (error) {
-                console.error('❌ Error in toggleLanguage:', error);
-            }
+            const newLang = currentLang === 'tr' ? 'en' : 'tr';
+            elements.langText.textContent = newLang.toUpperCase();
+            translatePage(newLang);
         }
         
         // ==================== PARTICLES SYSTEM ====================
@@ -2745,37 +2766,25 @@
         }
         
         function initParticles() {
-            try {
-                const canvas = elements.particles;
-                if (!canvas) {
-                    console.warn('⚠️ Particles canvas not found');
-                    return;
-                }
-                
-                const ctx = canvas.getContext('2d');
-                if (!ctx) {
-                    console.warn('⚠️ Canvas context not available');
-                    return;
-                }
-                
-                let animationFrameId;
-                let lastTime = 0;
-                const fps = 30;
-                const interval = 1000 / fps;
-                
-                function resizeCanvas() {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                }
-                
-                resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
-                
-                // Reduced to 30 particles for better mobile performance
-                const particleCount = window.innerWidth < 768 ? 20 : 30;
-                for (let i = 0; i < particleCount; i++) {
-                    particlesArray.push(new Particle(canvas));
-                }
+            const canvas = elements.particles;
+            const ctx = canvas.getContext('2d');
+            let animationFrameId;
+            let lastTime = 0;
+            const fps = 30;
+            const interval = 1000 / fps;
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Reduced to 40 particles for better performance
+            for (let i = 0; i < 40; i++) {
+                particlesArray.push(new Particle(canvas));
+            }
             
             function animateParticles(currentTime) {
                 animationFrameId = requestAnimationFrame(animateParticles);
@@ -2813,24 +2822,166 @@
             }
             
             animateParticles(0);
-            console.log('✅ Particles initialized');
-            } catch (error) {
-                console.error('❌ Error initializing particles:', error);
+        }
+        
+        // ==================== MUSIC CONTROLS ====================
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateProgress() {
+            const audio = elements.bgMusic;
+            if (audio.duration) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                elements.musicProgressFill.style.width = `${progress}%`;
+                elements.musicCurrentTime.textContent = formatTime(audio.currentTime);
+                elements.musicDuration.textContent = formatTime(audio.duration);
             }
+        }
+        
+        function loadSong(index) {
+            if (index < 0 || index >= playlist.length) return;
+            
+            currentSongIndex = index;
+            const song = playlist[index];
+            
+            elements.bgMusic.src = song;
+            
+            // Update song info
+            const songName = song.split('/').pop().replace('.mp3', '');
+            const songTitle = songName.charAt(0).toUpperCase() + songName.slice(1);
+            elements.musicSongName.textContent = songTitle;
+            
+            // Reset progress
+            elements.musicProgressFill.style.width = '0%';
+            elements.musicCurrentTime.textContent = '0:00';
+            elements.musicDuration.textContent = '0:00';
+            
+            // If music was playing, continue playing
+            if (musicPlaying) {
+                elements.bgMusic.play().catch(err => {
+                    console.log('Playback error:', err);
+                });
+            }
+        }
+        
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            loadSong(currentSongIndex);
+        }
+        
+        function previousSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+        }
+        
+        function stopMusic() {
+            elements.bgMusic.pause();
+            elements.bgMusic.currentTime = 0;
+            elements.musicPlayIcon.style.display = 'block';
+            elements.musicPauseIcon.style.display = 'none';
+            elements.musicPlayBtn.classList.remove('playing');
+            musicPlaying = false;
+            
+            // Reset progress
+            elements.musicProgressFill.style.width = '0%';
+            elements.musicCurrentTime.textContent = '0:00';
+        }
+        
+        function togglePlay() {
+            if (musicPlaying) {
+                elements.bgMusic.pause();
+                elements.musicPlayIcon.style.display = 'block';
+                elements.musicPauseIcon.style.display = 'none';
+                elements.musicPlayBtn.classList.remove('playing');
+            } else {
+                elements.bgMusic.play().catch(err => {
+                    console.log('Music autoplay blocked:', err);
+                });
+                elements.musicPlayIcon.style.display = 'none';
+                elements.musicPauseIcon.style.display = 'block';
+                elements.musicPlayBtn.classList.add('playing');
+            }
+            musicPlaying = !musicPlaying;
+        }
+        
+        function initMusic() {
+            // Load first song
+            loadSong(0);
+            
+            // Toggle player visibility
+            elements.musicToggle.addEventListener('click', () => {
+                elements.musicPlayerMain.classList.toggle('collapsed');
+            });
+            
+            // Play/Pause button
+            elements.musicPlayBtn.addEventListener('click', togglePlay);
+            
+            // Stop button
+            elements.musicStopBtn.addEventListener('click', stopMusic);
+            
+            // Next button
+            elements.musicNextBtn.addEventListener('click', () => {
+                nextSong();
+            });
+            
+            // Previous button
+            elements.musicPrevBtn.addEventListener('click', () => {
+                previousSong();
+            });
+            
+            // Progress bar click to seek
+            elements.musicProgressBar.addEventListener('click', (e) => {
+                const rect = elements.musicProgressBar.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = x / rect.width;
+                elements.bgMusic.currentTime = percentage * elements.bgMusic.duration;
+            });
+            
+            // Update progress continuously
+            elements.bgMusic.addEventListener('timeupdate', updateProgress);
+            
+            // Update duration when metadata loads
+            elements.bgMusic.addEventListener('loadedmetadata', () => {
+                elements.musicDuration.textContent = formatTime(elements.bgMusic.duration);
+            });
+            
+            // Auto-play next song when current ends
+            elements.bgMusic.addEventListener('ended', () => {
+                nextSong();
+            });
+            
+            // Handle errors (skip to next song)
+            elements.bgMusic.addEventListener('error', () => {
+                console.log('Song failed to load, skipping...');
+                nextSong();
+            });
+            
+            // Try autoplay after delay
+            setTimeout(() => {
+                elements.bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    elements.musicPlayIcon.style.display = 'none';
+                    elements.musicPauseIcon.style.display = 'block';
+                    elements.musicPlayBtn.classList.add('playing');
+                }).catch(() => {
+                    console.log('Autoplay blocked - user interaction required');
+                });
+            }, 1000);
         }
         
         // ==================== NAVIGATION ====================
         function initNavigation() {
-            try {
-                window.addEventListener('scroll', () => {
-                    if (elements.nav) {
-                        if (window.scrollY > 100) {
-                            elements.nav.classList.add('scrolled');
-                        } else {
-                            elements.nav.classList.remove('scrolled');
-                        }
-                    }
-                });
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    elements.nav.classList.add('scrolled');
+                } else {
+                    elements.nav.classList.remove('scrolled');
+                }
+            });
             
             // Smooth scroll
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2849,21 +3000,13 @@
                 });
             });
             
-                // Scroll indicator
-                if (elements.scrollIndicator) {
-                    elements.scrollIndicator.addEventListener('click', () => {
-                        const featuresSection = document.querySelector('.features');
-                        if (featuresSection) {
-                            featuresSection.scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
+            // Scroll indicator
+            if (elements.scrollIndicator) {
+                elements.scrollIndicator.addEventListener('click', () => {
+                    document.querySelector('.features').scrollIntoView({
+                        behavior: 'smooth'
                     });
-                }
-                
-                console.log('✅ Navigation initialized');
-            } catch (error) {
-                console.error('❌ Error initializing navigation:', error);
+                });
             }
         }
         
@@ -2874,23 +3017,15 @@
         const STATS_INCREMENT_INTERVAL = 15 * 60 * 1000; // 15 minutes
         
         function getStoredStats() {
-            try {
-                const stored = localStorage.getItem('hapsetme_stats');
-                if (stored) {
-                    return JSON.parse(stored);
-                }
-            } catch (e) {
-                console.warn('⚠️ Could not read stats from localStorage:', e);
+            const stored = localStorage.getItem('hapsetme_stats');
+            if (stored) {
+                return JSON.parse(stored);
             }
             return null;
         }
         
         function saveStats(stats) {
-            try {
-                localStorage.setItem('hapsetme_stats', JSON.stringify(stats));
-            } catch (e) {
-                console.warn('⚠️ Could not save stats to localStorage:', e);
-            }
+            localStorage.setItem('hapsetme_stats', JSON.stringify(stats));
         }
         
         function incrementStats(stats) {
@@ -2975,8 +3110,7 @@
         }
         
         async function initStatsCounters() {
-            try {
-                const stats = await fetchRealStats();
+            const stats = await fetchRealStats();
             
             // Update data-count attributes with real values
             const heroStatValues = document.querySelectorAll('.hero-stat-value');
@@ -3004,186 +3138,290 @@
             
             allStatValues.forEach(stat => observer.observe(stat));
             
-                // Set up periodic increment check (every minute)
-                setInterval(async () => {
-                    try {
-                        const currentStats = await fetchRealStats();
-                        // Update displayed values if they changed
-                        if (heroStatValues[0]) heroStatValues[0].setAttribute('data-count', currentStats.total_queries);
-                        if (heroStatValues[1]) heroStatValues[1].setAttribute('data-count', currentStats.active_users);
-                        if (statValues[0]) statValues[0].setAttribute('data-count', currentStats.total_queries);
-                        if (statValues[1]) statValues[1].setAttribute('data-count', currentStats.active_users);
-                    } catch (error) {
-                        console.error('❌ Error updating stats:', error);
-                    }
-                }, 60000); // Check every minute
-                
-                console.log('✅ Stats counters initialized');
-            } catch (error) {
-                console.error('❌ Error initializing stats:', error);
-            }
+            // Set up periodic increment check (every minute)
+            setInterval(async () => {
+                const currentStats = await fetchRealStats();
+                // Update displayed values if they changed
+                heroStatValues[0].setAttribute('data-count', currentStats.total_queries);
+                heroStatValues[1].setAttribute('data-count', currentStats.active_users);
+                statValues[0].setAttribute('data-count', currentStats.total_queries);
+                statValues[1].setAttribute('data-count', currentStats.active_users);
+            }, 60000); // Check every minute
         }
         
         // ==================== SCROLL REVEAL ====================
         function initScrollReveal() {
-            try {
-                const reveals = document.querySelectorAll('.reveal');
-                
-                if (reveals.length === 0) {
-                    console.warn('⚠️ No reveal elements found');
-                    return;
-                }
-                
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('active');
-                        }
-                    });
-                }, {
-                    threshold: 0.15,
-                    rootMargin: '0px 0px -50px 0px'
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
                 });
-                
-                reveals.forEach(reveal => observer.observe(reveal));
-                console.log('✅ Scroll reveal initialized');
-            } catch (error) {
-                console.error('❌ Error initializing scroll reveal:', error);
-            }
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            reveals.forEach(reveal => observer.observe(reveal));
         }
         
         // ==================== 3D CARD EFFECTS ====================
         function init3DCards() {
-            try {
-                // Only enable on desktop for performance
-                if (window.innerWidth < 768) {
-                    console.log('⚠️ 3D cards disabled on mobile');
-                    return;
-                }
-                
-                const cards = document.querySelectorAll('.feature-card');
-                
-                if (cards.length === 0) {
-                    console.warn('⚠️ No feature cards found');
-                    return;
-                }
-                
-                cards.forEach(card => {
-                    card.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const rotateX = (y - centerY) / 10;
-                        const rotateY = (centerX - x) / 10;
-                        
-                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.02)`;
-                    });
+            const cards = document.querySelectorAll('.feature-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
                     
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = '';
-                    });
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px)`;
                 });
                 
-                console.log('✅ 3D cards initialized');
-            } catch (error) {
-                console.error('❌ Error initializing 3D cards:', error);
-            }
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
+        
+        // ==================== MODAL MANAGEMENT ====================
+        function openModal(modal) {
+            modal.classList.add('active');
+            document.body.classList.add('no-scroll');
+        }
+        
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+        
+        function initModals() {
+            // Open login modal
+            [elements.loginBtn, elements.footerLoginLink].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        closeModal(elements.registerModal);
+                        openModal(elements.loginModal);
+                    });
+                }
+            });
+            
+            // Open register modal
+            [elements.registerBtn, elements.getStartedBtn, elements.ctaRegisterBtn, elements.footerRegisterLink].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        closeModal(elements.loginModal);
+                        openModal(elements.registerModal);
+                    });
+                }
+            });
+            
+            // Close modals
+            elements.closeLogin.addEventListener('click', () => closeModal(elements.loginModal));
+            elements.closeRegister.addEventListener('click', () => closeModal(elements.registerModal));
+            
+            // Switch between modals
+            elements.switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal(elements.loginModal);
+                openModal(elements.registerModal);
+            });
+            
+            elements.switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal(elements.registerModal);
+                openModal(elements.loginModal);
+            });
+            
+            // Close on overlay click
+            [elements.loginModal, elements.registerModal].forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+            
+            // Close on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal(elements.loginModal);
+                    closeModal(elements.registerModal);
+                }
+            });
+        }
+        
+        // ==================== FORM HANDLING ====================
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `form-message ${type}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        function initForms() {
+            // Login Form
+            elements.loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const username = elements.loginUsername.value.trim();
+                const password = elements.loginPassword.value.trim();
+                
+                if (!username || !password) {
+                    showMessage(elements.loginMessage, 'Tüm alanları doldurun', 'error');
+                    return;
+                }
+                
+                const submitBtn = elements.loginForm.querySelector('.form-submit');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Giriş yapılıyor...';
+                
+                try {
+                    const response = await fetch(`${API_BASE}/api/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        showMessage(elements.loginMessage, 'Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1500);
+                    } else {
+                        showMessage(elements.loginMessage, data.error || 'Giriş başarısız', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Giriş Yap';
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showMessage(elements.loginMessage, 'Bağlantı hatası. Lütfen tekrar deneyin.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Giriş Yap';
+                }
+            });
+            
+            // Register Form
+            elements.registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const key = elements.registerKey.value.trim();
+                const username = elements.registerUsername.value.trim();
+                const password = elements.registerPassword.value.trim();
+                
+                if (!key || !username || !password) {
+                    showMessage(elements.registerMessage, 'Tüm alanları doldurun', 'error');
+                    return;
+                }
+                
+                if (username.length < 3) {
+                    showMessage(elements.registerMessage, 'Kullanıcı adı en az 3 karakter olmalı', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showMessage(elements.registerMessage, 'Şifre en az 6 karakter olmalı', 'error');
+                    return;
+                }
+                
+                const submitBtn = elements.registerForm.querySelector('.form-submit');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Kayıt yapılıyor...';
+                
+                try {
+                    const response = await fetch(`${API_BASE}/api/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ key, username, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        showMessage(elements.registerMessage, 'Kayıt başarılı! Giriş yapabilirsiniz.', 'success');
+                        
+                        setTimeout(() => {
+                            closeModal(elements.registerModal);
+                            openModal(elements.loginModal);
+                            elements.loginUsername.value = username;
+                            elements.registerForm.reset();
+                        }, 2000);
+                    } else {
+                        showMessage(elements.registerMessage, data.error || 'Kayıt başarısız', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Kayıt Ol';
+                    }
+                } catch (error) {
+                    console.error('Register error:', error);
+                    showMessage(elements.registerMessage, 'Bağlantı hatası. Lütfen tekrar deneyin.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Kayıt Ol';
+                }
+            });
         }
         
         // ==================== LOADING SCREEN ====================
         function hideLoading() {
-            try {
-                const loadingEl = document.getElementById('loading');
-                if (loadingEl) {
-                    setTimeout(() => {
-                        loadingEl.classList.add('hide');
-                        setTimeout(() => {
-                            loadingEl.style.display = 'none';
-                        }, 600);
-                    }, 500);
-                    console.log('✅ Loading screen hidden');
-                } else {
-                    console.warn('⚠️ Loading element not found');
-                }
-            } catch (error) {
-                console.error('❌ Error hiding loading:', error);
-                // Force hide anyway
-                const loadingEl = document.getElementById('loading');
-                if (loadingEl) loadingEl.style.display = 'none';
-            }
+            setTimeout(() => {
+                elements.loading.classList.add('hide');
+                setTimeout(() => {
+                    elements.loading.style.display = 'none';
+                }, 600);
+            }, 800);
         }
         
         // ==================== INITIALIZATION ====================
-        async function init() {
-            console.log('🚀 HAPSETME Market Platform Initializing...');
+        function init() {
+            console.log('🚀 HAPSETME Platform Initializing...');
             
-            // CRITICAL: Hide loading screen IMMEDIATELY
+            // Apply saved theme immediately
+            applyTheme(currentTheme);
+            
+            // Apply saved language
+            elements.langText.textContent = currentLang.toUpperCase();
+            if (currentLang === 'en') {
+                translatePage('en');
+            }
+            
+            // Initialize all features
+            initParticles();
+            initMusic();
+            initNavigation();
+            initStatsCounters();
+            initScrollReveal();
+            init3DCards();
+            initControls();
             hideLoading();
             
-            try {
-                // Apply saved theme immediately
-                try {
-                    applyTheme(currentTheme);
-                } catch (e) {
-                    console.error('❌ Theme error:', e);
-                }
-                
-                // Apply saved language
-                try {
-                    if (elements.langText) {
-                        elements.langText.textContent = currentLang.toUpperCase();
-                    }
-                    if (currentLang === 'en') {
-                        translatePage('en');
-                    }
-                } catch (e) {
-                    console.error('❌ Language error:', e);
-                }
-                
-                // Initialize all features (each wrapped in try-catch)
-                try { initParticles(); } catch (e) { console.error('❌ Particles error:', e); }
-                try { initNavigation(); } catch (e) { console.error('❌ Navigation error:', e); }
-                try { initScrollReveal(); } catch (e) { console.error('❌ Scroll reveal error:', e); }
-                try { init3DCards(); } catch (e) { console.error('❌ 3D cards error:', e); }
-                try { initControls(); } catch (e) { console.error('❌ Controls error:', e); }
-                
-                // Initialize stats asynchronously (don't block page load)
-                try {
-                    initStatsCounters().catch(err => {
-                        console.error('❌ Stats initialization failed:', err);
-                    });
-                } catch (e) {
-                    console.error('❌ Stats error:', e);
-                }
-                
-                console.log('✅ HAPSETME Market Platform Ready!');
-            } catch (error) {
-                console.error('❌ Critical initialization error:', error);
-                // Ensure loading screen is hidden even on error
-                hideLoading();
-            }
+            console.log('✅ HAPSETME Platform Ready!');
         }
         
         function initControls() {
             // Theme toggle
-            if (elements.themeToggle) {
-                elements.themeToggle.addEventListener('click', toggleTheme);
-                console.log('✅ Theme toggle initialized');
-            } else {
-                console.error('❌ Theme toggle element not found');
-            }
+            elements.themeToggle.addEventListener('click', toggleTheme);
             
             // Language toggle
-            if (elements.langToggle) {
-                elements.langToggle.addEventListener('click', toggleLanguage);
-                console.log('✅ Language toggle initialized');
-            } else {
-                console.error('❌ Language toggle element not found');
-            }
+            elements.langToggle.addEventListener('click', toggleLanguage);
         }
         
         // Start when DOM is ready
