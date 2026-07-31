@@ -32,10 +32,10 @@ const API_DEFINITIONS = [
     icon: "fa-solid fa-user-magnifying-glass",
     description: "Ad ve soyad bilgisiyle kişi arama yapar. İl, ilçe, anne ve baba adı ile filtreleme desteklenir.",
     params: [
-      { key: "ad",    label: "Ad",       placeholder: "AHMET",    type: "text", required: true,  hint: "Kişinin adı" },
-      { key: "soyad", label: "Soyad",    placeholder: "YILMAZ",   type: "text", required: false, hint: "İsteğe bağlı" },
+      { key: "ad",    label: "Ad",       placeholder: "FURKAN",    type: "text", required: true,  hint: "Kişinin adı" },
+      { key: "soyad", label: "Soyad",    placeholder: "ALBAYRAK",   type: "text", required: false, hint: "İsteğe bağlı" },
       { key: "il",    label: "İl",       placeholder: "ISTANBUL",  type: "text", required: false, hint: "İsteğe bağlı" },
-      { key: "ilce",  label: "İlçe",     placeholder: "KADIKOY",  type: "text", required: false, hint: "İsteğe bağlı" },
+      { key: "ilce",  label: "İlçe",     placeholder: "PENDIK",  type: "text", required: false, hint: "İsteğe bağlı" },
       { key: "anne",  label: "Anne Adı", placeholder: "AYSE",     type: "text", required: false, hint: "İsteğe bağlı" },
       { key: "baba",  label: "Baba Adı", placeholder: "MEHMET",   type: "text", required: false, hint: "İsteğe bağlı" },
     ],
