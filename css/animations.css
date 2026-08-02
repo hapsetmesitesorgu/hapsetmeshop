@@ -1,0 +1,162 @@
+/* ═══════════════════════════════════════════
+   animations.css — Optimize edilmiş animasyonlar
+   Kural: Sadece transform + opacity animasyonları GPU hızlandırmalıdır.
+   box-shadow / border-color animasyonları repaint tetikler — kaldırıldı.
+═══════════════════════════════════════════ */
+
+/* ── Temel keyframe'ler ── */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-5px); }
+  40%       { transform: translateX(5px); }
+  60%       { transform: translateX(-3px); }
+  80%       { transform: translateX(3px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Glow: pseudo element ile yapılır → repaint yok ── */
+@keyframes glowOpacity {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* badge pulse — transform bazlı ── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 1; }
+  70%  { transform: scale(2); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* ── Scroll Reveal ── */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.fade-in-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
+/* ── Hero içeriği ── */
+.hero-content {
+  animation: fadeInUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Buton glow: box-shadow yerine ::after pseudo ile ──
+   ::after transform/opacity ile animasyon → GPU hızlandırmalı ── */
+.btn-query { position: relative; overflow: hidden; }
+.btn-query::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 20px rgba(220,38,38,0.6);
+  opacity: 0.5;
+  animation: glowOpacity 3s ease-in-out infinite;
+  pointer-events: none;
+}
+.btn-query:hover::after { animation: none; opacity: 0.9; }
+
+/* ── Kart hover efekti: transition ile, animasyon YOK ──
+   Sürekli çalışan animasyon 9 kartta birden → kasma ── */
+.api-card { transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+.api-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(220,38,38,0.35);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.6), 0 0 20px rgba(220,38,38,0.1);
+}
+/* focus-within sadece border — animasyon YOK */
+.api-card:focus-within { border-color: rgba(220,38,38,0.3); }
+
+/* ── API Grid kart stagger (transition-delay, animasyon değil) ── */
+.api-card:nth-child(1)  { transition-delay: 0ms; }
+.api-card:nth-child(2)  { transition-delay: 50ms; }
+.api-card:nth-child(3)  { transition-delay: 100ms; }
+.api-card:nth-child(4)  { transition-delay: 150ms; }
+.api-card:nth-child(5)  { transition-delay: 200ms; }
+.api-card:nth-child(6)  { transition-delay: 250ms; }
+.api-card:nth-child(7)  { transition-delay: 300ms; }
+.api-card:nth-child(8)  { transition-delay: 350ms; }
+.api-card:nth-child(9)  { transition-delay: 400ms; }
+
+/* ── Result container ── */
+.result-container {
+  transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+/* ── Recent items ── */
+.recent-item { animation: fadeInUp 0.3s ease both; }
+
+/* ── Logo: glowPulse yerine ::after ile ── */
+.nav-logo-icon { position: relative; }
+
+/* ── Hero title shimmer ── */
+.title-line.accent {
+  background: linear-gradient(
+    90deg,
+    var(--red) 0%,
+    var(--red-light) 40%,
+    #ff6b6b 60%,
+    var(--red) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 5s linear infinite;
+  will-change: background-position;
+}
+
+/* ── Preloader ── */
+.preloader-ring { animation: spin 0.9s linear infinite; }
+
+/* ── Badge pulse (status dot) ── */
+.status-dot.online, .badge-pulse {
+  position: relative;
+}
+.status-dot.online::after, .badge-pulse::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: pulse-ring 2s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+/* ── Kart flash (favorilerden tıklayınca) ── */
+@keyframes card-flash-anim {
+  0%,100% { outline: none; }
+  40%     { outline: 2px solid var(--red); }
+}
+.card-flash { animation: card-flash-anim 0.7s ease; }
+
+/* ── Reduce motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
